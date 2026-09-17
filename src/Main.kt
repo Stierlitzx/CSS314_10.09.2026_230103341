@@ -149,7 +149,7 @@ fun main() {
     println("AtomicLong (4 threads):   pi ≈ %.6f, time = %d ms".format(piAtomic, timeAtomic))
     println("Slowdown vs single thread: %.2fx".format(timeAtomic.toDouble() / timeSingle))
 
-    println()git add .gitignore src/Main.kt
+    println()
     println("=".repeat(70))
     println("PART 3 — OpenMP-Style Reduction (local counters, 100,000,000 points)")
     println("=".repeat(70))
