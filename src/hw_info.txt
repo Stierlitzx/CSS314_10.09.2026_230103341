@@ -1,0 +1,32 @@
+
+
+Name                      : AMD Ryzen 5 7640HS w/ Radeon 760M Graphics
+NumberOfCores             : 6
+NumberOfLogicalProcessors : 12
+
+
+
+
+Supplemental Worksheet Information
+---------------------------------
+
+
+Caption        : Microsoft Windows 11 Pro
+Version        : 10.0.22631
+BuildNumber    : 22631
+OSArchitecture : 64-bit
+
+
+
+
+
+Manufacturer        : LENOVO
+Model               : 82Y9
+TotalPhysicalMemory : 16309932032
+
+
+
+L1 data cache line size: 64 bytes
+OpenMP omp_get_max_threads: 12
+gcc.exe (MinGW.org GCC-6.3.0-1) 6.3.0
+Benchmark timestamp: 2026-09-24T12:05:34.2824218+05:00

@@ -1,0 +1,6 @@
+Student ID: 230103341
+Workload N: 10341000
+omp_get_max_threads(): 12
+scaling      reduction              threads=6  run=1 time=0.810000 s max=685 checksum=608547103
+scaling      reduction              threads=6  run=2 time=0.826000 s max=685 checksum=608547103
+scaling      reduction              threads=6  run=3 time=0.833000 s max=685 checksum=608547103

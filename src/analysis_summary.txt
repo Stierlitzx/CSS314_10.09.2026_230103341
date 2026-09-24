@@ -1,0 +1,28 @@
+CSS314 Collatz benchmark summary
+N: 10341000
+Checksum: 608547103
+Maximum stopping time: 685
+Numbers with >100 steps: 8197974
+Sequential T_seq: 4.147500 s
+Derived S_emp(2): 1.901651
+Derived parallel fraction p: 0.948282
+
+Scaling:
+k= 1: runs=4.157000/4.186000/3.932000 s, avg=4.059000 s, S_emp=1.0218, S_theo=1.0000, delta=-0.0218
+k= 2: runs=1.953000/2.199000/2.163000 s, avg=2.181000 s, S_emp=1.9017, S_theo=1.9017, delta=+0.0000
+k= 4: runs=1.185000/1.137000/1.152000 s, avg=1.144500 s, S_emp=3.6239, S_theo=3.4627, delta=-0.1611
+k= 6: runs=0.810000/0.826000/0.833000 s, avg=0.829500 s, S_emp=5.0000, S_theo=4.7672, delta=-0.2328
+k= 8: runs=0.631000/0.633000/0.633000 s, avg=0.633000 s, S_emp=6.5521, S_theo=5.8736, delta=-0.6785
+k=12: runs=0.545000/0.529000/0.606000 s, avg=0.567500 s, S_emp=7.3084, S_theo=7.6487, delta=+0.3403
+
+False sharing:
+cache_padded: runs=0.815000/0.808000/0.807000 s, avg=0.807500 s, throughput=12,806,191 iter/s
+naive_shared_line: runs=0.865000/0.796000/0.792000 s, avg=0.794000 s, throughput=13,023,930 iter/s
+Naive/padded penalty ratio: 0.983282
+
+Scheduling:
+static: runs=0.548000/0.548000/0.590000 s, avg=0.569000 s, throughput=18,173,988 iter/s, speedup_vs_seq=7.2891
+static_1000: runs=0.513000/0.543000/0.536000 s, avg=0.539500 s, throughput=19,167,745 iter/s, speedup_vs_seq=7.6877
+dynamic_100: runs=0.493000/0.480000/0.504000 s, avg=0.492000 s, throughput=21,018,291 iter/s, speedup_vs_seq=8.4299
+dynamic_10000: runs=0.538000/0.521000/0.569000 s, avg=0.545000 s, throughput=18,974,311 iter/s, speedup_vs_seq=7.6101
+guided: runs=0.607000/0.621000/0.785000 s, avg=0.703000 s, throughput=14,709,816 iter/s, speedup_vs_seq=5.8997

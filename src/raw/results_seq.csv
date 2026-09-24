@@ -1,0 +1,4 @@
+phase,variant,schedule,chunk,threads,run,seconds,max_steps,checksum,hits_over_100
+sequential,sequential,none,0,1,1,4.078999996,685,608547103,8197974
+sequential,sequential,none,0,1,2,4.157000065,685,608547103,8197974
+sequential,sequential,none,0,1,3,4.137999773,685,608547103,8197974

@@ -1,0 +1,4 @@
+phase,variant,schedule,chunk,threads,run,seconds,max_steps,checksum,hits_over_100
+scaling,reduction,static_default,0,6,1,0.809999884,685,608547103,8197974
+scaling,reduction,static_default,0,6,2,0.825999941,685,608547103,8197974
+scaling,reduction,static_default,0,6,3,0.832999966,685,608547103,8197974

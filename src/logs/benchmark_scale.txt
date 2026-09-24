@@ -1,0 +1,18 @@
+Student ID: 230103341
+Workload N: 10341000
+omp_get_max_threads(): 12
+scaling      reduction              threads=1  run=1 time=4.157000 s max=685 checksum=608547103
+scaling      reduction              threads=1  run=2 time=4.186000 s max=685 checksum=608547103
+scaling      reduction              threads=1  run=3 time=3.932000 s max=685 checksum=608547103
+scaling      reduction              threads=2  run=1 time=1.953000 s max=685 checksum=608547103
+scaling      reduction              threads=2  run=2 time=2.199000 s max=685 checksum=608547103
+scaling      reduction              threads=2  run=3 time=2.163000 s max=685 checksum=608547103
+scaling      reduction              threads=4  run=1 time=1.185000 s max=685 checksum=608547103
+scaling      reduction              threads=4  run=2 time=1.137000 s max=685 checksum=608547103
+scaling      reduction              threads=4  run=3 time=1.152000 s max=685 checksum=608547103
+scaling      reduction              threads=8  run=1 time=0.631000 s max=685 checksum=608547103
+scaling      reduction              threads=8  run=2 time=0.633000 s max=685 checksum=608547103
+scaling      reduction              threads=8  run=3 time=0.633000 s max=685 checksum=608547103
+scaling      reduction              threads=12 run=1 time=0.545000 s max=685 checksum=608547103
+scaling      reduction              threads=12 run=2 time=0.529000 s max=685 checksum=608547103
+scaling      reduction              threads=12 run=3 time=0.606000 s max=685 checksum=608547103

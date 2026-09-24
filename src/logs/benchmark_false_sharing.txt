@@ -1,0 +1,9 @@
+Student ID: 230103341
+Workload N: 10341000
+omp_get_max_threads(): 12
+false_sharing naive_shared_line      threads=6  run=1 time=0.865000 s max=685 checksum=608547103
+false_sharing naive_shared_line      threads=6  run=2 time=0.796000 s max=685 checksum=608547103
+false_sharing naive_shared_line      threads=6  run=3 time=0.792000 s max=685 checksum=608547103
+false_sharing cache_padded           threads=6  run=1 time=0.815000 s max=685 checksum=608547103
+false_sharing cache_padded           threads=6  run=2 time=0.808000 s max=685 checksum=608547103
+false_sharing cache_padded           threads=6  run=3 time=0.807000 s max=685 checksum=608547103

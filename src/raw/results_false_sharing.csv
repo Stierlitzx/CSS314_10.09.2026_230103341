@@ -1,0 +1,7 @@
+phase,variant,schedule,chunk,threads,run,seconds,max_steps,checksum,hits_over_100
+false_sharing,naive_shared_line,static_default,0,6,1,0.864999987,685,608547103,8197974
+false_sharing,naive_shared_line,static_default,0,6,2,0.795999977,685,608547103,8197974
+false_sharing,naive_shared_line,static_default,0,6,3,0.791999973,685,608547103,8197974
+false_sharing,cache_padded,static_default,0,6,1,0.814999918,685,608547103,8197974
+false_sharing,cache_padded,static_default,0,6,2,0.808000099,685,608547103,8197974
+false_sharing,cache_padded,static_default,0,6,3,0.807000011,685,608547103,8197974
