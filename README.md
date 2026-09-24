@@ -3,6 +3,7 @@
 - **Student:** Ayazgaliyev Aibek
 - **Student ID:** 230103341
 - **Group:** 06-P, 02-N
+- **Practicum Date & Time (Slot):** 24.09.2026, 12:20 local time (UTC+05:00)
 
 ## Workload
 
