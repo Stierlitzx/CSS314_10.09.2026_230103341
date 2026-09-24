@@ -45,6 +45,8 @@ pool creation, worker spawning and barrier wake-ups scale with team size.
 | 32 | 212.3 | 1507.3 |
 | 64 | 409.1 | 1564.6 |
 
+![Lab 1 — fork/join cost vs. team size; CPU saturation throughput](plots/lab1_forkjoin.png)
+
 **Q1.2:** Each thread carries a fixed 10M-op workload, so ideal wall time would stay ~37 ms.
 Beyond the 6 physical cores (and even past 12 SMT threads) throughput flattens at ~1.5 Gsqrt/s
 while wall time grows linearly with P: runnable threads exceed hardware contexts, so the OS
@@ -117,6 +119,8 @@ Near-linear scaling to P=8 (SMT helps beyond 6 physical cores for this FPU-light
 efficiency drops to 0.80 at P=16 (oversubscription of 12 logical CPUs). See
 `plots/lab2_speedup.png`.
 
+![Lab 2 — measured speedup vs. ideal linear speedup, with efficiency on the right axis](plots/lab2_speedup.png)
+
 **Q2.3:** Amdahl: with serial fraction s = 0.05, S_max = 1/s = **20×** even with infinitely many
 processors. If measured speedup flattens earlier, secondary causes are memory-bandwidth
 saturation, SMT siblings sharing one core's execution units, all-core turbo/thermal frequency
@@ -143,6 +147,8 @@ only if no other core touched the line since the load, otherwise the operation r
 | 16 | 244 | 103 | 97 | 215 | 537 |
 
 Heatmap + comparison chart: `plots/lab3_scheduling.png`.
+
+![Lab 3 — dynamic scheduling heatmap (threads × chunk) and static vs. best dynamic](plots/lab3_scheduling.png)
 
 Key findings:
 - **Static scheduling barely scales from P=2 to P=4 (430 → 432 ms)** because one thread gets the
@@ -196,6 +202,8 @@ microseconds of work.
 
 Raw data: `lab4/results/task4_scaling.csv`, plot: `plots/lab4_false_sharing.png`.
 
+![Lab 4 — false sharing scaling: unpadded vs. padded vs. thread-local](plots/lab4_false_sharing.png)
+
 | P | Unpadded (ms) | Padded 64B stride (ms) | Thread-local register (ms) |
 |---|---------------|-------------------------|----------------------------|
 | 1 | 88.5 | 81.5 | 25.5* |
@@ -246,6 +254,8 @@ Sequential baseline (T1, `Arrays.sort`): **553.4 ms**.
 | 100,000 | 136.6 | 129.1 | 4.05× |
 
 Optimum at K ≈ 10³–10⁵ with a shallow trough; K = 10 is ~39% slower than the optimum.
+
+![Lab 5 — execution time vs. sequential cutoff K (log scale)](plots/lab5_cutoff.png)
 
 ### Task 5.3 — Work–Span model
 - Work T1 = **O(N log N)** (all comparisons and merge passes). Measured T1 ≈ 553 ms.

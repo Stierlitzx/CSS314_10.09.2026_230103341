@@ -1,4 +1,4 @@
-# CSS314 — Practice Task 3 (24.09.2026): Shared-Memory Concurrency & OpenMP Paradigms Lab
+# CSS314 — Practice Task 3 (24.09.2026, 14:30): Shared-Memory Concurrency & OpenMP Paradigms Lab
 
 Implementations of Labs 1–5 from the *Laboratory Practice Manual: Shared-Memory
 Concurrency & OpenMP Paradigms* (Instructor – Sufyan bin Uzayr).
@@ -11,8 +11,8 @@ parallel streams ≈ `parallel for reduction`, `synchronized` ≈ `critical`,
 `AtomicInteger` work dispenser ≈ `schedule(dynamic,chunk)`,
 `RecursiveAction.invokeAll` ≈ `task` + `taskwait`).
 
-Earlier lecture work (Collatz OpenMP benchmark in C) is preserved in
-[`../lecture_task_10.09.2026/`](../lecture_task_10.09.2026/).
+Earlier lecture work from today (24.09.2026, 11:30 — Collatz OpenMP benchmark in C)
+is preserved in [`../lecture_task_24.09.2026_11.30/`](../lecture_task_24.09.2026_11.30/).
 
 ## Hardware Specification (Section I)
 
@@ -70,3 +70,23 @@ java "-Duser.language=en" "-Duser.country=US" -cp lab5 ParallelMergeSortLab5
 # Regenerate plots (requires numpy + matplotlib)
 python make_plots.py
 ```
+
+## Results & Plots (Section III preview)
+
+Full tables and discussion in [`RESULTS.md`](RESULTS.md).
+
+**Lab 1 — Fork/join cost vs. team size and CPU saturation throughput**
+![Lab 1 fork-join](plots/lab1_forkjoin.png)
+
+**Lab 2 — Pi reduction: measured speedup vs. ideal linear speedup (right axis: efficiency)**
+![Lab 2 speedup](plots/lab2_speedup.png)
+
+**Lab 3 — Mandelbrot scheduling: dynamic chunk-size heatmap and static vs. best dynamic**
+![Lab 3 scheduling](plots/lab3_scheduling.png)
+
+**Lab 4 — False sharing: unpadded vs. padded vs. thread-local scaling**
+![Lab 4 false sharing](plots/lab4_false_sharing.png)
+
+**Lab 5 — Parallel merge sort: execution time vs. sequential cutoff K (log scale)**
+![Lab 5 cutoff sweep](plots/lab5_cutoff.png)
+
