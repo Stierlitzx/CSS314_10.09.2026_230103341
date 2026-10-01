@@ -1,8 +1,12 @@
 """LAB PRACTICUM: OpenMP Multi-Core Scaling in Python (Numba)."""
 import time
+from pathlib import Path
 import numpy as np
 import numba
 from numba import njit, prange
+
+OUT_DIR = Path(__file__).resolve().parent.parent / "result"
+OUT_DIR.mkdir(parents=True, exist_ok=True)
 
 print(f"Hardware Threads Detected: {numba.config.NUMBA_NUM_THREADS}")
 
@@ -96,8 +100,8 @@ plt.figure(figsize=(8, 8))
 plt.imshow(grid_rows, cmap='magma', extent=[-2.0, 0.5, -1.2, 1.2])
 plt.title(f"Mandelbrot {H}x{W} (Render: {t_rows:.2f}s)")
 plt.axis('off')
-plt.savefig('mandelbrot_output.png', dpi=300, bbox_inches='tight')
-print("Saved image: mandelbrot_output.png")
+plt.savefig(OUT_DIR / 'mandelbrot_output.png', dpi=300, bbox_inches='tight')
+print(f"Saved image: {OUT_DIR / 'mandelbrot_output.png'}")
 
 # ---------------- Challenge 3: Heat stencil ----------------
 @njit(parallel=True)
@@ -137,7 +141,7 @@ print(f"Heat Diffusion Complete: {t32:.3f} s")
 print(f"Throughput: {cells32:.2f} Megacells/sec")
 print(f"Speedup (f64 -> f32): {t64 / t32:.2f}x")
 
-with open("benchmark_results.txt", "w") as f:
+with open(OUT_DIR / "benchmark_results.txt", "w") as f:
     f.write(f"Threads | Time(s) | Speedup | Efficiency(%)\n")
     for t, e, s, eff in mc_results:
         f.write(f"{t} | {e:.4f} | {s:.2f}x | {eff:.1f}\n")
