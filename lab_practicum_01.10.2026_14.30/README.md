@@ -12,10 +12,16 @@ parallel engine across three challenges, plus a load-imbalance and memory-bandwi
 ```
 lab_practicum_01.10.2026_14.30/
 ├── src/
-│   └── lab_openmp_benchmark.py   # all three challenges in one script (+ float32 variant)
+│   ├── lab_openmp_benchmark.py   # all three challenges in one script (+ float32 variant)
+│   └── make_plots.py             # generates the figures below from the recorded results
+├── plots/
+│   ├── challenge1_scaling.png    # latency, speedup & efficiency vs thread count
+│   ├── challenge2_axis.png       # row vs column decomposition render time
+│   ├── challenge3_bandwidth.png  # f64 vs f32 stencil throughput
+│   └── mandelbrot.png            # exported fractal render (2500x2500)
 └── result/
     ├── benchmark_results.txt     # raw console output of the run
-    ├── mandelbrot_output.png     # exported fractal render (2500x2500)
+    ├── mandelbrot_output.png     # fractal render produced by the benchmark run
     └── LAB_REPORT.md             # filled Table 1 scorecard + full answers
 ```
 
@@ -24,6 +30,7 @@ lab_practicum_01.10.2026_14.30/
 ```bash
 pip install numpy numba matplotlib
 python src/lab_openmp_benchmark.py
+python src/make_plots.py
 ```
 
 Outputs (render image + raw results) are written automatically into `result/`.
@@ -46,6 +53,16 @@ No C/C++ compiler is required — Numba JIT-compiles everything on first call
 
 - π estimate: **3.141739**
 - Ch3 throughput: **1540.59 Mcells/s (f64)** → **2026.62 Mcells/s (f32)** = **1.32x** faster
+
+## Figures
+
+![Challenge 1 — Monte Carlo π latency (left) and speedup vs ideal linear with efficiency on the right axis](plots/challenge1_scaling.png)
+
+![Challenge 2 — Mandelbrot row vs column parallel decomposition render time](plots/challenge2_axis.png)
+
+![Challenge 3 — heat stencil throughput, float64 vs float32](plots/challenge3_bandwidth.png)
+
+![Mandelbrot set 2500×2500, max_iter=1000, rendered with Numba prange on 12 threads](plots/mandelbrot.png)
 
 ## Key takeaways
 
