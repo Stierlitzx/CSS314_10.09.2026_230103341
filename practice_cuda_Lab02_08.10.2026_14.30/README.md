@@ -16,12 +16,16 @@ practice_cuda_Lab02_08.10.2026_14.30/
 ├── task3_grid_stride.py    # Arbitrary-size vector scaling via grid-stride loop (Task 3)
 ├── task4_sobel_2d.py       # 2D Sobel horizontal filter (Task 4)
 ├── verify_submission.py    # Autonomous verification & integrity token generator
-├── make_plots.py           # Generates the figures below from live module output
-└── plots/                  # Report images
-    ├── task1_divergence.png
-    ├── task2_stencil.png
-    ├── task3_grid_stride.png
-    └── task4_sobel.png
+├── make_plots.py           # Generates plots/ and result/ from live module output
+├── plots/                  # Report figures
+│   ├── task1_divergence.png
+│   ├── task2_stencil.png
+│   ├── task3_grid_stride.png
+│   └── task4_sobel.png
+└── result/                 # Actual run artifacts
+    ├── sobel_output.png          # real run_sobel output on a synthetic scene
+    ├── stencil_output.png        # real run_stencil output on a noisy signal
+    └── verification_output.txt   # raw console output of verify_submission.py
 ```
 
 ## Hardware & Software
@@ -57,19 +61,20 @@ Three CUDA kernels execute 1,000 iterations per element with different branching
 | **C – Warp-Aligned** | `warp_id = idx // 32` with even/odd warps | Warps execute uniformly, no intra-warp divergence |
 
 Measured median wall times with the CPU fallback (N=512, 1,000 it/elem, warm-up +
-5 trials, seeded `default_rng(230103341)`):
+5 trials, seeded `default_rng(230103341)` — the same run that produced the figure):
 
 | Kernel | Median time (s) |
 |---|---|
-| A – Uniform | 0.0974 |
-| B – Full Divergence | 0.1065 |
-| C – Warp-Aligned | 0.1099 |
+| A – Uniform | 0.0904 |
+| B – Full Divergence | 0.0858 |
+| C – Warp-Aligned | 0.0847 |
 
 ![Warp-divergence proxy timings measured from live module output](plots/task1_divergence.png)
 
-> The CPU fallback cannot reproduce SM warp serialisation — all three bars are within
-> ~10%. On a real CUDA device, Kernel B consistently measures **~1.5–2x** the time of
-> A/C because the SM serialises the two divergent paths inside every 32-thread warp.
+> The CPU fallback cannot reproduce SM warp serialisation: all three bars sit within
+> run-to-run noise (a repeat run measured A=0.111 s, B=0.116 s, C=0.118 s). On a real
+> CUDA device, Kernel B consistently measures **~1.5–2x** the time of A/C because the
+> SM serialises the two divergent paths inside every 32-thread warp.
 
 ## Task 2: 1D Boundary Stencil & Halo Protection
 
@@ -97,6 +102,11 @@ TASK 2 PASSED: MAX DELTA = 0.000e+00
 ```
 
 ![Input sine vs smoothed stencil output, first 600 of 10007 samples](plots/task2_stencil.png)
+
+Denoising demo on a seeded noisy signal (the blue curve is `run_stencil`'s actual return
+value): the 3-point average cuts RMS error against the clean signal from **0.149 to 0.092**:
+
+![Stencil denoising result on a noisy composite signal](result/stencil_output.png)
 
 ## Task 3: Arbitrary-Size Vector Scaling via Grid-Stride Loops
 
@@ -151,6 +161,13 @@ linear ramp:
 
 ![Horizontal ramp input and annotated Sobel-X corner showing zeroed borders](plots/task4_sobel.png)
 
+Full-scene result on a synthetic 128×128 image (square, disc, row gradient). The middle
+panel is `run_sobel(scene)`'s actual return value: horizontal edges light up with opposite
+signs (red top edge / blue bottom edge), the row gradient yields a constant interior
+response, and the zeroed 1-pixel border frame is visible:
+
+![Actual Sobel-X kernel output on a synthetic scene](result/sobel_output.png)
+
 ## Conclusions
 
 1. **Warp divergence is a hardware effect:** the CPU fallback shows only ~10% spread
@@ -171,8 +188,10 @@ linear ramp:
 
 ```powershell
 python -m pip install numpy numba matplotlib
-python make_plots.py            # regenerates plots/ from live module output
+python make_plots.py            # regenerates plots/ and result/ from live module output
 python verify_submission.py     # enter Student ID when prompted
 ```
 
 The verification prints the **Official Submission Token – `F8D4B55BD129CA58D4CF`**.
+The raw console output of the recorded passing run is preserved in
+[`result/verification_output.txt`](result/verification_output.txt).

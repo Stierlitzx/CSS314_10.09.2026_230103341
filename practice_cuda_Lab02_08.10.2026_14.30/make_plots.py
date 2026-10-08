@@ -135,7 +135,61 @@ def main():
     plt.close(fig)
     print(f"task4: ramp interior max abs = {interior:.4f}")
 
-    print(f"Generated four report images in {plots}")
+    # ------------------------------------------------------------------
+    # Result artifacts (actual kernel outputs, like result/mandelbrot_output.png)
+    # ------------------------------------------------------------------
+    results = folder / "result"
+    results.mkdir(exist_ok=True)
+
+    # Sobel-X on a synthetic scene: the displayed output IS run_sobel's return value.
+    scene = np.full((128, 128), 0.1, dtype=np.float32)
+    scene[20:60, 15:55] = 0.9                                  # bright square
+    yy, xx = np.mgrid[0:128, 0:128]
+    scene[(yy - 88) ** 2 + (xx - 88) ** 2 <= 24 ** 2] = 0.7    # disc
+    scene[100:, :] = np.linspace(0.0, 1.0, 28, dtype=np.float32)[:, None]  # row gradient
+    filtered = t4.run_sobel(scene)
+    fmax = max(float(np.max(np.abs(filtered))), 1e-9)
+    fig, (p_in, p_out, p_abs) = plt.subplots(1, 3, figsize=(13, 4.8))
+    im_a = p_in.imshow(scene, cmap="gray", vmin=0, vmax=1)
+    p_in.set_title("Synthetic input scene 128x128")
+    fig.colorbar(im_a, ax=p_in, fraction=0.046)
+    im_b = p_out.imshow(filtered, cmap="RdBu_r", vmin=-fmax, vmax=fmax)
+    p_out.set_title("run_sobel(scene) output")
+    fig.colorbar(im_b, ax=p_out, fraction=0.046)
+    im_c = p_abs.imshow(np.abs(filtered), cmap="viridis", vmin=0, vmax=fmax)
+    p_abs.set_title("|Sobel-X| edge strength")
+    fig.colorbar(im_c, ax=p_abs, fraction=0.046)
+    for p in (p_in, p_out, p_abs):
+        p.set_xticks([])
+        p.set_yticks([])
+    fig.suptitle("Task 4 result: actual Sobel-X kernel output (borders zeroed)")
+    fig.tight_layout()
+    fig.savefig(results / "sobel_output.png", dpi=180)
+    plt.close(fig)
+    print(f"result: sobel_output.png, output range +/-{fmax:.3f}")
+
+    # Stencil smoothing on a noisy signal: the blue curve IS run_stencil's return value.
+    xs = np.linspace(0, 10, 2000).astype(np.float32)
+    clean = (np.sin(xs) * 0.6 + 0.4 * np.sin(3 * xs)).astype(np.float32)
+    noisy = clean + np.float32(0.15) * np.asarray(
+        np.random.default_rng(230103341).standard_normal(2000), dtype=np.float32)
+    smoothed = t2.run_stencil(noisy)
+    rms_in = float(np.sqrt(np.mean((noisy - clean) ** 2)))
+    rms_out = float(np.sqrt(np.mean((smoothed - clean) ** 2)))
+    fig, ax = plt.subplots(figsize=(11, 4.6))
+    ax.plot(xs, noisy, color="#cbd5e1", linewidth=0.7, label="Noisy input")
+    ax.plot(xs, smoothed, color="#2563eb", linewidth=1.8, label="run_stencil output")
+    ax.plot(xs, clean, color="#334155", linewidth=1.0, linestyle="--", label="Clean signal")
+    ax.set(xlabel="x", ylabel="Value",
+           title=f"Task 2 result: stencil denoising, RMS error {rms_in:.3f} -> {rms_out:.3f}")
+    ax.legend(loc="upper right")
+    ax.grid(alpha=0.2)
+    fig.tight_layout()
+    fig.savefig(results / "stencil_output.png", dpi=180)
+    plt.close(fig)
+    print(f"result: stencil_output.png, RMS {rms_in:.4f} -> {rms_out:.4f}")
+
+    print(f"Generated four report images in {plots} and two result images in {results}")
 
 
 if __name__ == "__main__":
