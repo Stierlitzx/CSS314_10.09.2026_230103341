@@ -1,0 +1,201 @@
+{
+  "student_name": "Aibek Ayazgaliyev",
+  "student_id": "230103341",
+  "session": "Lecture",
+  "session_date": "08.10.2026 11:30",
+  "telemetry": {
+    "gpu_index": "0",
+    "gpu_uuid": "GPU-0c13a78b-5a3e-7434-f187-59658df572e9",
+    "gpu_name": "NVIDIA GeForce RTX 4060 Laptop GPU",
+    "driver_version": "610.88",
+    "cuda_version": "13.3",
+    "vram_mib": 8188,
+    "compute_capability": "8.9",
+    "multiprocessors": 24,
+    "max_threads_per_block": 1024,
+    "warp_size": 32
+  },
+  "nvidia_smi": "Thu Oct  8 12:44:42 2026       \n+-----------------------------------------------------------------------------------------+\n| NVIDIA-SMI 610.88                 KMD Version: 610.88        CUDA UMD Version: 13.3     |\n+-----------------------------------------+------------------------+----------------------+\n| GPU  Name                  Driver-Model | Bus-Id          Disp.A | Volatile Uncorr. ECC |\n| Fan  Temp   Perf          Pwr:Usage/Cap |           Memory-Usage | GPU-Util  Compute M. |\n|                                         |                        |               MIG M. |\n|=========================================+========================+======================|\n|   0  NVIDIA GeForce RTX 4060 ...  WDDM  |   00000000:01:00.0 Off |                  N/A |\n| N/A   45C    P8              4W /   50W |      83MiB /   8188MiB |      0%      Default |\n|                                         |                        |                  N/A |\n+-----------------------------------------+------------------------+----------------------+\n\n+-----------------------------------------------------------------------------------------+\n| Processes:                                                                              |\n|  GPU   GI   CI              PID   Type   Process name                        GPU Memory |\n|        ID   ID                                                               Usage      |\n|=========================================================================================|\n|    0   N/A  N/A            2788      C   ...s\\Python\\Python312\\python.exe      N/A      |\n|    0   N/A  N/A            9776    C+G   ...2p2nqsd0c76g0\\app\\ChatGPT.exe      N/A      |\n+-----------------------------------------------------------------------------------------+\n",
+  "benchmark": [
+    {
+      "N": 100,
+      "cpu_ms": 0.04569999873638153,
+      "gpu_total_ms": 2.1380000034696423,
+      "gpu_kernel_ms": 0.1343000039923936,
+      "winner": "CPU"
+    },
+    {
+      "N": 1000,
+      "cpu_ms": 0.24499999562976882,
+      "gpu_total_ms": 0.9740000023157336,
+      "gpu_kernel_ms": 0.16549999418202788,
+      "winner": "CPU"
+    },
+    {
+      "N": 10000,
+      "cpu_ms": 3.66809999832185,
+      "gpu_total_ms": 1.165500005299691,
+      "gpu_kernel_ms": 0.19070000416832045,
+      "winner": "GPU"
+    },
+    {
+      "N": 100000,
+      "cpu_ms": 30.718999994860496,
+      "gpu_total_ms": 1.0040000051958486,
+      "gpu_kernel_ms": 0.14430000010179356,
+      "winner": "GPU"
+    },
+    {
+      "N": 1000000,
+      "cpu_ms": 295.89539999869885,
+      "gpu_total_ms": 3.3209000030183233,
+      "gpu_kernel_ms": 0.3749999959836714,
+      "winner": "GPU"
+    },
+    {
+      "N": 5000000,
+      "cpu_ms": 1513.191400001233,
+      "gpu_total_ms": 11.936000002606306,
+      "gpu_kernel_ms": 0.5043999990448356,
+      "winner": "GPU"
+    },
+    {
+      "N": 10000000,
+      "cpu_ms": 2868.9267999943695,
+      "gpu_total_ms": 19.74329999939073,
+      "gpu_kernel_ms": 4.137800002354197,
+      "winner": "GPU"
+    }
+  ],
+  "crossover_N": 10000,
+  "q1": "The first tested size at which GPU total beats CPU is N* = 10,000.",
+  "q2": "At N=100, GPU total is 2.138000 ms, versus kernel 0.134300 ms. The difference is approximately 93.72% of total time. Allocation, PCIe transfers, launch, and synchronization can dominate tiny workloads; these separately sampled intervals do not isolate PCIe time or guarantee a 95% overhead fraction.",
+  "defective_kernel_observation": "Child exit code: 0\nDefective experiment GPU: NVIDIA GeForce RTX 4060 Laptop GPU\nLaunching defective kernel with 1024 threads on 1000-element array...\nC:\\Users\\aiblb\\AppData\\Local\\Temp\\opencode\\cuda-230103341\\Lib\\site-packages\\numba_cuda\\numba\\cuda\\dispatcher.py:748: NumbaPerformanceWarning: \u001b[1mGrid size 4 will likely result in GPU under-utilization due to low occupancy.\u001b[0m\n  warn(errors.NumbaPerformanceWarning(msg))\nExecution finished (or did it crash?). Checking host copy...\nElements processed: 1000. Last element: 999.0\n",
+  "thread_geometry": {
+    "blocks": 5,
+    "launched": 40,
+    "active": 37,
+    "idle": 3
+  },
+  "boundary_threads": [
+    [
+      32,
+      4,
+      0,
+      "ACTIVE"
+    ],
+    [
+      33,
+      4,
+      1,
+      "ACTIVE"
+    ],
+    [
+      34,
+      4,
+      2,
+      "ACTIVE"
+    ],
+    [
+      35,
+      4,
+      3,
+      "ACTIVE"
+    ],
+    [
+      36,
+      4,
+      4,
+      "ACTIVE"
+    ],
+    [
+      37,
+      4,
+      5,
+      "IDLE (GUARDED)"
+    ],
+    [
+      38,
+      4,
+      6,
+      "IDLE (GUARDED)"
+    ],
+    [
+      39,
+      4,
+      7,
+      "IDLE (GUARDED)"
+    ]
+  ],
+  "naive_trials": [
+    {
+      "trial": 1,
+      "target": 50000.0,
+      "output": 2.0,
+      "lost_updates": 49998.0,
+      "kernel_ms": 0.1207999957841821
+    },
+    {
+      "trial": 2,
+      "target": 50000.0,
+      "output": 2.0,
+      "lost_updates": 49998.0,
+      "kernel_ms": 0.09019999561132863
+    },
+    {
+      "trial": 3,
+      "target": 50000.0,
+      "output": 2.0,
+      "lost_updates": 49998.0,
+      "kernel_ms": 0.07800000457791612
+    },
+    {
+      "trial": 4,
+      "target": 50000.0,
+      "output": 2.0,
+      "lost_updates": 49998.0,
+      "kernel_ms": 0.07780000305501744
+    },
+    {
+      "trial": 5,
+      "target": 50000.0,
+      "output": 2.0,
+      "lost_updates": 49998.0,
+      "kernel_ms": 0.07589999586343765
+    }
+  ],
+  "atomic_trials": [
+    [
+      50000.0,
+      0.15469999925699085
+    ],
+    [
+      50000.0,
+      0.14650000230176374
+    ],
+    [
+      50000.0,
+      0.14730000111740083
+    ],
+    [
+      50000.0,
+      0.18730000010691583
+    ],
+    [
+      50000.0,
+      0.17610000213608146
+    ]
+  ],
+  "atomic_output": 50000.0,
+  "naive_median_ms": 0.07800000457791612,
+  "atomic_median_ms": 0.15469999925699085,
+  "atomic_to_naive_ratio": 1.983333207403305,
+  "image_geometry": {
+    "blocks_x": 64,
+    "blocks_y": 64,
+    "total_blocks": 4096,
+    "center_value": 1.0,
+    "corner_value": 0.0
+  },
+  "verification_token": "DF248880DE203CB7"
+}
