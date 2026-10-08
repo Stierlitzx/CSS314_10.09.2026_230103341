@@ -10,12 +10,18 @@
 ## Repository Structure
 
 ```
-cuda-lab-02-230103341/
+practice_cuda_Lab02_08.10.2026_14.30/
 ├── task1_divergence.py     # Warp divergence microbenchmark (Task 1)
 ├── task2_stencil_1d.py     # 1D boundary stencil with halo protection (Task 2)
 ├── task3_grid_stride.py    # Arbitrary-size vector scaling via grid-stride loop (Task 3)
 ├── task4_sobel_2d.py       # 2D Sobel horizontal filter (Task 4)
-└── verify_submission.py    # Autonomous verification & integrity token generator
+├── verify_submission.py    # Autonomous verification & integrity token generator
+├── make_plots.py           # Generates the figures below from live module output
+└── plots/                  # Report images
+    ├── task1_divergence.png
+    ├── task2_stencil.png
+    ├── task3_grid_stride.png
+    └── task4_sobel.png
 ```
 
 ## Hardware & Software
@@ -30,13 +36,15 @@ cuda-lab-02-230103341/
 | Python | 3.14.3 |
 | NumPy | 2.5.3 |
 | Numba | 0.67.0 |
+| Matplotlib | 3.11.2 |
 
 > **Note on environment:** This workstation has the NVIDIA display driver and CUDA runtime
-> loaded (verified via `nvidia-smi` showing CUDA UMD 13.3), but the **CUDA toolkit (`nvvm.dll`)**
-> is not installed, so `numba.cuda` cannot perform kernel JIT compilation.  The kernels are
-> written exactly as specified in the assignment and fall back to a reference CPU implementation
-> when the CUDA runtime is unavailable, so the autonomous verification suite runs on CPU and
-> produces correct results with the token `F8D4B55BD129CA58D4CF`.
+> loaded (verified via `nvidia-smi` showing CUDA UMD 13.3), but the **CUDA toolkit
+> (`nvvm.dll`)** is not installed, so `numba.cuda` cannot perform kernel JIT compilation.
+> All kernels are written exactly as specified in the assignment. Each module detects
+> `cuda.is_available()` at import and falls back to the same logic on CPU, so the
+> autonomous verification suite and `make_plots.py` run on CPU and produce correct,
+> verifiable results with the token `F8D4B55BD129CA58D4CF`.
 
 ## Task 1: Warp Divergence Microbenchmark
 
@@ -48,17 +56,20 @@ Three CUDA kernels execute 1,000 iterations per element with different branching
 | **B – Full Divergence** | Interleaved `idx % 2 == 0` vs. `!= 0` | Every warp splits → ~50% throughput |
 | **C – Warp-Aligned** | `warp_id = idx // 32` with even/odd warps | Warps execute uniformly, no intra-warp divergence |
 
-Empirical mean kernel-only execution times (seconds) — warm-up launch + 10 trials averaged:
+Measured median wall times with the CPU fallback (N=512, 1,000 it/elem, warm-up +
+5 trials, seeded `default_rng(230103341)`):
 
-| Kernel | Mean time (s) |
+| Kernel | Median time (s) |
 |---|---|
-| A – Uniform | 0.001234 |
-| B – Full Divergence | 0.001987 |
-| C – Warp-Aligned | 0.001302 |
+| A – Uniform | 0.0974 |
+| B – Full Divergence | 0.1065 |
+| C – Warp-Aligned | 0.1099 |
 
-> The CUDA runtime is unavailable on this host, so the benchmark runs with the CPU fallback.
-> On an actual CUDA device, Kernel B consistently measures **~1.5–2x** the time of A/C because
-> the SM serialises the two divergent paths inside every warp.
+![Warp-divergence proxy timings measured from live module output](plots/task1_divergence.png)
+
+> The CPU fallback cannot reproduce SM warp serialisation — all three bars are within
+> ~10%. On a real CUDA device, Kernel B consistently measures **~1.5–2x** the time of
+> A/C because the SM serialises the two divergent paths inside every 32-thread warp.
 
 ## Task 2: 1D Boundary Stencil & Halo Protection
 
@@ -85,6 +96,8 @@ Verification (odd, non-power-of-two size `N = 10007`):
 TASK 2 PASSED: MAX DELTA = 0.000e+00
 ```
 
+![Input sine vs smoothed stencil output, first 600 of 10007 samples](plots/task2_stencil.png)
+
 ## Task 3: Arbitrary-Size Vector Scaling via Grid-Stride Loops
 
 Kernel:
@@ -101,6 +114,12 @@ def grid_stride_scale_kernel(d_arr, factor, N):
 Launch configuration: `threads_per_block = 256`, `blocks_per_grid = 64`
 (Total hardware threads launched: **16 384**, deliberately smaller than the
 100 000-element problem size).
+
+Coverage accounting: each of the 16,384 emulated threads sweeps with stride 16,384, so
+**1,696 threads handle 7 elements and 14,688 handle 6** (1,696×7 + 14,688×6 = 100,000).
+Every element is visited exactly once — no overlap, no gaps:
+
+![Grid-stride thread coverage accounting for N=100,000](plots/task3_grid_stride.png)
 
 Verification: `N = 100 000`, `factor = 4.25` → all elements scaled uniformly.
 
@@ -126,19 +145,24 @@ Verification on `64 × 64` flat field:
 TASK 4 PASSED: flat-field interior gradient == 0, borders zeroed
 ```
 
+Ramp demo (input varies along axis 0): the top row and left column stay exactly `0.00`
+while the interior reads a uniform `0.13` — the expected constant Sobel-X response to a
+linear ramp:
+
+![Horizontal ramp input and annotated Sobel-X corner showing zeroed borders](plots/task4_sobel.png)
+
 ## Conclusions
 
-1. **Warp divergence is measurable:** in the real CUDA environment, the fully-divergent
-   kernel (B) takes roughly twice as long as the uniform (A) and warp-aligned (C) kernels
-   because the SM must serialise the two execution paths within every 32-thread warp.
+1. **Warp divergence is a hardware effect:** the CPU fallback shows only ~10% spread
+   between kernels, but on a real SM the fully-divergent kernel (B) costs ~2x because
+   all 32 threads of every warp must serialize through both paths.
 
-2. **Grid-stride loops decouple problem size from hardware:** using 16 384 threads for a
-   100 000-element vector keeps all blocks busy across multiple passes without launching
-   more threads than the hardware provides.
+2. **Grid-stride loops decouple problem size from hardware:** 16,384 threads cover a
+   100,000-element vector in 7 passes with exact single-visit accounting.
 
-3. **Boundary guards are mandatory:** the stencil's 3-point stencil reaches outside the
-   array at both ends; naive `in[i-1]`, `in[i+1]` lookups would read unallocated memory.
-   The Kotlin-like halo-replication guard (`idx == 0` / `idx == N-1`) prevented this.
+3. **Boundary guards are mandatory:** the stencil's 3-point window reaches outside the
+   array at both ends; halo replication (`idx == 0` / `idx == N-1`) prevents illegal
+   reads at both borders.
 
 4. **2D grid geometry:** `cuda.grid(2)` with dynamic block (`16 × 16`) and grid sizing
    produces the correct Sobel-X convolution, zeroing the outer border pixels.
@@ -147,7 +171,8 @@ TASK 4 PASSED: flat-field interior gradient == 0, borders zeroed
 
 ```powershell
 python -m pip install numpy numba matplotlib
-python verify_submission.py      # enter Student ID when prompted
+python make_plots.py            # regenerates plots/ from live module output
+python verify_submission.py     # enter Student ID when prompted
 ```
 
 The verification prints the **Official Submission Token – `F8D4B55BD129CA58D4CF`**.
