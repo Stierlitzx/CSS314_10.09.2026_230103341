@@ -1,0 +1,843 @@
+{
+  "schema_version": 1,
+  "recorded_at_utc": "2026-10-15T09:58:18.645703+00:00",
+  "mode": "simulator",
+  "certified": false,
+  "status": "simulated_not_certified",
+  "module": null,
+  "pytest_exit_code": 0,
+  "counts": {
+    "passed": 116,
+    "failed": 0,
+    "skipped": 35
+  },
+  "passed_task_numbers": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    20,
+    21,
+    22,
+    23,
+    25,
+    26,
+    27,
+    28,
+    29,
+    30,
+    32,
+    33,
+    34,
+    43,
+    44,
+    45,
+    46,
+    48,
+    49,
+    50
+  ],
+  "collection_errors": [],
+  "environment": {
+    "python": "3.14.3",
+    "platform": "Windows-11-10.0.22631-SP0",
+    "nvidia_smi": "NVIDIA GeForce RTX 4060 Laptop GPU, GPU-0c13a78b-5a3e-7434-f187-59658df572e9, 610.88, 8188 MiB",
+    "numba": "0.67.0",
+    "numpy": "2.5.3"
+  },
+  "source_manifest": {
+    "autograder.py": "c54cc1e5c82a66e461183b735a85135430dcb4b030b25f2ee665f68b1112f609",
+    "colab_launcher.ipynb": "dcc80d8c5df7f1ed31ce30aa96fa20ea53763b24f67682ec9197ad42c2935aed",
+    "generate_submission_token.py": "1c2982b788933e551891ad9b59759d7ea31d5578011af98132bb533169f8a9a0",
+    "lab_kernels/__init__.py": "ac99b3cdcfbec8f95114387065502be8bacff9e52ad239dfde8c8588c1f65377",
+    "lab_kernels/module1_execution_model.py": "e60ebcaf46a1339c6a58ced818a09b933e1f183bccb2519d529909247ce15887",
+    "lab_kernels/module2_memory_hierarchy.py": "e0e5f7d132879615befd2889872a5f195c8ff9411badeb229f3dd24a0c64c557",
+    "lab_kernels/module3_warp_atomics.py": "67d2d27d2c0dd4ae02fc8c68d24977fd2a88673d333a41a77c70b586c455126b",
+    "lab_kernels/module4_scientific.py": "d915a53dc3b77ec9f6b74323df0c60b0280749613284f3b0b4bb13be2e599e0d",
+    "lab_kernels/module5_streams_cupy.py": "10abb5d42653a7f70699c79c14967a83ca58ce021ab38a3b13740ba85fb54c2f",
+    "lab_kernels/module6_deep_learning.py": "66b0c853f4066c2b39fb21c511322c3eac7071a13239fe34b99a64169762ebd8",
+    "lab_support.py": "69acc2029d4f0802063303efe8f358002a7764245b8cd73a09ca0eb4ecd84f64",
+    "pytest.ini": "ee14631a355fdce7547310cd1a43aceb19edfb88fa6a36ffde47bac8588f25c3",
+    "requirements.txt": "eef2e6d8a131b2c7112207a7f14e4c232876a027cc3c000aa274c79f716ce3c0",
+    "tests/conftest.py": "6e6bf3c14135f0e980a3ec3587c63b638c61486b657c96983d77b51d4614b5ad",
+    "tests/test_contract_structure.py": "a1b6f4e8e808fb2d503f7c4cc70b43c085f4cc1522fab27281a467aef867ffca",
+    "tests/test_harness.py": "057086412b13d9f3b1dc6a109df04ce3d2be76643b0aaf8135c4130b88e86f62",
+    "tests/test_module1.py": "c78804f4b8d140c8493c30c687f47602c9fd1ae81fde35371cc4968a2ce3cfd4",
+    "tests/test_module2.py": "cbeff66846157e233f43c887dd24a2734ee50defdc50feb80a80b7b7064183a3",
+    "tests/test_module3.py": "3ce8bdffe9a883b31368f9627144c50dec5ac5889395bd11baf48989c3ac488a",
+    "tests/test_module4.py": "ea28061ce28c4fab44177dfc99c8f7347a227bf349a40d1916e9d1973c879ced",
+    "tests/test_module5.py": "07c617bc9394ad886ecc8f8c76699fe94dc80999adce1d5b49c655679d7d0cc6",
+    "tests/test_module6.py": "940e921d8a7421a3d1c33c8b1dc3b72efdae717fc09a2f72fdd387c67ff972cd",
+    "tests/test_spec_workloads.py": "85cde0bb793780efc69d9e175942bb860f29567ec85d64d16fbc4c4c0256dc70"
+  },
+  "tests": {
+    "tests/test_contract_structure.py::test_all_fifty_signatures_match_the_task_sheet": {
+      "outcome": "passed",
+      "duration_s": 0.023003700000117533,
+      "detail": ""
+    },
+    "tests/test_contract_structure.py::test_each_task_has_a_reference_test": {
+      "outcome": "passed",
+      "duration_s": 0.03492510000000948,
+      "detail": ""
+    },
+    "tests/test_harness.py::test_notebook_is_valid_and_unexecuted": {
+      "outcome": "passed",
+      "duration_s": 0.0025573999998869112,
+      "detail": ""
+    },
+    "tests/test_harness.py::test_simulated_reports_cannot_be_signed": {
+      "outcome": "passed",
+      "duration_s": 0.00043559999994613463,
+      "detail": ""
+    },
+    "tests/test_harness.py::test_incomplete_or_stale_reports_are_rejected[counts-value0]": {
+      "outcome": "passed",
+      "duration_s": 0.0057105999999294,
+      "detail": ""
+    },
+    "tests/test_harness.py::test_incomplete_or_stale_reports_are_rejected[passed_task_numbers-value1]": {
+      "outcome": "passed",
+      "duration_s": 0.006054299999959767,
+      "detail": ""
+    },
+    "tests/test_harness.py::test_incomplete_or_stale_reports_are_rejected[source_manifest-value2]": {
+      "outcome": "passed",
+      "duration_s": 0.011446400000068024,
+      "detail": ""
+    },
+    "tests/test_harness.py::test_incomplete_or_stale_reports_are_rejected[module-1]": {
+      "outcome": "passed",
+      "duration_s": 0.004139399999985471,
+      "detail": ""
+    },
+    "tests/test_harness.py::test_incomplete_or_stale_reports_are_rejected[environment-value4]": {
+      "outcome": "passed",
+      "duration_s": 0.007628600000089136,
+      "detail": ""
+    },
+    "tests/test_module1.py::test_task01_vector_add[float32-0]": {
+      "outcome": "passed",
+      "duration_s": 0.07595659999992677,
+      "detail": ""
+    },
+    "tests/test_module1.py::test_task01_vector_add[float32-1]": {
+      "outcome": "passed",
+      "duration_s": 0.07143190000010691,
+      "detail": ""
+    },
+    "tests/test_module1.py::test_task01_vector_add[float32-31]": {
+      "outcome": "passed",
+      "duration_s": 0.07392970000000787,
+      "detail": ""
+    },
+    "tests/test_module1.py::test_task01_vector_add[float32-259]": {
+      "outcome": "passed",
+      "duration_s": 0.16442879999999604,
+      "detail": ""
+    },
+    "tests/test_module1.py::test_task01_vector_add[float64-0]": {
+      "outcome": "passed",
+      "duration_s": 0.09910450000006676,
+      "detail": ""
+    },
+    "tests/test_module1.py::test_task01_vector_add[float64-1]": {
+      "outcome": "passed",
+      "duration_s": 0.11586220000003777,
+      "detail": ""
+    },
+    "tests/test_module1.py::test_task01_vector_add[float64-31]": {
+      "outcome": "passed",
+      "duration_s": 0.06461300000000847,
+      "detail": ""
+    },
+    "tests/test_module1.py::test_task01_vector_add[float64-259]": {
+      "outcome": "passed",
+      "duration_s": 0.12829750000014428,
+      "detail": ""
+    },
+    "tests/test_module1.py::test_task02_grid_stride[0-2]": {
+      "outcome": "passed",
+      "duration_s": 0.016582900000003065,
+      "detail": ""
+    },
+    "tests/test_module1.py::test_task02_grid_stride[1-0]": {
+      "outcome": "passed",
+      "duration_s": 0.01417700000001787,
+      "detail": ""
+    },
+    "tests/test_module1.py::test_task02_grid_stride[17--2.5]": {
+      "outcome": "passed",
+      "duration_s": 0.011681799999905706,
+      "detail": ""
+    },
+    "tests/test_module1.py::test_task02_grid_stride[1003-3.25]": {
+      "outcome": "passed",
+      "duration_s": 0.012641600000051767,
+      "detail": ""
+    },
+    "tests/test_module1.py::test_task03_matrix_add[shape0]": {
+      "outcome": "passed",
+      "duration_s": 0.08901900000000751,
+      "detail": ""
+    },
+    "tests/test_module1.py::test_task03_matrix_add[shape1]": {
+      "outcome": "passed",
+      "duration_s": 0.08682959999987361,
+      "detail": ""
+    },
+    "tests/test_module1.py::test_task03_matrix_add[shape2]": {
+      "outcome": "passed",
+      "duration_s": 0.173222399999986,
+      "detail": ""
+    },
+    "tests/test_module1.py::test_task03_matrix_add[shape3]": {
+      "outcome": "passed",
+      "duration_s": 0.17911949999984245,
+      "detail": ""
+    },
+    "tests/test_module1.py::test_task04_naive_transpose[shape0]": {
+      "outcome": "passed",
+      "duration_s": 0.01091380000002573,
+      "detail": ""
+    },
+    "tests/test_module1.py::test_task04_naive_transpose[shape1]": {
+      "outcome": "passed",
+      "duration_s": 0.012327000000141197,
+      "detail": ""
+    },
+    "tests/test_module1.py::test_task04_naive_transpose[shape2]": {
+      "outcome": "passed",
+      "duration_s": 0.03307300000005853,
+      "detail": ""
+    },
+    "tests/test_module1.py::test_task04_naive_transpose[shape3]": {
+      "outcome": "passed",
+      "duration_s": 0.05188210000005711,
+      "detail": ""
+    },
+    "tests/test_module1.py::test_task05_volume_init[shape0]": {
+      "outcome": "passed",
+      "duration_s": 0.1393227000000934,
+      "detail": ""
+    },
+    "tests/test_module1.py::test_task05_volume_init[shape1]": {
+      "outcome": "passed",
+      "duration_s": 0.14199150000013105,
+      "detail": ""
+    },
+    "tests/test_module1.py::test_task05_volume_init[shape2]": {
+      "outcome": "passed",
+      "duration_s": 0.2492083999998158,
+      "detail": ""
+    },
+    "tests/test_module1.py::test_task06_rgb_to_grayscale[uint8-shape0]": {
+      "outcome": "passed",
+      "duration_s": 0.005991500000163796,
+      "detail": ""
+    },
+    "tests/test_module1.py::test_task06_rgb_to_grayscale[uint8-shape1]": {
+      "outcome": "passed",
+      "duration_s": 0.007052500000099826,
+      "detail": ""
+    },
+    "tests/test_module1.py::test_task06_rgb_to_grayscale[uint8-shape2]": {
+      "outcome": "passed",
+      "duration_s": 0.038346600000068065,
+      "detail": ""
+    },
+    "tests/test_module1.py::test_task06_rgb_to_grayscale[float32-shape0]": {
+      "outcome": "passed",
+      "duration_s": 0.006334800000104224,
+      "detail": ""
+    },
+    "tests/test_module1.py::test_task06_rgb_to_grayscale[float32-shape1]": {
+      "outcome": "passed",
+      "duration_s": 0.005812600000126622,
+      "detail": ""
+    },
+    "tests/test_module1.py::test_task06_rgb_to_grayscale[float32-shape2]": {
+      "outcome": "passed",
+      "duration_s": 0.03563650000000962,
+      "detail": ""
+    },
+    "tests/test_module1.py::test_task07_vector_lerp[0]": {
+      "outcome": "passed",
+      "duration_s": 0.011350699999866265,
+      "detail": ""
+    },
+    "tests/test_module1.py::test_task07_vector_lerp[1]": {
+      "outcome": "passed",
+      "duration_s": 0.011487600000009479,
+      "detail": ""
+    },
+    "tests/test_module1.py::test_task07_vector_lerp[35]": {
+      "outcome": "passed",
+      "duration_s": 0.022333599999910803,
+      "detail": ""
+    },
+    "tests/test_module1.py::test_task07_vector_lerp[101]": {
+      "outcome": "passed",
+      "duration_s": 0.049090999999862106,
+      "detail": ""
+    },
+    "tests/test_module1.py::test_task08_vector_threshold[0-bool]": {
+      "outcome": "passed",
+      "duration_s": 0.003897300000062387,
+      "detail": ""
+    },
+    "tests/test_module1.py::test_task08_vector_threshold[0-uint8]": {
+      "outcome": "passed",
+      "duration_s": 0.00376349999987724,
+      "detail": ""
+    },
+    "tests/test_module1.py::test_task08_vector_threshold[1-bool]": {
+      "outcome": "passed",
+      "duration_s": 0.003439099999923201,
+      "detail": ""
+    },
+    "tests/test_module1.py::test_task08_vector_threshold[1-uint8]": {
+      "outcome": "passed",
+      "duration_s": 0.0034835999999813794,
+      "detail": ""
+    },
+    "tests/test_module1.py::test_task08_vector_threshold[37-bool]": {
+      "outcome": "passed",
+      "duration_s": 0.0033131000000139466,
+      "detail": ""
+    },
+    "tests/test_module1.py::test_task08_vector_threshold[37-uint8]": {
+      "outcome": "passed",
+      "duration_s": 0.0028102000001126726,
+      "detail": ""
+    },
+    "tests/test_module2.py::test_task09_strided_access[0-1]": {
+      "outcome": "passed",
+      "duration_s": 0.011301600000024337,
+      "detail": ""
+    },
+    "tests/test_module2.py::test_task09_strided_access[1-7]": {
+      "outcome": "passed",
+      "duration_s": 0.012277300000050673,
+      "detail": ""
+    },
+    "tests/test_module2.py::test_task09_strided_access[37-1]": {
+      "outcome": "passed",
+      "duration_s": 0.01974870000003648,
+      "detail": ""
+    },
+    "tests/test_module2.py::test_task09_strided_access[37-2]": {
+      "outcome": "passed",
+      "duration_s": 0.02589499999999134,
+      "detail": ""
+    },
+    "tests/test_module2.py::test_task09_strided_access[37-4]": {
+      "outcome": "passed",
+      "duration_s": 0.028737999999975727,
+      "detail": ""
+    },
+    "tests/test_module2.py::test_task09_strided_access[37-8]": {
+      "outcome": "passed",
+      "duration_s": 0.023366899999928137,
+      "detail": ""
+    },
+    "tests/test_module2.py::test_task09_strided_access[37-16]": {
+      "outcome": "passed",
+      "duration_s": 0.022081600000092294,
+      "detail": ""
+    },
+    "tests/test_module2.py::test_task09_strided_access[37-32]": {
+      "outcome": "passed",
+      "duration_s": 0.019943000000012034,
+      "detail": ""
+    },
+    "tests/test_module2.py::test_task10_shared_stencil[0-3-16]": {
+      "outcome": "passed",
+      "duration_s": 0.09677740000006452,
+      "detail": ""
+    },
+    "tests/test_module2.py::test_task10_shared_stencil[1-32-8]": {
+      "outcome": "passed",
+      "duration_s": 0.09719970000014655,
+      "detail": ""
+    },
+    "tests/test_module2.py::test_task10_shared_stencil[19-0-16]": {
+      "outcome": "passed",
+      "duration_s": 0.20260929999994914,
+      "detail": ""
+    },
+    "tests/test_module2.py::test_task10_shared_stencil[35-3-16]": {
+      "outcome": "passed",
+      "duration_s": 0.3152198000000226,
+      "detail": ""
+    },
+    "tests/test_module2.py::test_task10_shared_stencil[273-32-256]": {
+      "outcome": "passed",
+      "duration_s": 0.498797500000137,
+      "detail": ""
+    },
+    "tests/test_module2.py::test_task11_shared_convolution[0-3-16]": {
+      "outcome": "passed",
+      "duration_s": 0.2760217999998531,
+      "detail": ""
+    },
+    "tests/test_module2.py::test_task11_shared_convolution[1-65-8]": {
+      "outcome": "passed",
+      "duration_s": 0.2413518999999269,
+      "detail": ""
+    },
+    "tests/test_module2.py::test_task11_shared_convolution[37-1-16]": {
+      "outcome": "passed",
+      "duration_s": 0.5636597000000165,
+      "detail": ""
+    },
+    "tests/test_module2.py::test_task11_shared_convolution[71-4-16]": {
+      "outcome": "passed",
+      "duration_s": 0.816610300000093,
+      "detail": ""
+    },
+    "tests/test_module2.py::test_task11_shared_convolution[79-65-32]": {
+      "outcome": "passed",
+      "duration_s": 0.6698576999999659,
+      "detail": ""
+    },
+    "tests/test_module2.py::test_task12_tiled_matmul[1-1-1]": {
+      "outcome": "passed",
+      "duration_s": 0.3922844000001078,
+      "detail": ""
+    },
+    "tests/test_module2.py::test_task12_tiled_matmul[3-0-5]": {
+      "outcome": "passed",
+      "duration_s": 0.17112620000011702,
+      "detail": ""
+    },
+    "tests/test_module2.py::test_task12_tiled_matmul[17-19-9]": {
+      "outcome": "passed",
+      "duration_s": 1.2853644999997869,
+      "detail": ""
+    },
+    "tests/test_module2.py::test_task12_tiled_matmul[7-5-33]": {
+      "outcome": "passed",
+      "duration_s": 1.1712099999999737,
+      "detail": ""
+    },
+    "tests/test_module2.py::test_task13_padded_transpose[8-shape0]": {
+      "outcome": "passed",
+      "duration_s": 0.24239970000007816,
+      "detail": ""
+    },
+    "tests/test_module2.py::test_task13_padded_transpose[8-shape1]": {
+      "outcome": "passed",
+      "duration_s": 0.22771770000008473,
+      "detail": ""
+    },
+    "tests/test_module2.py::test_task13_padded_transpose[8-shape2]": {
+      "outcome": "passed",
+      "duration_s": 0.595674899999949,
+      "detail": ""
+    },
+    "tests/test_module2.py::test_task13_padded_transpose[8-shape3]": {
+      "outcome": "passed",
+      "duration_s": 0.6191596999999547,
+      "detail": ""
+    },
+    "tests/test_module2.py::test_task13_padded_transpose[32-shape0]": {
+      "outcome": "passed",
+      "duration_s": 0.6547870000001694,
+      "detail": ""
+    },
+    "tests/test_module2.py::test_task13_padded_transpose[32-shape1]": {
+      "outcome": "passed",
+      "duration_s": 0.631445900000017,
+      "detail": ""
+    },
+    "tests/test_module2.py::test_task13_padded_transpose[32-shape2]": {
+      "outcome": "passed",
+      "duration_s": 1.294621300000017,
+      "detail": ""
+    },
+    "tests/test_module2.py::test_task13_padded_transpose[32-shape3]": {
+      "outcome": "passed",
+      "duration_s": 1.2590525000000525,
+      "detail": ""
+    },
+    "tests/test_module2.py::test_task14_shared_sum[0]": {
+      "outcome": "passed",
+      "duration_s": 0.6645750000000135,
+      "detail": ""
+    },
+    "tests/test_module2.py::test_task14_shared_sum[1]": {
+      "outcome": "passed",
+      "duration_s": 0.8097091999998156,
+      "detail": ""
+    },
+    "tests/test_module2.py::test_task14_shared_sum[255]": {
+      "outcome": "passed",
+      "duration_s": 0.6737368000001425,
+      "detail": ""
+    },
+    "tests/test_module2.py::test_task14_shared_sum[256]": {
+      "outcome": "passed",
+      "duration_s": 0.7080313000001297,
+      "detail": ""
+    },
+    "tests/test_module2.py::test_task14_shared_sum[513]": {
+      "outcome": "passed",
+      "duration_s": 2.8904347999998663,
+      "detail": ""
+    },
+    "tests/test_module2.py::test_task15_shared_argmax[0-False]": {
+      "outcome": "passed",
+      "duration_s": 1.0229807999999139,
+      "detail": ""
+    },
+    "tests/test_module2.py::test_task15_shared_argmax[1-False]": {
+      "outcome": "passed",
+      "duration_s": 1.2676779999999326,
+      "detail": ""
+    },
+    "tests/test_module2.py::test_task15_shared_argmax[257-False]": {
+      "outcome": "passed",
+      "duration_s": 2.2538766000000123,
+      "detail": ""
+    },
+    "tests/test_module2.py::test_task15_shared_argmax[513-False]": {
+      "outcome": "passed",
+      "duration_s": 3.7044100000000526,
+      "detail": ""
+    },
+    "tests/test_module2.py::test_task15_shared_argmax[257-True]": {
+      "outcome": "passed",
+      "duration_s": 1.9072037000000819,
+      "detail": ""
+    },
+    "tests/test_module2.py::test_task16_constant_filter[0]": {
+      "outcome": "passed",
+      "duration_s": 0.011863300000186427,
+      "detail": ""
+    },
+    "tests/test_module2.py::test_task16_constant_filter[1]": {
+      "outcome": "passed",
+      "duration_s": 0.01361340000016753,
+      "detail": ""
+    },
+    "tests/test_module2.py::test_task16_constant_filter[63]": {
+      "outcome": "passed",
+      "duration_s": 0.1345550999999432,
+      "detail": ""
+    },
+    "tests/test_module2.py::test_task16_constant_filter[64]": {
+      "outcome": "passed",
+      "duration_s": 0.14133659999993142,
+      "detail": ""
+    },
+    "tests/test_module2.py::test_task16_constant_filter[65]": {
+      "outcome": "passed",
+      "duration_s": 0.17320140000015272,
+      "detail": ""
+    },
+    "tests/test_module2.py::test_task16_constant_filter[137]": {
+      "outcome": "passed",
+      "duration_s": 0.3358915999999681,
+      "detail": ""
+    },
+    "tests/test_module2.py::test_task17_pinned_transfer[4096]": {
+      "outcome": "skipped",
+      "duration_s": 0.0003517999998621235,
+      "detail": "('C:\\\\Users\\\\aiblb\\\\PycharmProjects\\\\CSS314_10.09.2026_230103341\\\\practice_cuda_50_tasks_15.10.2026_14.30\\\\cuda-python-lab\\\\tests\\\\test_module2.py', 123, 'Skipped: Requires real CUDA; warp intrinsics/timing are not simulated')"
+    },
+    "tests/test_module2.py::test_task17_pinned_transfer[1048576]": {
+      "outcome": "skipped",
+      "duration_s": 0.00020810000000892614,
+      "detail": "('C:\\\\Users\\\\aiblb\\\\PycharmProjects\\\\CSS314_10.09.2026_230103341\\\\practice_cuda_50_tasks_15.10.2026_14.30\\\\cuda-python-lab\\\\tests\\\\test_module2.py', 123, 'Skipped: Requires real CUDA; warp intrinsics/timing are not simulated')"
+    },
+    "tests/test_module3.py::test_task18": {
+      "outcome": "skipped",
+      "duration_s": 0.00019189999989066564,
+      "detail": "('C:\\\\Users\\\\aiblb\\\\PycharmProjects\\\\CSS314_10.09.2026_230103341\\\\practice_cuda_50_tasks_15.10.2026_14.30\\\\cuda-python-lab\\\\tests\\\\test_module3.py', 8, 'Skipped: Requires real CUDA; warp intrinsics/timing are not simulated')"
+    },
+    "tests/test_module3.py::test_task19": {
+      "outcome": "skipped",
+      "duration_s": 0.0001780999998572952,
+      "detail": "('C:\\\\Users\\\\aiblb\\\\PycharmProjects\\\\CSS314_10.09.2026_230103341\\\\practice_cuda_50_tasks_15.10.2026_14.30\\\\cuda-python-lab\\\\tests\\\\test_module3.py', 19, 'Skipped: Requires real CUDA; warp intrinsics/timing are not simulated')"
+    },
+    "tests/test_module3.py::test_task20": {
+      "outcome": "passed",
+      "duration_s": 2.1997358999999506,
+      "detail": ""
+    },
+    "tests/test_module3.py::test_task21": {
+      "outcome": "passed",
+      "duration_s": 3.328599899999972,
+      "detail": ""
+    },
+    "tests/test_module3.py::test_task22": {
+      "outcome": "passed",
+      "duration_s": 0.758910399999877,
+      "detail": ""
+    },
+    "tests/test_module3.py::test_task23": {
+      "outcome": "passed",
+      "duration_s": 0.034458099999937986,
+      "detail": ""
+    },
+    "tests/test_module3.py::test_task24": {
+      "outcome": "skipped",
+      "duration_s": 0.00022619999981543515,
+      "detail": "('C:\\\\Users\\\\aiblb\\\\PycharmProjects\\\\CSS314_10.09.2026_230103341\\\\practice_cuda_50_tasks_15.10.2026_14.30\\\\cuda-python-lab\\\\tests\\\\test_module3.py', 80, 'Skipped: Requires real CUDA; warp intrinsics/timing are not simulated')"
+    },
+    "tests/test_module3.py::test_task25": {
+      "outcome": "passed",
+      "duration_s": 0.06758330000002388,
+      "detail": ""
+    },
+    "tests/test_module4.py::test_task26": {
+      "outcome": "passed",
+      "duration_s": 0.08972280000011779,
+      "detail": ""
+    },
+    "tests/test_module4.py::test_task27": {
+      "outcome": "passed",
+      "duration_s": 0.44942070000001877,
+      "detail": ""
+    },
+    "tests/test_module4.py::test_task28": {
+      "outcome": "passed",
+      "duration_s": 1.3159746000001178,
+      "detail": ""
+    },
+    "tests/test_module4.py::test_task29": {
+      "outcome": "passed",
+      "duration_s": 2.760676099999955,
+      "detail": ""
+    },
+    "tests/test_module4.py::test_task30": {
+      "outcome": "passed",
+      "duration_s": 0.47375179999994543,
+      "detail": ""
+    },
+    "tests/test_module4.py::test_task31": {
+      "outcome": "skipped",
+      "duration_s": 0.0003283999999439402,
+      "detail": "('C:\\\\Users\\\\aiblb\\\\PycharmProjects\\\\CSS314_10.09.2026_230103341\\\\practice_cuda_50_tasks_15.10.2026_14.30\\\\cuda-python-lab\\\\tests\\\\test_module4.py', 109, 'Skipped: CuPy tasks require actual GPU execution')"
+    },
+    "tests/test_module4.py::test_task32": {
+      "outcome": "passed",
+      "duration_s": 0.38673709999989114,
+      "detail": ""
+    },
+    "tests/test_module4.py::test_task33": {
+      "outcome": "passed",
+      "duration_s": 0.06905559999995603,
+      "detail": ""
+    },
+    "tests/test_module4.py::test_task34": {
+      "outcome": "passed",
+      "duration_s": 0.1537170999999944,
+      "detail": ""
+    },
+    "tests/test_module5.py::test_task35_dual_stream[17-32]": {
+      "outcome": "skipped",
+      "duration_s": 0.0002563000000463944,
+      "detail": "('C:\\\\Users\\\\aiblb\\\\PycharmProjects\\\\CSS314_10.09.2026_230103341\\\\practice_cuda_50_tasks_15.10.2026_14.30\\\\cuda-python-lab\\\\tests\\\\test_module5.py', 13, 'Skipped: Requires real CUDA; warp intrinsics/timing are not simulated')"
+    },
+    "tests/test_module5.py::test_task35_dual_stream[1031-127]": {
+      "outcome": "skipped",
+      "duration_s": 0.00020989999984522,
+      "detail": "('C:\\\\Users\\\\aiblb\\\\PycharmProjects\\\\CSS314_10.09.2026_230103341\\\\practice_cuda_50_tasks_15.10.2026_14.30\\\\cuda-python-lab\\\\tests\\\\test_module5.py', 13, 'Skipped: Requires real CUDA; warp intrinsics/timing are not simulated')"
+    },
+    "tests/test_module5.py::test_task35_dual_stream[0-8]": {
+      "outcome": "skipped",
+      "duration_s": 0.00027939999995396647,
+      "detail": "('C:\\\\Users\\\\aiblb\\\\PycharmProjects\\\\CSS314_10.09.2026_230103341\\\\practice_cuda_50_tasks_15.10.2026_14.30\\\\cuda-python-lab\\\\tests\\\\test_module5.py', 13, 'Skipped: Requires real CUDA; warp intrinsics/timing are not simulated')"
+    },
+    "tests/test_module5.py::test_task36_multistream_gemv[1]": {
+      "outcome": "skipped",
+      "duration_s": 0.0003360999999131309,
+      "detail": "('C:\\\\Users\\\\aiblb\\\\PycharmProjects\\\\CSS314_10.09.2026_230103341\\\\practice_cuda_50_tasks_15.10.2026_14.30\\\\cuda-python-lab\\\\tests\\\\test_module5.py', 22, 'Skipped: Requires real CUDA; warp intrinsics/timing are not simulated')"
+    },
+    "tests/test_module5.py::test_task36_multistream_gemv[2]": {
+      "outcome": "skipped",
+      "duration_s": 0.00020440000002963643,
+      "detail": "('C:\\\\Users\\\\aiblb\\\\PycharmProjects\\\\CSS314_10.09.2026_230103341\\\\practice_cuda_50_tasks_15.10.2026_14.30\\\\cuda-python-lab\\\\tests\\\\test_module5.py', 22, 'Skipped: Requires real CUDA; warp intrinsics/timing are not simulated')"
+    },
+    "tests/test_module5.py::test_task36_multistream_gemv[4]": {
+      "outcome": "skipped",
+      "duration_s": 0.0001916999999593827,
+      "detail": "('C:\\\\Users\\\\aiblb\\\\PycharmProjects\\\\CSS314_10.09.2026_230103341\\\\practice_cuda_50_tasks_15.10.2026_14.30\\\\cuda-python-lab\\\\tests\\\\test_module5.py', 22, 'Skipped: Requires real CUDA; warp intrinsics/timing are not simulated')"
+    },
+    "tests/test_module5.py::test_task37_rawkernel_sinc": {
+      "outcome": "skipped",
+      "duration_s": 0.00021540000011555094,
+      "detail": "('C:\\\\Users\\\\aiblb\\\\PycharmProjects\\\\CSS314_10.09.2026_230103341\\\\practice_cuda_50_tasks_15.10.2026_14.30\\\\cuda-python-lab\\\\tests\\\\test_module5.py', 32, 'Skipped: CuPy tasks require actual GPU execution')"
+    },
+    "tests/test_module5.py::test_task38_rawmodule_arithmetic": {
+      "outcome": "skipped",
+      "duration_s": 0.0001793000001271139,
+      "detail": "('C:\\\\Users\\\\aiblb\\\\PycharmProjects\\\\CSS314_10.09.2026_230103341\\\\practice_cuda_50_tasks_15.10.2026_14.30\\\\cuda-python-lab\\\\tests\\\\test_module5.py', 41, 'Skipped: CuPy tasks require actual GPU execution')"
+    },
+    "tests/test_module5.py::test_task39_event_profiler": {
+      "outcome": "skipped",
+      "duration_s": 0.00017650000017965795,
+      "detail": "('C:\\\\Users\\\\aiblb\\\\PycharmProjects\\\\CSS314_10.09.2026_230103341\\\\practice_cuda_50_tasks_15.10.2026_14.30\\\\cuda-python-lab\\\\tests\\\\test_module5.py', 58, 'Skipped: Requires real CUDA; warp intrinsics/timing are not simulated')"
+    },
+    "tests/test_module5.py::test_task40_graph_capture": {
+      "outcome": "skipped",
+      "duration_s": 0.00017430000002605084,
+      "detail": "('C:\\\\Users\\\\aiblb\\\\PycharmProjects\\\\CSS314_10.09.2026_230103341\\\\practice_cuda_50_tasks_15.10.2026_14.30\\\\cuda-python-lab\\\\tests\\\\test_module5.py', 70, 'Skipped: CuPy tasks require actual GPU execution')"
+    },
+    "tests/test_module5.py::test_task41_unified_memory": {
+      "outcome": "skipped",
+      "duration_s": 0.00017109999998865533,
+      "detail": "('C:\\\\Users\\\\aiblb\\\\PycharmProjects\\\\CSS314_10.09.2026_230103341\\\\practice_cuda_50_tasks_15.10.2026_14.30\\\\cuda-python-lab\\\\tests\\\\test_module5.py', 86, 'Skipped: CuPy tasks require actual GPU execution')"
+    },
+    "tests/test_module5.py::test_task42_cooperative_barrier[0]": {
+      "outcome": "skipped",
+      "duration_s": 0.00016959999993559904,
+      "detail": "('C:\\\\Users\\\\aiblb\\\\PycharmProjects\\\\CSS314_10.09.2026_230103341\\\\practice_cuda_50_tasks_15.10.2026_14.30\\\\cuda-python-lab\\\\tests\\\\test_module5.py', 97, 'Skipped: CuPy tasks require actual GPU execution')"
+    },
+    "tests/test_module5.py::test_task42_cooperative_barrier[1]": {
+      "outcome": "skipped",
+      "duration_s": 0.00022039999998924031,
+      "detail": "('C:\\\\Users\\\\aiblb\\\\PycharmProjects\\\\CSS314_10.09.2026_230103341\\\\practice_cuda_50_tasks_15.10.2026_14.30\\\\cuda-python-lab\\\\tests\\\\test_module5.py', 97, 'Skipped: CuPy tasks require actual GPU execution')"
+    },
+    "tests/test_module5.py::test_task42_cooperative_barrier[4]": {
+      "outcome": "skipped",
+      "duration_s": 0.0003802999999606982,
+      "detail": "('C:\\\\Users\\\\aiblb\\\\PycharmProjects\\\\CSS314_10.09.2026_230103341\\\\practice_cuda_50_tasks_15.10.2026_14.30\\\\cuda-python-lab\\\\tests\\\\test_module5.py', 97, 'Skipped: CuPy tasks require actual GPU execution')"
+    },
+    "tests/test_module6.py::test_task43_softmax": {
+      "outcome": "passed",
+      "duration_s": 4.4033847000000605,
+      "detail": ""
+    },
+    "tests/test_module6.py::test_task44_bias_gelu[False]": {
+      "outcome": "passed",
+      "duration_s": 0.2772380000001249,
+      "detail": ""
+    },
+    "tests/test_module6.py::test_task44_bias_gelu[True]": {
+      "outcome": "passed",
+      "duration_s": 0.0528970999998819,
+      "detail": ""
+    },
+    "tests/test_module6.py::test_task45_maxpool_argmax": {
+      "outcome": "passed",
+      "duration_s": 0.028648900000007416,
+      "detail": ""
+    },
+    "tests/test_module6.py::test_task46_batch_norm": {
+      "outcome": "passed",
+      "duration_s": 5.779488700000002,
+      "detail": ""
+    },
+    "tests/test_module6.py::test_task47_layer_norm_welford[7]": {
+      "outcome": "skipped",
+      "duration_s": 0.00026760000037029386,
+      "detail": "('C:\\\\Users\\\\aiblb\\\\PycharmProjects\\\\CSS314_10.09.2026_230103341\\\\practice_cuda_50_tasks_15.10.2026_14.30\\\\cuda-python-lab\\\\tests\\\\test_module6.py', 68, 'Skipped: Requires real CUDA; warp intrinsics/timing are not simulated')"
+    },
+    "tests/test_module6.py::test_task47_layer_norm_welford[269]": {
+      "outcome": "skipped",
+      "duration_s": 0.000256599999829632,
+      "detail": "('C:\\\\Users\\\\aiblb\\\\PycharmProjects\\\\CSS314_10.09.2026_230103341\\\\practice_cuda_50_tasks_15.10.2026_14.30\\\\cuda-python-lab\\\\tests\\\\test_module6.py', 68, 'Skipped: Requires real CUDA; warp intrinsics/timing are not simulated')"
+    },
+    "tests/test_module6.py::test_task47_layer_norm_welford[1027]": {
+      "outcome": "skipped",
+      "duration_s": 0.00019859999974869424,
+      "detail": "('C:\\\\Users\\\\aiblb\\\\PycharmProjects\\\\CSS314_10.09.2026_230103341\\\\practice_cuda_50_tasks_15.10.2026_14.30\\\\cuda-python-lab\\\\tests\\\\test_module6.py', 68, 'Skipped: Requires real CUDA; warp intrinsics/timing are not simulated')"
+    },
+    "tests/test_module6.py::test_task48_spmv": {
+      "outcome": "passed",
+      "duration_s": 0.010079900000164344,
+      "detail": ""
+    },
+    "tests/test_module6.py::test_task49_tiled_attention[shape0]": {
+      "outcome": "passed",
+      "duration_s": 2.1784527999998318,
+      "detail": ""
+    },
+    "tests/test_module6.py::test_task49_tiled_attention[shape1]": {
+      "outcome": "passed",
+      "duration_s": 1.2781974999998056,
+      "detail": ""
+    },
+    "tests/test_module6.py::test_task50_rope": {
+      "outcome": "passed",
+      "duration_s": 1.9293464000002132,
+      "detail": ""
+    },
+    "tests/test_spec_workloads.py::test_task01_spec_lengths[1]": {
+      "outcome": "skipped",
+      "duration_s": 0.00021939999987807823,
+      "detail": "('C:\\\\Users\\\\aiblb\\\\PycharmProjects\\\\CSS314_10.09.2026_230103341\\\\practice_cuda_50_tasks_15.10.2026_14.30\\\\cuda-python-lab\\\\tests\\\\test_spec_workloads.py', 12, 'Skipped: Requires real CUDA; warp intrinsics/timing are not simulated')"
+    },
+    "tests/test_spec_workloads.py::test_task01_spec_lengths[255]": {
+      "outcome": "skipped",
+      "duration_s": 0.0002303000001120381,
+      "detail": "('C:\\\\Users\\\\aiblb\\\\PycharmProjects\\\\CSS314_10.09.2026_230103341\\\\practice_cuda_50_tasks_15.10.2026_14.30\\\\cuda-python-lab\\\\tests\\\\test_spec_workloads.py', 12, 'Skipped: Requires real CUDA; warp intrinsics/timing are not simulated')"
+    },
+    "tests/test_spec_workloads.py::test_task01_spec_lengths[256]": {
+      "outcome": "skipped",
+      "duration_s": 0.00020760000006703194,
+      "detail": "('C:\\\\Users\\\\aiblb\\\\PycharmProjects\\\\CSS314_10.09.2026_230103341\\\\practice_cuda_50_tasks_15.10.2026_14.30\\\\cuda-python-lab\\\\tests\\\\test_spec_workloads.py', 12, 'Skipped: Requires real CUDA; warp intrinsics/timing are not simulated')"
+    },
+    "tests/test_spec_workloads.py::test_task01_spec_lengths[1024]": {
+      "outcome": "skipped",
+      "duration_s": 0.00018330000011701486,
+      "detail": "('C:\\\\Users\\\\aiblb\\\\PycharmProjects\\\\CSS314_10.09.2026_230103341\\\\practice_cuda_50_tasks_15.10.2026_14.30\\\\cuda-python-lab\\\\tests\\\\test_spec_workloads.py', 12, 'Skipped: Requires real CUDA; warp intrinsics/timing are not simulated')"
+    },
+    "tests/test_spec_workloads.py::test_task01_spec_lengths[1000003]": {
+      "outcome": "skipped",
+      "duration_s": 0.0002712999998948362,
+      "detail": "('C:\\\\Users\\\\aiblb\\\\PycharmProjects\\\\CSS314_10.09.2026_230103341\\\\practice_cuda_50_tasks_15.10.2026_14.30\\\\cuda-python-lab\\\\tests\\\\test_spec_workloads.py', 12, 'Skipped: Requires real CUDA; warp intrinsics/timing are not simulated')"
+    },
+    "tests/test_spec_workloads.py::test_task02_spec_grid_stride": {
+      "outcome": "skipped",
+      "duration_s": 0.00018840000029740622,
+      "detail": "('C:\\\\Users\\\\aiblb\\\\PycharmProjects\\\\CSS314_10.09.2026_230103341\\\\practice_cuda_50_tasks_15.10.2026_14.30\\\\cuda-python-lab\\\\tests\\\\test_spec_workloads.py', 22, 'Skipped: Requires real CUDA; warp intrinsics/timing are not simulated')"
+    },
+    "tests/test_spec_workloads.py::test_task03_spec_rectangular": {
+      "outcome": "skipped",
+      "duration_s": 0.00017920000027515925,
+      "detail": "('C:\\\\Users\\\\aiblb\\\\PycharmProjects\\\\CSS314_10.09.2026_230103341\\\\practice_cuda_50_tasks_15.10.2026_14.30\\\\cuda-python-lab\\\\tests\\\\test_spec_workloads.py', 29, 'Skipped: Requires real CUDA; warp intrinsics/timing are not simulated')"
+    },
+    "tests/test_spec_workloads.py::test_task05_spec_volume": {
+      "outcome": "skipped",
+      "duration_s": 0.00019389999988561613,
+      "detail": "('C:\\\\Users\\\\aiblb\\\\PycharmProjects\\\\CSS314_10.09.2026_230103341\\\\practice_cuda_50_tasks_15.10.2026_14.30\\\\cuda-python-lab\\\\tests\\\\test_spec_workloads.py', 38, 'Skipped: Requires real CUDA; warp intrinsics/timing are not simulated')"
+    },
+    "tests/test_spec_workloads.py::test_task12_spec_matmul[64]": {
+      "outcome": "skipped",
+      "duration_s": 0.00017690000004222384,
+      "detail": "('C:\\\\Users\\\\aiblb\\\\PycharmProjects\\\\CSS314_10.09.2026_230103341\\\\practice_cuda_50_tasks_15.10.2026_14.30\\\\cuda-python-lab\\\\tests\\\\test_spec_workloads.py', 47, 'Skipped: Requires real CUDA; warp intrinsics/timing are not simulated')"
+    },
+    "tests/test_spec_workloads.py::test_task12_spec_matmul[500]": {
+      "outcome": "skipped",
+      "duration_s": 0.0003100999997514009,
+      "detail": "('C:\\\\Users\\\\aiblb\\\\PycharmProjects\\\\CSS314_10.09.2026_230103341\\\\practice_cuda_50_tasks_15.10.2026_14.30\\\\cuda-python-lab\\\\tests\\\\test_spec_workloads.py', 47, 'Skipped: Requires real CUDA; warp intrinsics/timing are not simulated')"
+    },
+    "tests/test_spec_workloads.py::test_task12_spec_matmul[1024]": {
+      "outcome": "skipped",
+      "duration_s": 0.00019759999986490584,
+      "detail": "('C:\\\\Users\\\\aiblb\\\\PycharmProjects\\\\CSS314_10.09.2026_230103341\\\\practice_cuda_50_tasks_15.10.2026_14.30\\\\cuda-python-lab\\\\tests\\\\test_spec_workloads.py', 47, 'Skipped: Requires real CUDA; warp intrinsics/timing are not simulated')"
+    },
+    "tests/test_spec_workloads.py::test_task31_spec_monte_carlo": {
+      "outcome": "skipped",
+      "duration_s": 0.00018110000019078143,
+      "detail": "('C:\\\\Users\\\\aiblb\\\\PycharmProjects\\\\CSS314_10.09.2026_230103341\\\\practice_cuda_50_tasks_15.10.2026_14.30\\\\cuda-python-lab\\\\tests\\\\test_spec_workloads.py', 57, 'Skipped: CuPy tasks require actual GPU execution')"
+    }
+  },
+  "scope": "Functional reference tests, not the instructor's profiler or official grader."
+}

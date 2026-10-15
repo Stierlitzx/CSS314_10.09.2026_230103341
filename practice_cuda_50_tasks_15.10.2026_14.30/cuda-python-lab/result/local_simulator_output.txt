@@ -1,0 +1,27 @@
+........................................................................ [ 47%]
+......................ssss....s......s...ssssssssssssss.....sss....sssss [ 95%]
+sssssss                                                                  [100%]
+=========================== short test summary info ===========================
+SKIPPED [2] tests\test_module2.py:123: Requires real CUDA; warp intrinsics/timing are not simulated
+SKIPPED [1] tests\test_module3.py:8: Requires real CUDA; warp intrinsics/timing are not simulated
+SKIPPED [1] tests\test_module3.py:19: Requires real CUDA; warp intrinsics/timing are not simulated
+SKIPPED [1] tests\test_module3.py:80: Requires real CUDA; warp intrinsics/timing are not simulated
+SKIPPED [1] tests\test_module4.py:109: CuPy tasks require actual GPU execution
+SKIPPED [3] tests\test_module5.py:13: Requires real CUDA; warp intrinsics/timing are not simulated
+SKIPPED [3] tests\test_module5.py:22: Requires real CUDA; warp intrinsics/timing are not simulated
+SKIPPED [1] tests\test_module5.py:32: CuPy tasks require actual GPU execution
+SKIPPED [1] tests\test_module5.py:41: CuPy tasks require actual GPU execution
+SKIPPED [1] tests\test_module5.py:58: Requires real CUDA; warp intrinsics/timing are not simulated
+SKIPPED [1] tests\test_module5.py:70: CuPy tasks require actual GPU execution
+SKIPPED [1] tests\test_module5.py:86: CuPy tasks require actual GPU execution
+SKIPPED [3] tests\test_module5.py:97: CuPy tasks require actual GPU execution
+SKIPPED [3] tests\test_module6.py:68: Requires real CUDA; warp intrinsics/timing are not simulated
+SKIPPED [5] tests\test_spec_workloads.py:12: Requires real CUDA; warp intrinsics/timing are not simulated
+SKIPPED [1] tests\test_spec_workloads.py:22: Requires real CUDA; warp intrinsics/timing are not simulated
+SKIPPED [1] tests\test_spec_workloads.py:29: Requires real CUDA; warp intrinsics/timing are not simulated
+SKIPPED [1] tests\test_spec_workloads.py:38: Requires real CUDA; warp intrinsics/timing are not simulated
+SKIPPED [3] tests\test_spec_workloads.py:47: Requires real CUDA; warp intrinsics/timing are not simulated
+SKIPPED [1] tests\test_spec_workloads.py:57: CuPy tasks require actual GPU execution
+116 passed, 35 skipped in 62.15s (0:01:02)
+
+Status: simulated_not_certified; report: C:\Users\aiblb\PycharmProjects\CSS314_10.09.2026_230103341\practice_cuda_50_tasks_15.10.2026_14.30\cuda-python-lab\result\local_simulator_report.json

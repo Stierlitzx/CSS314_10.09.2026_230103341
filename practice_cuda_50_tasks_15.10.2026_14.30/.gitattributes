@@ -1,0 +1,4 @@
+# Preserve the exact source/report bytes validated by the Colab SHA256 manifest.
+cuda-python-lab/** -text whitespace=cr-at-eol
+# Raw console evidence retains pytest's original whitespace.
+cuda-python-lab/result/*.txt -whitespace

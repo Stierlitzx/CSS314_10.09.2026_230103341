@@ -1,0 +1,2411 @@
+........................................................FFFFFFFFFF....FF [ 47%]
+FFFFFF..............................................FFF................. [ 95%]
+.......                                                                  [100%]
+=================================== FAILURES ===================================
+______________________ test_task10_shared_stencil[0-3-16] ______________________
+
+gpu = <module 'numba.cuda' from '/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/__init__.py'>
+n = 0, radius = 3, threads = 16
+
+    @pytest.mark.parametrize("n,radius,threads", [(0, 3, 16), (1, 32, 8), (19, 0, 16), (35, 3, 16), (273, 32, 256)])
+    def test_task10_shared_stencil(gpu, n, radius, threads):
+        x = np.random.default_rng(10).standard_normal(n)
+        out = gpu.to_device(np.full(n, np.nan))
+>       stencil_1d_shared[max(1, (n + threads - 1) // threads), threads](gpu.to_device(x), out, radius)
+
+tests/test_module2.py:42: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/dispatcher.py:719: in __call__
+    return self.dispatcher.call(
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/dispatcher.py:1642: in call
+    kernel = _dispatcher.Dispatcher._cuda_call(self, *args)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/dispatcher.py:1650: in _compile_for_args
+    return self.compile(tuple(argtypes))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler_lock.py:74: in _acquire_compile_lock
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/dispatcher.py:1908: in compile
+    kernel = _Kernel(self.py_func, argtypes, **self.targetoptions)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler_lock.py:74: in _acquire_compile_lock
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/dispatcher.py:155: in __init__
+    cres = compile_cuda(
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler_lock.py:74: in _acquire_compile_lock
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/compiler.py:789: in compile_cuda
+    cres = compile_extra(
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/compiler.py:599: in compile_extra
+    return pipeline.compile_extra(func)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler.py:146: in compile_extra
+    return self._compile_bytecode()
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler.py:214: in _compile_bytecode
+    return self._compile_core()
+           ^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler.py:190: in _compile_core
+    raise e
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler.py:182: in _compile_core
+    pm.run(self.state)
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler_machinery.py:392: in run
+    raise e
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler_machinery.py:385: in run
+    self._runPass(idx, pass_inst, state)
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler_lock.py:74: in _acquire_compile_lock
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler_machinery.py:337: in _runPass
+    mutated |= check(pss.run_pass, internal_state)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler_machinery.py:291: in check
+    mangled = func(compiler_state)
+              ^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/typed_passes.py:141: in run_pass
+    typemap, return_type, calltypes, errs = type_inference_stage(
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/typed_passes.py:120: in type_inference_stage
+    errs = infer.propagate(raise_errors=raise_errors)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/typeinfer.py:1147: in propagate
+    errors = self.constraints.propagate(self)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/typeinfer.py:192: in propagate
+    constraint(typeinfer)
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/typeinfer.py:620: in __call__
+    self.resolve(typeinfer, typevars, fnty)
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/typeinfer.py:643: in resolve
+    sig = typeinfer.resolve_call(fnty, pos_args, kw_args)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/typeinfer.py:1695: in resolve_call
+    return self.context.resolve_function_type(fnty, pos_args, kw_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/typing/context.py:198: in resolve_function_type
+    res = self._resolve_user_function_type(func, args, kws)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/typing/context.py:250: in _resolve_user_function_type
+    return func.get_call_type(self, args, kws)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba/core/types/functions.py:329: in get_call_type
+    failures.raise_error()
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <numba.core.types.functions._ResolutionFailures object at 0x7bf3b49e48c0>
+
+    def raise_error(self):
+        for faillist in self._failures.values():
+            for fail in faillist:
+                if isinstance(fail.error, errors.ForceLiteralArg):
+                    raise fail.error
+>       raise errors.TypingError(self.format())
+E       numba.core.errors.TypingError: No implementation of function Function(<function shared.array at 0x7bf3e1d98c20>) found for signature:
+E        
+E        >>> array(int64, class(float64))
+E        
+E       There are 2 candidate implementations:
+E        - Of which 2 did not match due to:
+E        Overload of function 'array': File: numba/cuda/cudadecl.py: Line 28.
+E          With argument(s): '(int64, class(float64))':
+E         No match.
+
+/usr/local/lib/python3.13/dist-packages/numba/core/types/functions.py:227: TypingError
+______________________ test_task10_shared_stencil[1-32-8] ______________________
+
+gpu = <module 'numba.cuda' from '/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/__init__.py'>
+n = 1, radius = 32, threads = 8
+
+    @pytest.mark.parametrize("n,radius,threads", [(0, 3, 16), (1, 32, 8), (19, 0, 16), (35, 3, 16), (273, 32, 256)])
+    def test_task10_shared_stencil(gpu, n, radius, threads):
+        x = np.random.default_rng(10).standard_normal(n)
+        out = gpu.to_device(np.full(n, np.nan))
+>       stencil_1d_shared[max(1, (n + threads - 1) // threads), threads](gpu.to_device(x), out, radius)
+
+tests/test_module2.py:42: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/dispatcher.py:719: in __call__
+    return self.dispatcher.call(
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/dispatcher.py:1642: in call
+    kernel = _dispatcher.Dispatcher._cuda_call(self, *args)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/dispatcher.py:1650: in _compile_for_args
+    return self.compile(tuple(argtypes))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler_lock.py:74: in _acquire_compile_lock
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/dispatcher.py:1908: in compile
+    kernel = _Kernel(self.py_func, argtypes, **self.targetoptions)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler_lock.py:74: in _acquire_compile_lock
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/dispatcher.py:155: in __init__
+    cres = compile_cuda(
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler_lock.py:74: in _acquire_compile_lock
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/compiler.py:789: in compile_cuda
+    cres = compile_extra(
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/compiler.py:599: in compile_extra
+    return pipeline.compile_extra(func)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler.py:146: in compile_extra
+    return self._compile_bytecode()
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler.py:214: in _compile_bytecode
+    return self._compile_core()
+           ^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler.py:190: in _compile_core
+    raise e
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler.py:182: in _compile_core
+    pm.run(self.state)
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler_machinery.py:392: in run
+    raise e
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler_machinery.py:385: in run
+    self._runPass(idx, pass_inst, state)
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler_lock.py:74: in _acquire_compile_lock
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler_machinery.py:337: in _runPass
+    mutated |= check(pss.run_pass, internal_state)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler_machinery.py:291: in check
+    mangled = func(compiler_state)
+              ^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/typed_passes.py:141: in run_pass
+    typemap, return_type, calltypes, errs = type_inference_stage(
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/typed_passes.py:120: in type_inference_stage
+    errs = infer.propagate(raise_errors=raise_errors)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/typeinfer.py:1147: in propagate
+    errors = self.constraints.propagate(self)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/typeinfer.py:192: in propagate
+    constraint(typeinfer)
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/typeinfer.py:620: in __call__
+    self.resolve(typeinfer, typevars, fnty)
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/typeinfer.py:643: in resolve
+    sig = typeinfer.resolve_call(fnty, pos_args, kw_args)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/typeinfer.py:1695: in resolve_call
+    return self.context.resolve_function_type(fnty, pos_args, kw_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/typing/context.py:198: in resolve_function_type
+    res = self._resolve_user_function_type(func, args, kws)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/typing/context.py:250: in _resolve_user_function_type
+    return func.get_call_type(self, args, kws)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba/core/types/functions.py:329: in get_call_type
+    failures.raise_error()
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <numba.core.types.functions._ResolutionFailures object at 0x7bf3b43016d0>
+
+    def raise_error(self):
+        for faillist in self._failures.values():
+            for fail in faillist:
+                if isinstance(fail.error, errors.ForceLiteralArg):
+                    raise fail.error
+>       raise errors.TypingError(self.format())
+E       numba.core.errors.TypingError: No implementation of function Function(<function shared.array at 0x7bf3e1d98c20>) found for signature:
+E        
+E        >>> array(int64, class(float64))
+E        
+E       There are 2 candidate implementations:
+E         - Of which 2 did not match due to:
+E         Overload of function 'array': File: numba/cuda/cudadecl.py: Line 28.
+E           With argument(s): '(int64, class(float64))':
+E          No match.
+
+/usr/local/lib/python3.13/dist-packages/numba/core/types/functions.py:227: TypingError
+_____________________ test_task10_shared_stencil[19-0-16] ______________________
+
+gpu = <module 'numba.cuda' from '/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/__init__.py'>
+n = 19, radius = 0, threads = 16
+
+    @pytest.mark.parametrize("n,radius,threads", [(0, 3, 16), (1, 32, 8), (19, 0, 16), (35, 3, 16), (273, 32, 256)])
+    def test_task10_shared_stencil(gpu, n, radius, threads):
+        x = np.random.default_rng(10).standard_normal(n)
+        out = gpu.to_device(np.full(n, np.nan))
+>       stencil_1d_shared[max(1, (n + threads - 1) // threads), threads](gpu.to_device(x), out, radius)
+
+tests/test_module2.py:42: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/dispatcher.py:719: in __call__
+    return self.dispatcher.call(
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/dispatcher.py:1642: in call
+    kernel = _dispatcher.Dispatcher._cuda_call(self, *args)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/dispatcher.py:1650: in _compile_for_args
+    return self.compile(tuple(argtypes))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler_lock.py:74: in _acquire_compile_lock
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/dispatcher.py:1908: in compile
+    kernel = _Kernel(self.py_func, argtypes, **self.targetoptions)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler_lock.py:74: in _acquire_compile_lock
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/dispatcher.py:155: in __init__
+    cres = compile_cuda(
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler_lock.py:74: in _acquire_compile_lock
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/compiler.py:789: in compile_cuda
+    cres = compile_extra(
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/compiler.py:599: in compile_extra
+    return pipeline.compile_extra(func)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler.py:146: in compile_extra
+    return self._compile_bytecode()
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler.py:214: in _compile_bytecode
+    return self._compile_core()
+           ^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler.py:190: in _compile_core
+    raise e
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler.py:182: in _compile_core
+    pm.run(self.state)
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler_machinery.py:392: in run
+    raise e
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler_machinery.py:385: in run
+    self._runPass(idx, pass_inst, state)
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler_lock.py:74: in _acquire_compile_lock
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler_machinery.py:337: in _runPass
+    mutated |= check(pss.run_pass, internal_state)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler_machinery.py:291: in check
+    mangled = func(compiler_state)
+              ^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/typed_passes.py:141: in run_pass
+    typemap, return_type, calltypes, errs = type_inference_stage(
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/typed_passes.py:120: in type_inference_stage
+    errs = infer.propagate(raise_errors=raise_errors)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/typeinfer.py:1147: in propagate
+    errors = self.constraints.propagate(self)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/typeinfer.py:192: in propagate
+    constraint(typeinfer)
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/typeinfer.py:620: in __call__
+    self.resolve(typeinfer, typevars, fnty)
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/typeinfer.py:643: in resolve
+    sig = typeinfer.resolve_call(fnty, pos_args, kw_args)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/typeinfer.py:1695: in resolve_call
+    return self.context.resolve_function_type(fnty, pos_args, kw_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/typing/context.py:198: in resolve_function_type
+    res = self._resolve_user_function_type(func, args, kws)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/typing/context.py:250: in _resolve_user_function_type
+    return func.get_call_type(self, args, kws)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba/core/types/functions.py:329: in get_call_type
+    failures.raise_error()
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <numba.core.types.functions._ResolutionFailures object at 0x7bf3b4303ad0>
+
+    def raise_error(self):
+        for faillist in self._failures.values():
+            for fail in faillist:
+                if isinstance(fail.error, errors.ForceLiteralArg):
+                    raise fail.error
+>       raise errors.TypingError(self.format())
+E       numba.core.errors.TypingError: No implementation of function Function(<function shared.array at 0x7bf3e1d98c20>) found for signature:
+E        
+E        >>> array(int64, class(float64))
+E        
+E       There are 2 candidate implementations:
+E          - Of which 2 did not match due to:
+E          Overload of function 'array': File: numba/cuda/cudadecl.py: Line 28.
+E            With argument(s): '(int64, class(float64))':
+E           No match.
+
+/usr/local/lib/python3.13/dist-packages/numba/core/types/functions.py:227: TypingError
+_____________________ test_task10_shared_stencil[35-3-16] ______________________
+
+gpu = <module 'numba.cuda' from '/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/__init__.py'>
+n = 35, radius = 3, threads = 16
+
+    @pytest.mark.parametrize("n,radius,threads", [(0, 3, 16), (1, 32, 8), (19, 0, 16), (35, 3, 16), (273, 32, 256)])
+    def test_task10_shared_stencil(gpu, n, radius, threads):
+        x = np.random.default_rng(10).standard_normal(n)
+        out = gpu.to_device(np.full(n, np.nan))
+>       stencil_1d_shared[max(1, (n + threads - 1) // threads), threads](gpu.to_device(x), out, radius)
+
+tests/test_module2.py:42: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/dispatcher.py:719: in __call__
+    return self.dispatcher.call(
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/dispatcher.py:1642: in call
+    kernel = _dispatcher.Dispatcher._cuda_call(self, *args)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/dispatcher.py:1650: in _compile_for_args
+    return self.compile(tuple(argtypes))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler_lock.py:74: in _acquire_compile_lock
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/dispatcher.py:1908: in compile
+    kernel = _Kernel(self.py_func, argtypes, **self.targetoptions)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler_lock.py:74: in _acquire_compile_lock
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/dispatcher.py:155: in __init__
+    cres = compile_cuda(
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler_lock.py:74: in _acquire_compile_lock
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/compiler.py:789: in compile_cuda
+    cres = compile_extra(
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/compiler.py:599: in compile_extra
+    return pipeline.compile_extra(func)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler.py:146: in compile_extra
+    return self._compile_bytecode()
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler.py:214: in _compile_bytecode
+    return self._compile_core()
+           ^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler.py:190: in _compile_core
+    raise e
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler.py:182: in _compile_core
+    pm.run(self.state)
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler_machinery.py:392: in run
+    raise e
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler_machinery.py:385: in run
+    self._runPass(idx, pass_inst, state)
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler_lock.py:74: in _acquire_compile_lock
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler_machinery.py:337: in _runPass
+    mutated |= check(pss.run_pass, internal_state)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler_machinery.py:291: in check
+    mangled = func(compiler_state)
+              ^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/typed_passes.py:141: in run_pass
+    typemap, return_type, calltypes, errs = type_inference_stage(
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/typed_passes.py:120: in type_inference_stage
+    errs = infer.propagate(raise_errors=raise_errors)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/typeinfer.py:1147: in propagate
+    errors = self.constraints.propagate(self)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/typeinfer.py:192: in propagate
+    constraint(typeinfer)
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/typeinfer.py:620: in __call__
+    self.resolve(typeinfer, typevars, fnty)
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/typeinfer.py:643: in resolve
+    sig = typeinfer.resolve_call(fnty, pos_args, kw_args)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/typeinfer.py:1695: in resolve_call
+    return self.context.resolve_function_type(fnty, pos_args, kw_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/typing/context.py:198: in resolve_function_type
+    res = self._resolve_user_function_type(func, args, kws)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/typing/context.py:250: in _resolve_user_function_type
+    return func.get_call_type(self, args, kws)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba/core/types/functions.py:329: in get_call_type
+    failures.raise_error()
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <numba.core.types.functions._ResolutionFailures object at 0x7bf3a7fdde20>
+
+    def raise_error(self):
+        for faillist in self._failures.values():
+            for fail in faillist:
+                if isinstance(fail.error, errors.ForceLiteralArg):
+                    raise fail.error
+>       raise errors.TypingError(self.format())
+E       numba.core.errors.TypingError: No implementation of function Function(<function shared.array at 0x7bf3e1d98c20>) found for signature:
+E        
+E        >>> array(int64, class(float64))
+E        
+E       There are 2 candidate implementations:
+E           - Of which 2 did not match due to:
+E           Overload of function 'array': File: numba/cuda/cudadecl.py: Line 28.
+E             With argument(s): '(int64, class(float64))':
+E            No match.
+
+/usr/local/lib/python3.13/dist-packages/numba/core/types/functions.py:227: TypingError
+____________________ test_task10_shared_stencil[273-32-256] ____________________
+
+gpu = <module 'numba.cuda' from '/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/__init__.py'>
+n = 273, radius = 32, threads = 256
+
+    @pytest.mark.parametrize("n,radius,threads", [(0, 3, 16), (1, 32, 8), (19, 0, 16), (35, 3, 16), (273, 32, 256)])
+    def test_task10_shared_stencil(gpu, n, radius, threads):
+        x = np.random.default_rng(10).standard_normal(n)
+        out = gpu.to_device(np.full(n, np.nan))
+>       stencil_1d_shared[max(1, (n + threads - 1) // threads), threads](gpu.to_device(x), out, radius)
+
+tests/test_module2.py:42: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/dispatcher.py:719: in __call__
+    return self.dispatcher.call(
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/dispatcher.py:1642: in call
+    kernel = _dispatcher.Dispatcher._cuda_call(self, *args)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/dispatcher.py:1650: in _compile_for_args
+    return self.compile(tuple(argtypes))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler_lock.py:74: in _acquire_compile_lock
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/dispatcher.py:1908: in compile
+    kernel = _Kernel(self.py_func, argtypes, **self.targetoptions)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler_lock.py:74: in _acquire_compile_lock
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/dispatcher.py:155: in __init__
+    cres = compile_cuda(
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler_lock.py:74: in _acquire_compile_lock
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/compiler.py:789: in compile_cuda
+    cres = compile_extra(
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/compiler.py:599: in compile_extra
+    return pipeline.compile_extra(func)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler.py:146: in compile_extra
+    return self._compile_bytecode()
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler.py:214: in _compile_bytecode
+    return self._compile_core()
+           ^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler.py:190: in _compile_core
+    raise e
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler.py:182: in _compile_core
+    pm.run(self.state)
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler_machinery.py:392: in run
+    raise e
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler_machinery.py:385: in run
+    self._runPass(idx, pass_inst, state)
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler_lock.py:74: in _acquire_compile_lock
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler_machinery.py:337: in _runPass
+    mutated |= check(pss.run_pass, internal_state)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler_machinery.py:291: in check
+    mangled = func(compiler_state)
+              ^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/typed_passes.py:141: in run_pass
+    typemap, return_type, calltypes, errs = type_inference_stage(
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/typed_passes.py:120: in type_inference_stage
+    errs = infer.propagate(raise_errors=raise_errors)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/typeinfer.py:1147: in propagate
+    errors = self.constraints.propagate(self)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/typeinfer.py:192: in propagate
+    constraint(typeinfer)
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/typeinfer.py:620: in __call__
+    self.resolve(typeinfer, typevars, fnty)
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/typeinfer.py:643: in resolve
+    sig = typeinfer.resolve_call(fnty, pos_args, kw_args)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/typeinfer.py:1695: in resolve_call
+    return self.context.resolve_function_type(fnty, pos_args, kw_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/typing/context.py:198: in resolve_function_type
+    res = self._resolve_user_function_type(func, args, kws)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/typing/context.py:250: in _resolve_user_function_type
+    return func.get_call_type(self, args, kws)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba/core/types/functions.py:329: in get_call_type
+    failures.raise_error()
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <numba.core.types.functions._ResolutionFailures object at 0x7bf3b422c170>
+
+    def raise_error(self):
+        for faillist in self._failures.values():
+            for fail in faillist:
+                if isinstance(fail.error, errors.ForceLiteralArg):
+                    raise fail.error
+>       raise errors.TypingError(self.format())
+E       numba.core.errors.TypingError: No implementation of function Function(<function shared.array at 0x7bf3e1d98c20>) found for signature:
+E        
+E        >>> array(int64, class(float64))
+E        
+E       There are 2 candidate implementations:
+E            - Of which 2 did not match due to:
+E            Overload of function 'array': File: numba/cuda/cudadecl.py: Line 28.
+E              With argument(s): '(int64, class(float64))':
+E             No match.
+
+/usr/local/lib/python3.13/dist-packages/numba/core/types/functions.py:227: TypingError
+____________________ test_task11_shared_convolution[0-3-16] ____________________
+
+gpu = <module 'numba.cuda' from '/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/__init__.py'>
+n = 0, k = 3, threads = 16
+
+    @pytest.mark.parametrize("n,k,threads", [(0, 3, 16), (1, 65, 8), (37, 1, 16), (71, 4, 16), (79, 65, 32)])
+    def test_task11_shared_convolution(gpu, n, k, threads):
+        rng = np.random.default_rng(11)
+        x = rng.standard_normal(n).astype(np.float32)
+        weights = (np.arange(1, k + 1) / (k * k)).astype(np.float32)
+        out = gpu.to_device(np.full(n, np.nan, dtype=np.float32))
+>       conv_1d_shared_tiled[max(1, (n + threads - 1) // threads), threads](
+            gpu.to_device(x), gpu.to_device(weights), out)
+
+tests/test_module2.py:53: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/dispatcher.py:719: in __call__
+    return self.dispatcher.call(
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/dispatcher.py:1642: in call
+    kernel = _dispatcher.Dispatcher._cuda_call(self, *args)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/dispatcher.py:1650: in _compile_for_args
+    return self.compile(tuple(argtypes))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler_lock.py:74: in _acquire_compile_lock
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/dispatcher.py:1908: in compile
+    kernel = _Kernel(self.py_func, argtypes, **self.targetoptions)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler_lock.py:74: in _acquire_compile_lock
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/dispatcher.py:155: in __init__
+    cres = compile_cuda(
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler_lock.py:74: in _acquire_compile_lock
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/compiler.py:789: in compile_cuda
+    cres = compile_extra(
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/compiler.py:599: in compile_extra
+    return pipeline.compile_extra(func)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler.py:146: in compile_extra
+    return self._compile_bytecode()
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler.py:214: in _compile_bytecode
+    return self._compile_core()
+           ^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler.py:190: in _compile_core
+    raise e
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler.py:182: in _compile_core
+    pm.run(self.state)
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler_machinery.py:392: in run
+    raise e
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler_machinery.py:385: in run
+    self._runPass(idx, pass_inst, state)
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler_lock.py:74: in _acquire_compile_lock
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler_machinery.py:337: in _runPass
+    mutated |= check(pss.run_pass, internal_state)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler_machinery.py:291: in check
+    mangled = func(compiler_state)
+              ^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/typed_passes.py:141: in run_pass
+    typemap, return_type, calltypes, errs = type_inference_stage(
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/typed_passes.py:120: in type_inference_stage
+    errs = infer.propagate(raise_errors=raise_errors)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/typeinfer.py:1147: in propagate
+    errors = self.constraints.propagate(self)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/typeinfer.py:192: in propagate
+    constraint(typeinfer)
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/typeinfer.py:620: in __call__
+    self.resolve(typeinfer, typevars, fnty)
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/typeinfer.py:643: in resolve
+    sig = typeinfer.resolve_call(fnty, pos_args, kw_args)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/typeinfer.py:1695: in resolve_call
+    return self.context.resolve_function_type(fnty, pos_args, kw_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/typing/context.py:198: in resolve_function_type
+    res = self._resolve_user_function_type(func, args, kws)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/typing/context.py:250: in _resolve_user_function_type
+    return func.get_call_type(self, args, kws)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba/core/types/functions.py:329: in get_call_type
+    failures.raise_error()
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <numba.core.types.functions._ResolutionFailures object at 0x7bf3b5c58680>
+
+    def raise_error(self):
+        for faillist in self._failures.values():
+            for fail in faillist:
+                if isinstance(fail.error, errors.ForceLiteralArg):
+                    raise fail.error
+>       raise errors.TypingError(self.format())
+E       numba.core.errors.TypingError: No implementation of function Function(<function shared.array at 0x7bf3e1d98c20>) found for signature:
+E        
+E        >>> array(int64, class(float64))
+E        
+E       There are 2 candidate implementations:
+E             - Of which 2 did not match due to:
+E             Overload of function 'array': File: numba/cuda/cudadecl.py: Line 28.
+E               With argument(s): '(int64, class(float64))':
+E              No match.
+
+/usr/local/lib/python3.13/dist-packages/numba/core/types/functions.py:227: TypingError
+____________________ test_task11_shared_convolution[1-65-8] ____________________
+
+gpu = <module 'numba.cuda' from '/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/__init__.py'>
+n = 1, k = 65, threads = 8
+
+    @pytest.mark.parametrize("n,k,threads", [(0, 3, 16), (1, 65, 8), (37, 1, 16), (71, 4, 16), (79, 65, 32)])
+    def test_task11_shared_convolution(gpu, n, k, threads):
+        rng = np.random.default_rng(11)
+        x = rng.standard_normal(n).astype(np.float32)
+        weights = (np.arange(1, k + 1) / (k * k)).astype(np.float32)
+        out = gpu.to_device(np.full(n, np.nan, dtype=np.float32))
+>       conv_1d_shared_tiled[max(1, (n + threads - 1) // threads), threads](
+            gpu.to_device(x), gpu.to_device(weights), out)
+
+tests/test_module2.py:53: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/dispatcher.py:719: in __call__
+    return self.dispatcher.call(
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/dispatcher.py:1642: in call
+    kernel = _dispatcher.Dispatcher._cuda_call(self, *args)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/dispatcher.py:1650: in _compile_for_args
+    return self.compile(tuple(argtypes))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler_lock.py:74: in _acquire_compile_lock
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/dispatcher.py:1908: in compile
+    kernel = _Kernel(self.py_func, argtypes, **self.targetoptions)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler_lock.py:74: in _acquire_compile_lock
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/dispatcher.py:155: in __init__
+    cres = compile_cuda(
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler_lock.py:74: in _acquire_compile_lock
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/compiler.py:789: in compile_cuda
+    cres = compile_extra(
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/compiler.py:599: in compile_extra
+    return pipeline.compile_extra(func)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler.py:146: in compile_extra
+    return self._compile_bytecode()
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler.py:214: in _compile_bytecode
+    return self._compile_core()
+           ^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler.py:190: in _compile_core
+    raise e
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler.py:182: in _compile_core
+    pm.run(self.state)
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler_machinery.py:392: in run
+    raise e
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler_machinery.py:385: in run
+    self._runPass(idx, pass_inst, state)
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler_lock.py:74: in _acquire_compile_lock
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler_machinery.py:337: in _runPass
+    mutated |= check(pss.run_pass, internal_state)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler_machinery.py:291: in check
+    mangled = func(compiler_state)
+              ^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/typed_passes.py:141: in run_pass
+    typemap, return_type, calltypes, errs = type_inference_stage(
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/typed_passes.py:120: in type_inference_stage
+    errs = infer.propagate(raise_errors=raise_errors)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/typeinfer.py:1147: in propagate
+    errors = self.constraints.propagate(self)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/typeinfer.py:192: in propagate
+    constraint(typeinfer)
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/typeinfer.py:620: in __call__
+    self.resolve(typeinfer, typevars, fnty)
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/typeinfer.py:643: in resolve
+    sig = typeinfer.resolve_call(fnty, pos_args, kw_args)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/typeinfer.py:1695: in resolve_call
+    return self.context.resolve_function_type(fnty, pos_args, kw_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/typing/context.py:198: in resolve_function_type
+    res = self._resolve_user_function_type(func, args, kws)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/typing/context.py:250: in _resolve_user_function_type
+    return func.get_call_type(self, args, kws)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba/core/types/functions.py:329: in get_call_type
+    failures.raise_error()
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <numba.core.types.functions._ResolutionFailures object at 0x7bf3b5c59fd0>
+
+    def raise_error(self):
+        for faillist in self._failures.values():
+            for fail in faillist:
+                if isinstance(fail.error, errors.ForceLiteralArg):
+                    raise fail.error
+>       raise errors.TypingError(self.format())
+E       numba.core.errors.TypingError: No implementation of function Function(<function shared.array at 0x7bf3e1d98c20>) found for signature:
+E        
+E        >>> array(int64, class(float64))
+E        
+E       There are 2 candidate implementations:
+E             - Of which 2 did not match due to:
+E             Overload of function 'array': File: numba/cuda/cudadecl.py: Line 28.
+E               With argument(s): '(int64, class(float64))':
+E              No match.
+
+/usr/local/lib/python3.13/dist-packages/numba/core/types/functions.py:227: TypingError
+___________________ test_task11_shared_convolution[37-1-16] ____________________
+
+gpu = <module 'numba.cuda' from '/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/__init__.py'>
+n = 37, k = 1, threads = 16
+
+    @pytest.mark.parametrize("n,k,threads", [(0, 3, 16), (1, 65, 8), (37, 1, 16), (71, 4, 16), (79, 65, 32)])
+    def test_task11_shared_convolution(gpu, n, k, threads):
+        rng = np.random.default_rng(11)
+        x = rng.standard_normal(n).astype(np.float32)
+        weights = (np.arange(1, k + 1) / (k * k)).astype(np.float32)
+        out = gpu.to_device(np.full(n, np.nan, dtype=np.float32))
+>       conv_1d_shared_tiled[max(1, (n + threads - 1) // threads), threads](
+            gpu.to_device(x), gpu.to_device(weights), out)
+
+tests/test_module2.py:53: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/dispatcher.py:719: in __call__
+    return self.dispatcher.call(
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/dispatcher.py:1642: in call
+    kernel = _dispatcher.Dispatcher._cuda_call(self, *args)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/dispatcher.py:1650: in _compile_for_args
+    return self.compile(tuple(argtypes))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler_lock.py:74: in _acquire_compile_lock
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/dispatcher.py:1908: in compile
+    kernel = _Kernel(self.py_func, argtypes, **self.targetoptions)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler_lock.py:74: in _acquire_compile_lock
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/dispatcher.py:155: in __init__
+    cres = compile_cuda(
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler_lock.py:74: in _acquire_compile_lock
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/compiler.py:789: in compile_cuda
+    cres = compile_extra(
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/compiler.py:599: in compile_extra
+    return pipeline.compile_extra(func)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler.py:146: in compile_extra
+    return self._compile_bytecode()
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler.py:214: in _compile_bytecode
+    return self._compile_core()
+           ^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler.py:190: in _compile_core
+    raise e
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler.py:182: in _compile_core
+    pm.run(self.state)
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler_machinery.py:392: in run
+    raise e
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler_machinery.py:385: in run
+    self._runPass(idx, pass_inst, state)
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler_lock.py:74: in _acquire_compile_lock
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler_machinery.py:337: in _runPass
+    mutated |= check(pss.run_pass, internal_state)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler_machinery.py:291: in check
+    mangled = func(compiler_state)
+              ^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/typed_passes.py:141: in run_pass
+    typemap, return_type, calltypes, errs = type_inference_stage(
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/typed_passes.py:120: in type_inference_stage
+    errs = infer.propagate(raise_errors=raise_errors)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/typeinfer.py:1147: in propagate
+    errors = self.constraints.propagate(self)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/typeinfer.py:192: in propagate
+    constraint(typeinfer)
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/typeinfer.py:620: in __call__
+    self.resolve(typeinfer, typevars, fnty)
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/typeinfer.py:643: in resolve
+    sig = typeinfer.resolve_call(fnty, pos_args, kw_args)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/typeinfer.py:1695: in resolve_call
+    return self.context.resolve_function_type(fnty, pos_args, kw_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/typing/context.py:198: in resolve_function_type
+    res = self._resolve_user_function_type(func, args, kws)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/typing/context.py:250: in _resolve_user_function_type
+    return func.get_call_type(self, args, kws)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba/core/types/functions.py:329: in get_call_type
+    failures.raise_error()
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <numba.core.types.functions._ResolutionFailures object at 0x7bf3b5c5b410>
+
+    def raise_error(self):
+        for faillist in self._failures.values():
+            for fail in faillist:
+                if isinstance(fail.error, errors.ForceLiteralArg):
+                    raise fail.error
+>       raise errors.TypingError(self.format())
+E       numba.core.errors.TypingError: No implementation of function Function(<function shared.array at 0x7bf3e1d98c20>) found for signature:
+E        
+E        >>> array(int64, class(float64))
+E        
+E       There are 2 candidate implementations:
+E             - Of which 2 did not match due to:
+E             Overload of function 'array': File: numba/cuda/cudadecl.py: Line 28.
+E               With argument(s): '(int64, class(float64))':
+E              No match.
+
+/usr/local/lib/python3.13/dist-packages/numba/core/types/functions.py:227: TypingError
+___________________ test_task11_shared_convolution[71-4-16] ____________________
+
+gpu = <module 'numba.cuda' from '/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/__init__.py'>
+n = 71, k = 4, threads = 16
+
+    @pytest.mark.parametrize("n,k,threads", [(0, 3, 16), (1, 65, 8), (37, 1, 16), (71, 4, 16), (79, 65, 32)])
+    def test_task11_shared_convolution(gpu, n, k, threads):
+        rng = np.random.default_rng(11)
+        x = rng.standard_normal(n).astype(np.float32)
+        weights = (np.arange(1, k + 1) / (k * k)).astype(np.float32)
+        out = gpu.to_device(np.full(n, np.nan, dtype=np.float32))
+>       conv_1d_shared_tiled[max(1, (n + threads - 1) // threads), threads](
+            gpu.to_device(x), gpu.to_device(weights), out)
+
+tests/test_module2.py:53: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/dispatcher.py:719: in __call__
+    return self.dispatcher.call(
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/dispatcher.py:1642: in call
+    kernel = _dispatcher.Dispatcher._cuda_call(self, *args)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/dispatcher.py:1650: in _compile_for_args
+    return self.compile(tuple(argtypes))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler_lock.py:74: in _acquire_compile_lock
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/dispatcher.py:1908: in compile
+    kernel = _Kernel(self.py_func, argtypes, **self.targetoptions)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler_lock.py:74: in _acquire_compile_lock
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/dispatcher.py:155: in __init__
+    cres = compile_cuda(
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler_lock.py:74: in _acquire_compile_lock
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/compiler.py:789: in compile_cuda
+    cres = compile_extra(
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/compiler.py:599: in compile_extra
+    return pipeline.compile_extra(func)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler.py:146: in compile_extra
+    return self._compile_bytecode()
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler.py:214: in _compile_bytecode
+    return self._compile_core()
+           ^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler.py:190: in _compile_core
+    raise e
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler.py:182: in _compile_core
+    pm.run(self.state)
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler_machinery.py:392: in run
+    raise e
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler_machinery.py:385: in run
+    self._runPass(idx, pass_inst, state)
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler_lock.py:74: in _acquire_compile_lock
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler_machinery.py:337: in _runPass
+    mutated |= check(pss.run_pass, internal_state)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler_machinery.py:291: in check
+    mangled = func(compiler_state)
+              ^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/typed_passes.py:141: in run_pass
+    typemap, return_type, calltypes, errs = type_inference_stage(
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/typed_passes.py:120: in type_inference_stage
+    errs = infer.propagate(raise_errors=raise_errors)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/typeinfer.py:1147: in propagate
+    errors = self.constraints.propagate(self)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/typeinfer.py:192: in propagate
+    constraint(typeinfer)
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/typeinfer.py:620: in __call__
+    self.resolve(typeinfer, typevars, fnty)
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/typeinfer.py:643: in resolve
+    sig = typeinfer.resolve_call(fnty, pos_args, kw_args)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/typeinfer.py:1695: in resolve_call
+    return self.context.resolve_function_type(fnty, pos_args, kw_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/typing/context.py:198: in resolve_function_type
+    res = self._resolve_user_function_type(func, args, kws)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/typing/context.py:250: in _resolve_user_function_type
+    return func.get_call_type(self, args, kws)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba/core/types/functions.py:329: in get_call_type
+    failures.raise_error()
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <numba.core.types.functions._ResolutionFailures object at 0x7bf3b5cc3ad0>
+
+    def raise_error(self):
+        for faillist in self._failures.values():
+            for fail in faillist:
+                if isinstance(fail.error, errors.ForceLiteralArg):
+                    raise fail.error
+>       raise errors.TypingError(self.format())
+E       numba.core.errors.TypingError: No implementation of function Function(<function shared.array at 0x7bf3e1d98c20>) found for signature:
+E        
+E        >>> array(int64, class(float64))
+E        
+E       There are 2 candidate implementations:
+E             - Of which 2 did not match due to:
+E             Overload of function 'array': File: numba/cuda/cudadecl.py: Line 28.
+E               With argument(s): '(int64, class(float64))':
+E              No match.
+
+/usr/local/lib/python3.13/dist-packages/numba/core/types/functions.py:227: TypingError
+___________________ test_task11_shared_convolution[79-65-32] ___________________
+
+gpu = <module 'numba.cuda' from '/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/__init__.py'>
+n = 79, k = 65, threads = 32
+
+    @pytest.mark.parametrize("n,k,threads", [(0, 3, 16), (1, 65, 8), (37, 1, 16), (71, 4, 16), (79, 65, 32)])
+    def test_task11_shared_convolution(gpu, n, k, threads):
+        rng = np.random.default_rng(11)
+        x = rng.standard_normal(n).astype(np.float32)
+        weights = (np.arange(1, k + 1) / (k * k)).astype(np.float32)
+        out = gpu.to_device(np.full(n, np.nan, dtype=np.float32))
+>       conv_1d_shared_tiled[max(1, (n + threads - 1) // threads), threads](
+            gpu.to_device(x), gpu.to_device(weights), out)
+
+tests/test_module2.py:53: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/dispatcher.py:719: in __call__
+    return self.dispatcher.call(
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/dispatcher.py:1642: in call
+    kernel = _dispatcher.Dispatcher._cuda_call(self, *args)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/dispatcher.py:1650: in _compile_for_args
+    return self.compile(tuple(argtypes))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler_lock.py:74: in _acquire_compile_lock
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/dispatcher.py:1908: in compile
+    kernel = _Kernel(self.py_func, argtypes, **self.targetoptions)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler_lock.py:74: in _acquire_compile_lock
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/dispatcher.py:155: in __init__
+    cres = compile_cuda(
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler_lock.py:74: in _acquire_compile_lock
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/compiler.py:789: in compile_cuda
+    cres = compile_extra(
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/compiler.py:599: in compile_extra
+    return pipeline.compile_extra(func)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler.py:146: in compile_extra
+    return self._compile_bytecode()
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler.py:214: in _compile_bytecode
+    return self._compile_core()
+           ^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler.py:190: in _compile_core
+    raise e
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler.py:182: in _compile_core
+    pm.run(self.state)
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler_machinery.py:392: in run
+    raise e
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler_machinery.py:385: in run
+    self._runPass(idx, pass_inst, state)
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler_lock.py:74: in _acquire_compile_lock
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler_machinery.py:337: in _runPass
+    mutated |= check(pss.run_pass, internal_state)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler_machinery.py:291: in check
+    mangled = func(compiler_state)
+              ^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/typed_passes.py:141: in run_pass
+    typemap, return_type, calltypes, errs = type_inference_stage(
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/typed_passes.py:120: in type_inference_stage
+    errs = infer.propagate(raise_errors=raise_errors)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/typeinfer.py:1147: in propagate
+    errors = self.constraints.propagate(self)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/typeinfer.py:192: in propagate
+    constraint(typeinfer)
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/typeinfer.py:620: in __call__
+    self.resolve(typeinfer, typevars, fnty)
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/typeinfer.py:643: in resolve
+    sig = typeinfer.resolve_call(fnty, pos_args, kw_args)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/typeinfer.py:1695: in resolve_call
+    return self.context.resolve_function_type(fnty, pos_args, kw_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/typing/context.py:198: in resolve_function_type
+    res = self._resolve_user_function_type(func, args, kws)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/typing/context.py:250: in _resolve_user_function_type
+    return func.get_call_type(self, args, kws)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba/core/types/functions.py:329: in get_call_type
+    failures.raise_error()
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <numba.core.types.functions._ResolutionFailures object at 0x7bf3b5c42570>
+
+    def raise_error(self):
+        for faillist in self._failures.values():
+            for fail in faillist:
+                if isinstance(fail.error, errors.ForceLiteralArg):
+                    raise fail.error
+>       raise errors.TypingError(self.format())
+E       numba.core.errors.TypingError: No implementation of function Function(<function shared.array at 0x7bf3e1d98c20>) found for signature:
+E        
+E        >>> array(int64, class(float64))
+E        
+E       There are 2 candidate implementations:
+E             - Of which 2 did not match due to:
+E             Overload of function 'array': File: numba/cuda/cudadecl.py: Line 28.
+E               With argument(s): '(int64, class(float64))':
+E              No match.
+
+/usr/local/lib/python3.13/dist-packages/numba/core/types/functions.py:227: TypingError
+____________________ test_task13_padded_transpose[8-shape0] ____________________
+
+gpu = <module 'numba.cuda' from '/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/__init__.py'>
+shape = (0, 5), block_y = 8
+
+    @pytest.mark.parametrize("shape", [(0, 5), (1, 1), (17, 35), (33, 7)])
+    @pytest.mark.parametrize("block_y", [8, 32])
+    def test_task13_padded_transpose(gpu, shape, block_y):
+        a = np.arange(np.prod(shape), dtype=np.float32).reshape(shape)
+        out = gpu.to_device(np.full(shape[::-1], np.nan, dtype=np.float32))
+        grid = (max(1, (shape[1] + 31) // 32), max(1, (shape[0] + 31) // 32))
+>       transpose_bank_conflict_free[grid, (32, block_y)](gpu.to_device(a), out)
+
+tests/test_module2.py:75: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/dispatcher.py:719: in __call__
+    return self.dispatcher.call(
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/dispatcher.py:1642: in call
+    kernel = _dispatcher.Dispatcher._cuda_call(self, *args)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/dispatcher.py:1650: in _compile_for_args
+    return self.compile(tuple(argtypes))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler_lock.py:74: in _acquire_compile_lock
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/dispatcher.py:1908: in compile
+    kernel = _Kernel(self.py_func, argtypes, **self.targetoptions)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler_lock.py:74: in _acquire_compile_lock
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/dispatcher.py:155: in __init__
+    cres = compile_cuda(
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler_lock.py:74: in _acquire_compile_lock
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/compiler.py:789: in compile_cuda
+    cres = compile_extra(
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/compiler.py:599: in compile_extra
+    return pipeline.compile_extra(func)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler.py:146: in compile_extra
+    return self._compile_bytecode()
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler.py:214: in _compile_bytecode
+    return self._compile_core()
+           ^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler.py:190: in _compile_core
+    raise e
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler.py:182: in _compile_core
+    pm.run(self.state)
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler_machinery.py:392: in run
+    raise e
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler_machinery.py:385: in run
+    self._runPass(idx, pass_inst, state)
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler_lock.py:74: in _acquire_compile_lock
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler_machinery.py:337: in _runPass
+    mutated |= check(pss.run_pass, internal_state)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler_machinery.py:291: in check
+    mangled = func(compiler_state)
+              ^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/typed_passes.py:141: in run_pass
+    typemap, return_type, calltypes, errs = type_inference_stage(
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/typed_passes.py:120: in type_inference_stage
+    errs = infer.propagate(raise_errors=raise_errors)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/typeinfer.py:1147: in propagate
+    errors = self.constraints.propagate(self)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/typeinfer.py:192: in propagate
+    constraint(typeinfer)
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/typeinfer.py:620: in __call__
+    self.resolve(typeinfer, typevars, fnty)
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/typeinfer.py:643: in resolve
+    sig = typeinfer.resolve_call(fnty, pos_args, kw_args)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/typeinfer.py:1695: in resolve_call
+    return self.context.resolve_function_type(fnty, pos_args, kw_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/typing/context.py:198: in resolve_function_type
+    res = self._resolve_user_function_type(func, args, kws)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/typing/context.py:250: in _resolve_user_function_type
+    return func.get_call_type(self, args, kws)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba/core/types/functions.py:329: in get_call_type
+    failures.raise_error()
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <numba.core.types.functions._ResolutionFailures object at 0x7bf3a7f9ca70>
+
+    def raise_error(self):
+        for faillist in self._failures.values():
+            for fail in faillist:
+                if isinstance(fail.error, errors.ForceLiteralArg):
+                    raise fail.error
+>       raise errors.TypingError(self.format())
+E       numba.core.errors.TypingError: No implementation of function Function(<function shared.array at 0x7bf3e1d98c20>) found for signature:
+E        
+E        >>> array(Tuple(Literal[int](32), int64), class(float32))
+E        
+E       There are 2 candidate implementations:
+E             - Of which 2 did not match due to:
+E             Overload of function 'array': File: numba/cuda/cudadecl.py: Line 28.
+E               With argument(s): '(UniTuple(int64 x 2), class(float32))':
+E              No match.
+
+/usr/local/lib/python3.13/dist-packages/numba/core/types/functions.py:227: TypingError
+____________________ test_task13_padded_transpose[8-shape1] ____________________
+
+gpu = <module 'numba.cuda' from '/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/__init__.py'>
+shape = (1, 1), block_y = 8
+
+    @pytest.mark.parametrize("shape", [(0, 5), (1, 1), (17, 35), (33, 7)])
+    @pytest.mark.parametrize("block_y", [8, 32])
+    def test_task13_padded_transpose(gpu, shape, block_y):
+        a = np.arange(np.prod(shape), dtype=np.float32).reshape(shape)
+        out = gpu.to_device(np.full(shape[::-1], np.nan, dtype=np.float32))
+        grid = (max(1, (shape[1] + 31) // 32), max(1, (shape[0] + 31) // 32))
+>       transpose_bank_conflict_free[grid, (32, block_y)](gpu.to_device(a), out)
+
+tests/test_module2.py:75: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/dispatcher.py:719: in __call__
+    return self.dispatcher.call(
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/dispatcher.py:1642: in call
+    kernel = _dispatcher.Dispatcher._cuda_call(self, *args)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/dispatcher.py:1650: in _compile_for_args
+    return self.compile(tuple(argtypes))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler_lock.py:74: in _acquire_compile_lock
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/dispatcher.py:1908: in compile
+    kernel = _Kernel(self.py_func, argtypes, **self.targetoptions)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler_lock.py:74: in _acquire_compile_lock
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/dispatcher.py:155: in __init__
+    cres = compile_cuda(
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler_lock.py:74: in _acquire_compile_lock
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/compiler.py:789: in compile_cuda
+    cres = compile_extra(
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/compiler.py:599: in compile_extra
+    return pipeline.compile_extra(func)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler.py:146: in compile_extra
+    return self._compile_bytecode()
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler.py:214: in _compile_bytecode
+    return self._compile_core()
+           ^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler.py:190: in _compile_core
+    raise e
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler.py:182: in _compile_core
+    pm.run(self.state)
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler_machinery.py:392: in run
+    raise e
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler_machinery.py:385: in run
+    self._runPass(idx, pass_inst, state)
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler_lock.py:74: in _acquire_compile_lock
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler_machinery.py:337: in _runPass
+    mutated |= check(pss.run_pass, internal_state)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler_machinery.py:291: in check
+    mangled = func(compiler_state)
+              ^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/typed_passes.py:141: in run_pass
+    typemap, return_type, calltypes, errs = type_inference_stage(
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/typed_passes.py:120: in type_inference_stage
+    errs = infer.propagate(raise_errors=raise_errors)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/typeinfer.py:1147: in propagate
+    errors = self.constraints.propagate(self)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/typeinfer.py:192: in propagate
+    constraint(typeinfer)
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/typeinfer.py:620: in __call__
+    self.resolve(typeinfer, typevars, fnty)
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/typeinfer.py:643: in resolve
+    sig = typeinfer.resolve_call(fnty, pos_args, kw_args)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/typeinfer.py:1695: in resolve_call
+    return self.context.resolve_function_type(fnty, pos_args, kw_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/typing/context.py:198: in resolve_function_type
+    res = self._resolve_user_function_type(func, args, kws)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/typing/context.py:250: in _resolve_user_function_type
+    return func.get_call_type(self, args, kws)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba/core/types/functions.py:329: in get_call_type
+    failures.raise_error()
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <numba.core.types.functions._ResolutionFailures object at 0x7bf3a7f9de20>
+
+    def raise_error(self):
+        for faillist in self._failures.values():
+            for fail in faillist:
+                if isinstance(fail.error, errors.ForceLiteralArg):
+                    raise fail.error
+>       raise errors.TypingError(self.format())
+E       numba.core.errors.TypingError: No implementation of function Function(<function shared.array at 0x7bf3e1d98c20>) found for signature:
+E        
+E        >>> array(Tuple(Literal[int](32), int64), class(float32))
+E        
+E       There are 2 candidate implementations:
+E             - Of which 2 did not match due to:
+E             Overload of function 'array': File: numba/cuda/cudadecl.py: Line 28.
+E               With argument(s): '(UniTuple(int64 x 2), class(float32))':
+E              No match.
+
+/usr/local/lib/python3.13/dist-packages/numba/core/types/functions.py:227: TypingError
+____________________ test_task13_padded_transpose[8-shape2] ____________________
+
+gpu = <module 'numba.cuda' from '/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/__init__.py'>
+shape = (17, 35), block_y = 8
+
+    @pytest.mark.parametrize("shape", [(0, 5), (1, 1), (17, 35), (33, 7)])
+    @pytest.mark.parametrize("block_y", [8, 32])
+    def test_task13_padded_transpose(gpu, shape, block_y):
+        a = np.arange(np.prod(shape), dtype=np.float32).reshape(shape)
+        out = gpu.to_device(np.full(shape[::-1], np.nan, dtype=np.float32))
+        grid = (max(1, (shape[1] + 31) // 32), max(1, (shape[0] + 31) // 32))
+>       transpose_bank_conflict_free[grid, (32, block_y)](gpu.to_device(a), out)
+
+tests/test_module2.py:75: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/dispatcher.py:719: in __call__
+    return self.dispatcher.call(
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/dispatcher.py:1642: in call
+    kernel = _dispatcher.Dispatcher._cuda_call(self, *args)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/dispatcher.py:1650: in _compile_for_args
+    return self.compile(tuple(argtypes))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler_lock.py:74: in _acquire_compile_lock
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/dispatcher.py:1908: in compile
+    kernel = _Kernel(self.py_func, argtypes, **self.targetoptions)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler_lock.py:74: in _acquire_compile_lock
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/dispatcher.py:155: in __init__
+    cres = compile_cuda(
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler_lock.py:74: in _acquire_compile_lock
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/compiler.py:789: in compile_cuda
+    cres = compile_extra(
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/compiler.py:599: in compile_extra
+    return pipeline.compile_extra(func)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler.py:146: in compile_extra
+    return self._compile_bytecode()
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler.py:214: in _compile_bytecode
+    return self._compile_core()
+           ^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler.py:190: in _compile_core
+    raise e
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler.py:182: in _compile_core
+    pm.run(self.state)
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler_machinery.py:392: in run
+    raise e
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler_machinery.py:385: in run
+    self._runPass(idx, pass_inst, state)
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler_lock.py:74: in _acquire_compile_lock
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler_machinery.py:337: in _runPass
+    mutated |= check(pss.run_pass, internal_state)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler_machinery.py:291: in check
+    mangled = func(compiler_state)
+              ^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/typed_passes.py:141: in run_pass
+    typemap, return_type, calltypes, errs = type_inference_stage(
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/typed_passes.py:120: in type_inference_stage
+    errs = infer.propagate(raise_errors=raise_errors)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/typeinfer.py:1147: in propagate
+    errors = self.constraints.propagate(self)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/typeinfer.py:192: in propagate
+    constraint(typeinfer)
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/typeinfer.py:620: in __call__
+    self.resolve(typeinfer, typevars, fnty)
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/typeinfer.py:643: in resolve
+    sig = typeinfer.resolve_call(fnty, pos_args, kw_args)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/typeinfer.py:1695: in resolve_call
+    return self.context.resolve_function_type(fnty, pos_args, kw_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/typing/context.py:198: in resolve_function_type
+    res = self._resolve_user_function_type(func, args, kws)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/typing/context.py:250: in _resolve_user_function_type
+    return func.get_call_type(self, args, kws)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba/core/types/functions.py:329: in get_call_type
+    failures.raise_error()
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <numba.core.types.functions._ResolutionFailures object at 0x7bf3a7f9db50>
+
+    def raise_error(self):
+        for faillist in self._failures.values():
+            for fail in faillist:
+                if isinstance(fail.error, errors.ForceLiteralArg):
+                    raise fail.error
+>       raise errors.TypingError(self.format())
+E       numba.core.errors.TypingError: No implementation of function Function(<function shared.array at 0x7bf3e1d98c20>) found for signature:
+E        
+E        >>> array(Tuple(Literal[int](32), int64), class(float32))
+E        
+E       There are 2 candidate implementations:
+E             - Of which 2 did not match due to:
+E             Overload of function 'array': File: numba/cuda/cudadecl.py: Line 28.
+E               With argument(s): '(UniTuple(int64 x 2), class(float32))':
+E              No match.
+
+/usr/local/lib/python3.13/dist-packages/numba/core/types/functions.py:227: TypingError
+____________________ test_task13_padded_transpose[8-shape3] ____________________
+
+gpu = <module 'numba.cuda' from '/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/__init__.py'>
+shape = (33, 7), block_y = 8
+
+    @pytest.mark.parametrize("shape", [(0, 5), (1, 1), (17, 35), (33, 7)])
+    @pytest.mark.parametrize("block_y", [8, 32])
+    def test_task13_padded_transpose(gpu, shape, block_y):
+        a = np.arange(np.prod(shape), dtype=np.float32).reshape(shape)
+        out = gpu.to_device(np.full(shape[::-1], np.nan, dtype=np.float32))
+        grid = (max(1, (shape[1] + 31) // 32), max(1, (shape[0] + 31) // 32))
+>       transpose_bank_conflict_free[grid, (32, block_y)](gpu.to_device(a), out)
+
+tests/test_module2.py:75: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/dispatcher.py:719: in __call__
+    return self.dispatcher.call(
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/dispatcher.py:1642: in call
+    kernel = _dispatcher.Dispatcher._cuda_call(self, *args)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/dispatcher.py:1650: in _compile_for_args
+    return self.compile(tuple(argtypes))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler_lock.py:74: in _acquire_compile_lock
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/dispatcher.py:1908: in compile
+    kernel = _Kernel(self.py_func, argtypes, **self.targetoptions)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler_lock.py:74: in _acquire_compile_lock
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/dispatcher.py:155: in __init__
+    cres = compile_cuda(
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler_lock.py:74: in _acquire_compile_lock
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/compiler.py:789: in compile_cuda
+    cres = compile_extra(
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/compiler.py:599: in compile_extra
+    return pipeline.compile_extra(func)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler.py:146: in compile_extra
+    return self._compile_bytecode()
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler.py:214: in _compile_bytecode
+    return self._compile_core()
+           ^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler.py:190: in _compile_core
+    raise e
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler.py:182: in _compile_core
+    pm.run(self.state)
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler_machinery.py:392: in run
+    raise e
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler_machinery.py:385: in run
+    self._runPass(idx, pass_inst, state)
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler_lock.py:74: in _acquire_compile_lock
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler_machinery.py:337: in _runPass
+    mutated |= check(pss.run_pass, internal_state)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler_machinery.py:291: in check
+    mangled = func(compiler_state)
+              ^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/typed_passes.py:141: in run_pass
+    typemap, return_type, calltypes, errs = type_inference_stage(
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/typed_passes.py:120: in type_inference_stage
+    errs = infer.propagate(raise_errors=raise_errors)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/typeinfer.py:1147: in propagate
+    errors = self.constraints.propagate(self)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/typeinfer.py:192: in propagate
+    constraint(typeinfer)
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/typeinfer.py:620: in __call__
+    self.resolve(typeinfer, typevars, fnty)
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/typeinfer.py:643: in resolve
+    sig = typeinfer.resolve_call(fnty, pos_args, kw_args)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/typeinfer.py:1695: in resolve_call
+    return self.context.resolve_function_type(fnty, pos_args, kw_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/typing/context.py:198: in resolve_function_type
+    res = self._resolve_user_function_type(func, args, kws)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/typing/context.py:250: in _resolve_user_function_type
+    return func.get_call_type(self, args, kws)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba/core/types/functions.py:329: in get_call_type
+    failures.raise_error()
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <numba.core.types.functions._ResolutionFailures object at 0x7bf3a7f9e0f0>
+
+    def raise_error(self):
+        for faillist in self._failures.values():
+            for fail in faillist:
+                if isinstance(fail.error, errors.ForceLiteralArg):
+                    raise fail.error
+>       raise errors.TypingError(self.format())
+E       numba.core.errors.TypingError: No implementation of function Function(<function shared.array at 0x7bf3e1d98c20>) found for signature:
+E        
+E        >>> array(Tuple(Literal[int](32), int64), class(float32))
+E        
+E       There are 2 candidate implementations:
+E             - Of which 2 did not match due to:
+E             Overload of function 'array': File: numba/cuda/cudadecl.py: Line 28.
+E               With argument(s): '(UniTuple(int64 x 2), class(float32))':
+E              No match.
+
+/usr/local/lib/python3.13/dist-packages/numba/core/types/functions.py:227: TypingError
+___________________ test_task13_padded_transpose[32-shape0] ____________________
+
+gpu = <module 'numba.cuda' from '/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/__init__.py'>
+shape = (0, 5), block_y = 32
+
+    @pytest.mark.parametrize("shape", [(0, 5), (1, 1), (17, 35), (33, 7)])
+    @pytest.mark.parametrize("block_y", [8, 32])
+    def test_task13_padded_transpose(gpu, shape, block_y):
+        a = np.arange(np.prod(shape), dtype=np.float32).reshape(shape)
+        out = gpu.to_device(np.full(shape[::-1], np.nan, dtype=np.float32))
+        grid = (max(1, (shape[1] + 31) // 32), max(1, (shape[0] + 31) // 32))
+>       transpose_bank_conflict_free[grid, (32, block_y)](gpu.to_device(a), out)
+
+tests/test_module2.py:75: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/dispatcher.py:719: in __call__
+    return self.dispatcher.call(
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/dispatcher.py:1642: in call
+    kernel = _dispatcher.Dispatcher._cuda_call(self, *args)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/dispatcher.py:1650: in _compile_for_args
+    return self.compile(tuple(argtypes))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler_lock.py:74: in _acquire_compile_lock
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/dispatcher.py:1908: in compile
+    kernel = _Kernel(self.py_func, argtypes, **self.targetoptions)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler_lock.py:74: in _acquire_compile_lock
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/dispatcher.py:155: in __init__
+    cres = compile_cuda(
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler_lock.py:74: in _acquire_compile_lock
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/compiler.py:789: in compile_cuda
+    cres = compile_extra(
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/compiler.py:599: in compile_extra
+    return pipeline.compile_extra(func)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler.py:146: in compile_extra
+    return self._compile_bytecode()
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler.py:214: in _compile_bytecode
+    return self._compile_core()
+           ^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler.py:190: in _compile_core
+    raise e
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler.py:182: in _compile_core
+    pm.run(self.state)
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler_machinery.py:392: in run
+    raise e
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler_machinery.py:385: in run
+    self._runPass(idx, pass_inst, state)
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler_lock.py:74: in _acquire_compile_lock
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler_machinery.py:337: in _runPass
+    mutated |= check(pss.run_pass, internal_state)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler_machinery.py:291: in check
+    mangled = func(compiler_state)
+              ^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/typed_passes.py:141: in run_pass
+    typemap, return_type, calltypes, errs = type_inference_stage(
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/typed_passes.py:120: in type_inference_stage
+    errs = infer.propagate(raise_errors=raise_errors)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/typeinfer.py:1147: in propagate
+    errors = self.constraints.propagate(self)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/typeinfer.py:192: in propagate
+    constraint(typeinfer)
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/typeinfer.py:620: in __call__
+    self.resolve(typeinfer, typevars, fnty)
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/typeinfer.py:643: in resolve
+    sig = typeinfer.resolve_call(fnty, pos_args, kw_args)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/typeinfer.py:1695: in resolve_call
+    return self.context.resolve_function_type(fnty, pos_args, kw_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/typing/context.py:198: in resolve_function_type
+    res = self._resolve_user_function_type(func, args, kws)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/typing/context.py:250: in _resolve_user_function_type
+    return func.get_call_type(self, args, kws)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba/core/types/functions.py:329: in get_call_type
+    failures.raise_error()
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <numba.core.types.functions._ResolutionFailures object at 0x7bf3a7f9f0b0>
+
+    def raise_error(self):
+        for faillist in self._failures.values():
+            for fail in faillist:
+                if isinstance(fail.error, errors.ForceLiteralArg):
+                    raise fail.error
+>       raise errors.TypingError(self.format())
+E       numba.core.errors.TypingError: No implementation of function Function(<function shared.array at 0x7bf3e1d98c20>) found for signature:
+E        
+E        >>> array(Tuple(Literal[int](32), int64), class(float32))
+E        
+E       There are 2 candidate implementations:
+E             - Of which 2 did not match due to:
+E             Overload of function 'array': File: numba/cuda/cudadecl.py: Line 28.
+E               With argument(s): '(UniTuple(int64 x 2), class(float32))':
+E              No match.
+
+/usr/local/lib/python3.13/dist-packages/numba/core/types/functions.py:227: TypingError
+___________________ test_task13_padded_transpose[32-shape1] ____________________
+
+gpu = <module 'numba.cuda' from '/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/__init__.py'>
+shape = (1, 1), block_y = 32
+
+    @pytest.mark.parametrize("shape", [(0, 5), (1, 1), (17, 35), (33, 7)])
+    @pytest.mark.parametrize("block_y", [8, 32])
+    def test_task13_padded_transpose(gpu, shape, block_y):
+        a = np.arange(np.prod(shape), dtype=np.float32).reshape(shape)
+        out = gpu.to_device(np.full(shape[::-1], np.nan, dtype=np.float32))
+        grid = (max(1, (shape[1] + 31) // 32), max(1, (shape[0] + 31) // 32))
+>       transpose_bank_conflict_free[grid, (32, block_y)](gpu.to_device(a), out)
+
+tests/test_module2.py:75: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/dispatcher.py:719: in __call__
+    return self.dispatcher.call(
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/dispatcher.py:1642: in call
+    kernel = _dispatcher.Dispatcher._cuda_call(self, *args)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/dispatcher.py:1650: in _compile_for_args
+    return self.compile(tuple(argtypes))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler_lock.py:74: in _acquire_compile_lock
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/dispatcher.py:1908: in compile
+    kernel = _Kernel(self.py_func, argtypes, **self.targetoptions)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler_lock.py:74: in _acquire_compile_lock
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/dispatcher.py:155: in __init__
+    cres = compile_cuda(
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler_lock.py:74: in _acquire_compile_lock
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/compiler.py:789: in compile_cuda
+    cres = compile_extra(
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/compiler.py:599: in compile_extra
+    return pipeline.compile_extra(func)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler.py:146: in compile_extra
+    return self._compile_bytecode()
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler.py:214: in _compile_bytecode
+    return self._compile_core()
+           ^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler.py:190: in _compile_core
+    raise e
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler.py:182: in _compile_core
+    pm.run(self.state)
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler_machinery.py:392: in run
+    raise e
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler_machinery.py:385: in run
+    self._runPass(idx, pass_inst, state)
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler_lock.py:74: in _acquire_compile_lock
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler_machinery.py:337: in _runPass
+    mutated |= check(pss.run_pass, internal_state)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler_machinery.py:291: in check
+    mangled = func(compiler_state)
+              ^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/typed_passes.py:141: in run_pass
+    typemap, return_type, calltypes, errs = type_inference_stage(
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/typed_passes.py:120: in type_inference_stage
+    errs = infer.propagate(raise_errors=raise_errors)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/typeinfer.py:1147: in propagate
+    errors = self.constraints.propagate(self)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/typeinfer.py:192: in propagate
+    constraint(typeinfer)
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/typeinfer.py:620: in __call__
+    self.resolve(typeinfer, typevars, fnty)
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/typeinfer.py:643: in resolve
+    sig = typeinfer.resolve_call(fnty, pos_args, kw_args)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/typeinfer.py:1695: in resolve_call
+    return self.context.resolve_function_type(fnty, pos_args, kw_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/typing/context.py:198: in resolve_function_type
+    res = self._resolve_user_function_type(func, args, kws)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/typing/context.py:250: in _resolve_user_function_type
+    return func.get_call_type(self, args, kws)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba/core/types/functions.py:329: in get_call_type
+    failures.raise_error()
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <numba.core.types.functions._ResolutionFailures object at 0x7bf3a7f9fc80>
+
+    def raise_error(self):
+        for faillist in self._failures.values():
+            for fail in faillist:
+                if isinstance(fail.error, errors.ForceLiteralArg):
+                    raise fail.error
+>       raise errors.TypingError(self.format())
+E       numba.core.errors.TypingError: No implementation of function Function(<function shared.array at 0x7bf3e1d98c20>) found for signature:
+E        
+E        >>> array(Tuple(Literal[int](32), int64), class(float32))
+E        
+E       There are 2 candidate implementations:
+E             - Of which 2 did not match due to:
+E             Overload of function 'array': File: numba/cuda/cudadecl.py: Line 28.
+E               With argument(s): '(UniTuple(int64 x 2), class(float32))':
+E              No match.
+
+/usr/local/lib/python3.13/dist-packages/numba/core/types/functions.py:227: TypingError
+___________________ test_task13_padded_transpose[32-shape2] ____________________
+
+gpu = <module 'numba.cuda' from '/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/__init__.py'>
+shape = (17, 35), block_y = 32
+
+    @pytest.mark.parametrize("shape", [(0, 5), (1, 1), (17, 35), (33, 7)])
+    @pytest.mark.parametrize("block_y", [8, 32])
+    def test_task13_padded_transpose(gpu, shape, block_y):
+        a = np.arange(np.prod(shape), dtype=np.float32).reshape(shape)
+        out = gpu.to_device(np.full(shape[::-1], np.nan, dtype=np.float32))
+        grid = (max(1, (shape[1] + 31) // 32), max(1, (shape[0] + 31) // 32))
+>       transpose_bank_conflict_free[grid, (32, block_y)](gpu.to_device(a), out)
+
+tests/test_module2.py:75: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/dispatcher.py:719: in __call__
+    return self.dispatcher.call(
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/dispatcher.py:1642: in call
+    kernel = _dispatcher.Dispatcher._cuda_call(self, *args)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/dispatcher.py:1650: in _compile_for_args
+    return self.compile(tuple(argtypes))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler_lock.py:74: in _acquire_compile_lock
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/dispatcher.py:1908: in compile
+    kernel = _Kernel(self.py_func, argtypes, **self.targetoptions)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler_lock.py:74: in _acquire_compile_lock
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/dispatcher.py:155: in __init__
+    cres = compile_cuda(
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler_lock.py:74: in _acquire_compile_lock
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/compiler.py:789: in compile_cuda
+    cres = compile_extra(
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/compiler.py:599: in compile_extra
+    return pipeline.compile_extra(func)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler.py:146: in compile_extra
+    return self._compile_bytecode()
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler.py:214: in _compile_bytecode
+    return self._compile_core()
+           ^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler.py:190: in _compile_core
+    raise e
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler.py:182: in _compile_core
+    pm.run(self.state)
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler_machinery.py:392: in run
+    raise e
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler_machinery.py:385: in run
+    self._runPass(idx, pass_inst, state)
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler_lock.py:74: in _acquire_compile_lock
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler_machinery.py:337: in _runPass
+    mutated |= check(pss.run_pass, internal_state)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler_machinery.py:291: in check
+    mangled = func(compiler_state)
+              ^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/typed_passes.py:141: in run_pass
+    typemap, return_type, calltypes, errs = type_inference_stage(
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/typed_passes.py:120: in type_inference_stage
+    errs = infer.propagate(raise_errors=raise_errors)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/typeinfer.py:1147: in propagate
+    errors = self.constraints.propagate(self)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/typeinfer.py:192: in propagate
+    constraint(typeinfer)
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/typeinfer.py:620: in __call__
+    self.resolve(typeinfer, typevars, fnty)
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/typeinfer.py:643: in resolve
+    sig = typeinfer.resolve_call(fnty, pos_args, kw_args)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/typeinfer.py:1695: in resolve_call
+    return self.context.resolve_function_type(fnty, pos_args, kw_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/typing/context.py:198: in resolve_function_type
+    res = self._resolve_user_function_type(func, args, kws)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/typing/context.py:250: in _resolve_user_function_type
+    return func.get_call_type(self, args, kws)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba/core/types/functions.py:329: in get_call_type
+    failures.raise_error()
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <numba.core.types.functions._ResolutionFailures object at 0x7bf3a7f9fad0>
+
+    def raise_error(self):
+        for faillist in self._failures.values():
+            for fail in faillist:
+                if isinstance(fail.error, errors.ForceLiteralArg):
+                    raise fail.error
+>       raise errors.TypingError(self.format())
+E       numba.core.errors.TypingError: No implementation of function Function(<function shared.array at 0x7bf3e1d98c20>) found for signature:
+E        
+E        >>> array(Tuple(Literal[int](32), int64), class(float32))
+E        
+E       There are 2 candidate implementations:
+E             - Of which 2 did not match due to:
+E             Overload of function 'array': File: numba/cuda/cudadecl.py: Line 28.
+E               With argument(s): '(UniTuple(int64 x 2), class(float32))':
+E              No match.
+
+/usr/local/lib/python3.13/dist-packages/numba/core/types/functions.py:227: TypingError
+___________________ test_task13_padded_transpose[32-shape3] ____________________
+
+gpu = <module 'numba.cuda' from '/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/__init__.py'>
+shape = (33, 7), block_y = 32
+
+    @pytest.mark.parametrize("shape", [(0, 5), (1, 1), (17, 35), (33, 7)])
+    @pytest.mark.parametrize("block_y", [8, 32])
+    def test_task13_padded_transpose(gpu, shape, block_y):
+        a = np.arange(np.prod(shape), dtype=np.float32).reshape(shape)
+        out = gpu.to_device(np.full(shape[::-1], np.nan, dtype=np.float32))
+        grid = (max(1, (shape[1] + 31) // 32), max(1, (shape[0] + 31) // 32))
+>       transpose_bank_conflict_free[grid, (32, block_y)](gpu.to_device(a), out)
+
+tests/test_module2.py:75: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/dispatcher.py:719: in __call__
+    return self.dispatcher.call(
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/dispatcher.py:1642: in call
+    kernel = _dispatcher.Dispatcher._cuda_call(self, *args)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/dispatcher.py:1650: in _compile_for_args
+    return self.compile(tuple(argtypes))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler_lock.py:74: in _acquire_compile_lock
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/dispatcher.py:1908: in compile
+    kernel = _Kernel(self.py_func, argtypes, **self.targetoptions)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler_lock.py:74: in _acquire_compile_lock
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/dispatcher.py:155: in __init__
+    cres = compile_cuda(
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler_lock.py:74: in _acquire_compile_lock
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/compiler.py:789: in compile_cuda
+    cres = compile_extra(
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/compiler.py:599: in compile_extra
+    return pipeline.compile_extra(func)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler.py:146: in compile_extra
+    return self._compile_bytecode()
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler.py:214: in _compile_bytecode
+    return self._compile_core()
+           ^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler.py:190: in _compile_core
+    raise e
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler.py:182: in _compile_core
+    pm.run(self.state)
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler_machinery.py:392: in run
+    raise e
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler_machinery.py:385: in run
+    self._runPass(idx, pass_inst, state)
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler_lock.py:74: in _acquire_compile_lock
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler_machinery.py:337: in _runPass
+    mutated |= check(pss.run_pass, internal_state)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/compiler_machinery.py:291: in check
+    mangled = func(compiler_state)
+              ^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/typed_passes.py:141: in run_pass
+    typemap, return_type, calltypes, errs = type_inference_stage(
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/typed_passes.py:120: in type_inference_stage
+    errs = infer.propagate(raise_errors=raise_errors)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/typeinfer.py:1147: in propagate
+    errors = self.constraints.propagate(self)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/typeinfer.py:192: in propagate
+    constraint(typeinfer)
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/typeinfer.py:620: in __call__
+    self.resolve(typeinfer, typevars, fnty)
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/typeinfer.py:643: in resolve
+    sig = typeinfer.resolve_call(fnty, pos_args, kw_args)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/core/typeinfer.py:1695: in resolve_call
+    return self.context.resolve_function_type(fnty, pos_args, kw_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/typing/context.py:198: in resolve_function_type
+    res = self._resolve_user_function_type(func, args, kws)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/typing/context.py:250: in _resolve_user_function_type
+    return func.get_call_type(self, args, kws)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/dist-packages/numba/core/types/functions.py:329: in get_call_type
+    failures.raise_error()
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <numba.core.types.functions._ResolutionFailures object at 0x7bf3a7f9f9b0>
+
+    def raise_error(self):
+        for faillist in self._failures.values():
+            for fail in faillist:
+                if isinstance(fail.error, errors.ForceLiteralArg):
+                    raise fail.error
+>       raise errors.TypingError(self.format())
+E       numba.core.errors.TypingError: No implementation of function Function(<function shared.array at 0x7bf3e1d98c20>) found for signature:
+E        
+E        >>> array(Tuple(Literal[int](32), int64), class(float32))
+E        
+E       There are 2 candidate implementations:
+E             - Of which 2 did not match due to:
+E             Overload of function 'array': File: numba/cuda/cudadecl.py: Line 28.
+E               With argument(s): '(UniTuple(int64 x 2), class(float32))':
+E              No match.
+
+/usr/local/lib/python3.13/dist-packages/numba/core/types/functions.py:227: TypingError
+______________________ test_task42_cooperative_barrier[0] ______________________
+
+self = <cupy.cuda.compiler._NVRTCProgram object at 0x7bf380ddb290>
+options = ('-I/usr/local/lib/python3.13/dist-packages/cupy/_core/include/cupy/_cccl/cub', '-I/usr/local/lib/python3.13/dist-pack...lib/python3.13/dist-packages/cupy/_core/include', '-I/usr/local/lib/python3.13/dist-packages/nvidia/cu13/include', ...)
+log_stream = None
+
+    def compile(self, options=(), log_stream=None):
+        try:
+            if self.name_expressions:
+                for ker in self.name_expressions:
+                    nvrtc.addNameExpression(self.ptr, ker)
+>           nvrtc.compileProgram(self.ptr, options)
+
+/usr/local/lib/python3.13/dist-packages/cupy/cuda/compiler.py:860: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+cupy_backends/cuda/libs/nvrtc.pyx:125: in cupy_backends.cuda.libs.nvrtc.compileProgram
+    ???
+cupy_backends/cuda/libs/nvrtc.pyx:138: in cupy_backends.cuda.libs.nvrtc.compileProgram
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+>   ???
+E   cupy_backends.cuda.libs.nvrtc.NVRTCError: NVRTC_ERROR_COMPILATION (6)
+
+cupy_backends/cuda/libs/nvrtc.pyx:53: NVRTCError
+
+During handling of the above exception, another exception occurred:
+
+cupy_gpu = <module 'cupy' from '/usr/local/lib/python3.13/dist-packages/cupy/__init__.py'>
+iterations = 0
+
+    @pytest.mark.parametrize("iterations", [0, 1, 4])
+    def test_task42_cooperative_barrier(cupy_gpu, iterations):
+        cp = cupy_gpu
+        x = np.arange(1031, dtype=np.float32) / 8
+        x[0] = 2
+        dx = cp.asarray(x)
+>       m.grid_cooperative_barrier(dx, iterations)
+
+tests/test_module5.py:103: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+lab_kernels/module5_streams_cupy.py:303: in grid_cooperative_barrier
+    kernel(((arr.size + 127) // 128,), (128,),
+cupy/_core/raw.pyx:101: in cupy._core.raw.RawKernel.__call__
+    ???
+cupy/_core/raw.pyx:108: in cupy._core.raw.RawKernel.kernel.__get__
+    ???
+cupy/_core/raw.pyx:125: in cupy._core.raw.RawKernel._kernel
+    ???
+cupy/_util.pyx:67: in cupy._util.memoize.decorator.ret
+    ???
+cupy/_core/raw.pyx:549: in cupy._core.raw._get_raw_module
+    ???
+cupy/_core/core.pyx:2621: in cupy._core.core.compile_with_cache
+    ???
+cupy/_core/core.pyx:2639: in cupy._core.core.compile_with_cache
+    ???
+/usr/local/lib/python3.13/dist-packages/cupy/cuda/compiler.py:649: in _compile_module_with_cache
+    return _compile_with_cache_cuda(
+/usr/local/lib/python3.13/dist-packages/cupy/cuda/compiler.py:748: in _compile_with_cache_cuda
+    ptx, mapping = _compile_using_nvrtc_no_warning(
+/usr/local/lib/python3.13/dist-packages/cupy/cuda/compiler.py:402: in _compile_using_nvrtc_no_warning
+    return _compile(source, options, cu_path, name_expressions,
+/usr/local/lib/python3.13/dist-packages/cupy/cuda/compiler.py:384: in _compile
+    compiled_obj, mapping = prog.compile(options, log_stream)
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <cupy.cuda.compiler._NVRTCProgram object at 0x7bf380ddb290>
+options = ('-I/usr/local/lib/python3.13/dist-packages/cupy/_core/include/cupy/_cccl/cub', '-I/usr/local/lib/python3.13/dist-pack...lib/python3.13/dist-packages/cupy/_core/include', '-I/usr/local/lib/python3.13/dist-packages/nvidia/cu13/include', ...)
+log_stream = None
+
+    def compile(self, options=(), log_stream=None):
+        try:
+            if self.name_expressions:
+                for ker in self.name_expressions:
+                    nvrtc.addNameExpression(self.ptr, ker)
+            nvrtc.compileProgram(self.ptr, options)
+            mapping = None
+            if self.name_expressions:
+                mapping = {}
+                for ker in self.name_expressions:
+                    mapping[ker] = nvrtc.getLoweredName(self.ptr, ker)
+            if log_stream is not None:
+                log_stream.write(nvrtc.getProgramLog(self.ptr))
+            # This is to ensure backwards compatibility with nvrtc
+            if self.method == 'cubin':
+                return nvrtc.getCUBIN(self.ptr), mapping
+            elif self.method == 'ptx':
+                return nvrtc.getPTX(self.ptr), mapping
+            elif self.method == 'lto':
+                return nvrtc.getLTOIR(self.ptr), mapping
+            else:
+                raise RuntimeError('Unknown NVRTC compile method')
+        except nvrtc.NVRTCError:
+            log = nvrtc.getProgramLog(self.ptr)
+>           raise CompileException(log, self.src, self.name, options,
+                                   'nvrtc' if not runtime.is_hip else 'hiprtc')
+E           cupy.cuda.compiler.CompileException: /usr/local/lib/python3.13/dist-packages/cupy/_core/include/cupy/_cccl/libcudacxx/cuda/std/__internal/cpp_dialect.h(40): catastrophic error: #error directive: libcu++ requires at least C++ 17. Define CCCL_IGNORE_DEPRECATED_CPP_DIALECT to suppress this message.
+E             #    error libcu++ requires at least C++ 17. Define CCCL_IGNORE_DEPRECATED_CPP_DIALECT to suppress this message.
+E                  ^
+E           
+E           1 catastrophic error detected in the compilation of "/tmp/tmpvh92i3ni/4e0965a9af2e6baed3415fe2cc0ebe890d3877d5.cubin.cu".
+E           Compilation terminated.
+
+/usr/local/lib/python3.13/dist-packages/cupy/cuda/compiler.py:879: CompileException
+______________________ test_task42_cooperative_barrier[1] ______________________
+
+self = <cupy.cuda.compiler._NVRTCProgram object at 0x7bf380ddae10>
+options = ('-I/usr/local/lib/python3.13/dist-packages/cupy/_core/include/cupy/_cccl/cub', '-I/usr/local/lib/python3.13/dist-pack...lib/python3.13/dist-packages/cupy/_core/include', '-I/usr/local/lib/python3.13/dist-packages/nvidia/cu13/include', ...)
+log_stream = None
+
+    def compile(self, options=(), log_stream=None):
+        try:
+            if self.name_expressions:
+                for ker in self.name_expressions:
+                    nvrtc.addNameExpression(self.ptr, ker)
+>           nvrtc.compileProgram(self.ptr, options)
+
+/usr/local/lib/python3.13/dist-packages/cupy/cuda/compiler.py:860: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+cupy_backends/cuda/libs/nvrtc.pyx:125: in cupy_backends.cuda.libs.nvrtc.compileProgram
+    ???
+cupy_backends/cuda/libs/nvrtc.pyx:138: in cupy_backends.cuda.libs.nvrtc.compileProgram
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+>   ???
+E   cupy_backends.cuda.libs.nvrtc.NVRTCError: NVRTC_ERROR_COMPILATION (6)
+
+cupy_backends/cuda/libs/nvrtc.pyx:53: NVRTCError
+
+During handling of the above exception, another exception occurred:
+
+cupy_gpu = <module 'cupy' from '/usr/local/lib/python3.13/dist-packages/cupy/__init__.py'>
+iterations = 1
+
+    @pytest.mark.parametrize("iterations", [0, 1, 4])
+    def test_task42_cooperative_barrier(cupy_gpu, iterations):
+        cp = cupy_gpu
+        x = np.arange(1031, dtype=np.float32) / 8
+        x[0] = 2
+        dx = cp.asarray(x)
+>       m.grid_cooperative_barrier(dx, iterations)
+
+tests/test_module5.py:103: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+lab_kernels/module5_streams_cupy.py:303: in grid_cooperative_barrier
+    kernel(((arr.size + 127) // 128,), (128,),
+cupy/_core/raw.pyx:101: in cupy._core.raw.RawKernel.__call__
+    ???
+cupy/_core/raw.pyx:108: in cupy._core.raw.RawKernel.kernel.__get__
+    ???
+cupy/_core/raw.pyx:125: in cupy._core.raw.RawKernel._kernel
+    ???
+cupy/_util.pyx:67: in cupy._util.memoize.decorator.ret
+    ???
+cupy/_core/raw.pyx:549: in cupy._core.raw._get_raw_module
+    ???
+cupy/_core/core.pyx:2621: in cupy._core.core.compile_with_cache
+    ???
+cupy/_core/core.pyx:2639: in cupy._core.core.compile_with_cache
+    ???
+/usr/local/lib/python3.13/dist-packages/cupy/cuda/compiler.py:649: in _compile_module_with_cache
+    return _compile_with_cache_cuda(
+/usr/local/lib/python3.13/dist-packages/cupy/cuda/compiler.py:748: in _compile_with_cache_cuda
+    ptx, mapping = _compile_using_nvrtc_no_warning(
+/usr/local/lib/python3.13/dist-packages/cupy/cuda/compiler.py:402: in _compile_using_nvrtc_no_warning
+    return _compile(source, options, cu_path, name_expressions,
+/usr/local/lib/python3.13/dist-packages/cupy/cuda/compiler.py:384: in _compile
+    compiled_obj, mapping = prog.compile(options, log_stream)
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <cupy.cuda.compiler._NVRTCProgram object at 0x7bf380ddae10>
+options = ('-I/usr/local/lib/python3.13/dist-packages/cupy/_core/include/cupy/_cccl/cub', '-I/usr/local/lib/python3.13/dist-pack...lib/python3.13/dist-packages/cupy/_core/include', '-I/usr/local/lib/python3.13/dist-packages/nvidia/cu13/include', ...)
+log_stream = None
+
+    def compile(self, options=(), log_stream=None):
+        try:
+            if self.name_expressions:
+                for ker in self.name_expressions:
+                    nvrtc.addNameExpression(self.ptr, ker)
+            nvrtc.compileProgram(self.ptr, options)
+            mapping = None
+            if self.name_expressions:
+                mapping = {}
+                for ker in self.name_expressions:
+                    mapping[ker] = nvrtc.getLoweredName(self.ptr, ker)
+            if log_stream is not None:
+                log_stream.write(nvrtc.getProgramLog(self.ptr))
+            # This is to ensure backwards compatibility with nvrtc
+            if self.method == 'cubin':
+                return nvrtc.getCUBIN(self.ptr), mapping
+            elif self.method == 'ptx':
+                return nvrtc.getPTX(self.ptr), mapping
+            elif self.method == 'lto':
+                return nvrtc.getLTOIR(self.ptr), mapping
+            else:
+                raise RuntimeError('Unknown NVRTC compile method')
+        except nvrtc.NVRTCError:
+            log = nvrtc.getProgramLog(self.ptr)
+>           raise CompileException(log, self.src, self.name, options,
+                                   'nvrtc' if not runtime.is_hip else 'hiprtc')
+E           cupy.cuda.compiler.CompileException: /usr/local/lib/python3.13/dist-packages/cupy/_core/include/cupy/_cccl/libcudacxx/cuda/std/__internal/cpp_dialect.h(40): catastrophic error: #error directive: libcu++ requires at least C++ 17. Define CCCL_IGNORE_DEPRECATED_CPP_DIALECT to suppress this message.
+E             #    error libcu++ requires at least C++ 17. Define CCCL_IGNORE_DEPRECATED_CPP_DIALECT to suppress this message.
+E                  ^
+E           
+E           1 catastrophic error detected in the compilation of "/tmp/tmp_fybsr20/4e0965a9af2e6baed3415fe2cc0ebe890d3877d5.cubin.cu".
+E           Compilation terminated.
+
+/usr/local/lib/python3.13/dist-packages/cupy/cuda/compiler.py:879: CompileException
+______________________ test_task42_cooperative_barrier[4] ______________________
+
+self = <cupy.cuda.compiler._NVRTCProgram object at 0x7bf3805dda70>
+options = ('-I/usr/local/lib/python3.13/dist-packages/cupy/_core/include/cupy/_cccl/cub', '-I/usr/local/lib/python3.13/dist-pack...lib/python3.13/dist-packages/cupy/_core/include', '-I/usr/local/lib/python3.13/dist-packages/nvidia/cu13/include', ...)
+log_stream = None
+
+    def compile(self, options=(), log_stream=None):
+        try:
+            if self.name_expressions:
+                for ker in self.name_expressions:
+                    nvrtc.addNameExpression(self.ptr, ker)
+>           nvrtc.compileProgram(self.ptr, options)
+
+/usr/local/lib/python3.13/dist-packages/cupy/cuda/compiler.py:860: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+cupy_backends/cuda/libs/nvrtc.pyx:125: in cupy_backends.cuda.libs.nvrtc.compileProgram
+    ???
+cupy_backends/cuda/libs/nvrtc.pyx:138: in cupy_backends.cuda.libs.nvrtc.compileProgram
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+>   ???
+E   cupy_backends.cuda.libs.nvrtc.NVRTCError: NVRTC_ERROR_COMPILATION (6)
+
+cupy_backends/cuda/libs/nvrtc.pyx:53: NVRTCError
+
+During handling of the above exception, another exception occurred:
+
+cupy_gpu = <module 'cupy' from '/usr/local/lib/python3.13/dist-packages/cupy/__init__.py'>
+iterations = 4
+
+    @pytest.mark.parametrize("iterations", [0, 1, 4])
+    def test_task42_cooperative_barrier(cupy_gpu, iterations):
+        cp = cupy_gpu
+        x = np.arange(1031, dtype=np.float32) / 8
+        x[0] = 2
+        dx = cp.asarray(x)
+>       m.grid_cooperative_barrier(dx, iterations)
+
+tests/test_module5.py:103: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+lab_kernels/module5_streams_cupy.py:303: in grid_cooperative_barrier
+    kernel(((arr.size + 127) // 128,), (128,),
+cupy/_core/raw.pyx:101: in cupy._core.raw.RawKernel.__call__
+    ???
+cupy/_core/raw.pyx:108: in cupy._core.raw.RawKernel.kernel.__get__
+    ???
+cupy/_core/raw.pyx:125: in cupy._core.raw.RawKernel._kernel
+    ???
+cupy/_util.pyx:67: in cupy._util.memoize.decorator.ret
+    ???
+cupy/_core/raw.pyx:549: in cupy._core.raw._get_raw_module
+    ???
+cupy/_core/core.pyx:2621: in cupy._core.core.compile_with_cache
+    ???
+cupy/_core/core.pyx:2639: in cupy._core.core.compile_with_cache
+    ???
+/usr/local/lib/python3.13/dist-packages/cupy/cuda/compiler.py:649: in _compile_module_with_cache
+    return _compile_with_cache_cuda(
+/usr/local/lib/python3.13/dist-packages/cupy/cuda/compiler.py:748: in _compile_with_cache_cuda
+    ptx, mapping = _compile_using_nvrtc_no_warning(
+/usr/local/lib/python3.13/dist-packages/cupy/cuda/compiler.py:402: in _compile_using_nvrtc_no_warning
+    return _compile(source, options, cu_path, name_expressions,
+/usr/local/lib/python3.13/dist-packages/cupy/cuda/compiler.py:384: in _compile
+    compiled_obj, mapping = prog.compile(options, log_stream)
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <cupy.cuda.compiler._NVRTCProgram object at 0x7bf3805dda70>
+options = ('-I/usr/local/lib/python3.13/dist-packages/cupy/_core/include/cupy/_cccl/cub', '-I/usr/local/lib/python3.13/dist-pack...lib/python3.13/dist-packages/cupy/_core/include', '-I/usr/local/lib/python3.13/dist-packages/nvidia/cu13/include', ...)
+log_stream = None
+
+    def compile(self, options=(), log_stream=None):
+        try:
+            if self.name_expressions:
+                for ker in self.name_expressions:
+                    nvrtc.addNameExpression(self.ptr, ker)
+            nvrtc.compileProgram(self.ptr, options)
+            mapping = None
+            if self.name_expressions:
+                mapping = {}
+                for ker in self.name_expressions:
+                    mapping[ker] = nvrtc.getLoweredName(self.ptr, ker)
+            if log_stream is not None:
+                log_stream.write(nvrtc.getProgramLog(self.ptr))
+            # This is to ensure backwards compatibility with nvrtc
+            if self.method == 'cubin':
+                return nvrtc.getCUBIN(self.ptr), mapping
+            elif self.method == 'ptx':
+                return nvrtc.getPTX(self.ptr), mapping
+            elif self.method == 'lto':
+                return nvrtc.getLTOIR(self.ptr), mapping
+            else:
+                raise RuntimeError('Unknown NVRTC compile method')
+        except nvrtc.NVRTCError:
+            log = nvrtc.getProgramLog(self.ptr)
+>           raise CompileException(log, self.src, self.name, options,
+                                   'nvrtc' if not runtime.is_hip else 'hiprtc')
+E           cupy.cuda.compiler.CompileException: /usr/local/lib/python3.13/dist-packages/cupy/_core/include/cupy/_cccl/libcudacxx/cuda/std/__internal/cpp_dialect.h(40): catastrophic error: #error directive: libcu++ requires at least C++ 17. Define CCCL_IGNORE_DEPRECATED_CPP_DIALECT to suppress this message.
+E             #    error libcu++ requires at least C++ 17. Define CCCL_IGNORE_DEPRECATED_CPP_DIALECT to suppress this message.
+E                  ^
+E           
+E           1 catastrophic error detected in the compilation of "/tmp/tmpmxr7x2sw/4e0965a9af2e6baed3415fe2cc0ebe890d3877d5.cubin.cu".
+E           Compilation terminated.
+
+/usr/local/lib/python3.13/dist-packages/cupy/cuda/compiler.py:879: CompileException
+=============================== warnings summary ===============================
+tests/test_module1.py: 7 warnings
+tests/test_module2.py: 11 warnings
+tests/test_module3.py: 8 warnings
+tests/test_module4.py: 8 warnings
+tests/test_module5.py: 5 warnings
+tests/test_module6.py: 2 warnings
+  /usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/dispatcher.py:716: NumbaPerformanceWarning: Grid size 1 will likely result in GPU under-utilization due to low occupancy.
+    warn(errors.NumbaPerformanceWarning(msg))
+
+tests/test_module1.py: 6 warnings
+tests/test_module2.py: 10 warnings
+tests/test_module3.py: 4 warnings
+tests/test_module4.py: 5 warnings
+tests/test_module6.py: 2 warnings
+  /usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/dispatcher.py:716: NumbaPerformanceWarning: Grid size 2 will likely result in GPU under-utilization due to low occupancy.
+    warn(errors.NumbaPerformanceWarning(msg))
+
+tests/test_module1.py: 1 warning
+tests/test_module2.py: 7 warnings
+tests/test_module3.py: 1 warning
+tests/test_module4.py: 3 warnings
+tests/test_module6.py: 4 warnings
+  /usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/dispatcher.py:716: NumbaPerformanceWarning: Grid size 3 will likely result in GPU under-utilization due to low occupancy.
+    warn(errors.NumbaPerformanceWarning(msg))
+
+tests/test_module1.py::test_task04_naive_transpose[shape3]
+tests/test_module2.py::test_task11_shared_convolution[71-4-16]
+tests/test_module2.py::test_task16_constant_filter[137]
+tests/test_module5.py::test_task39_event_profiler
+  /usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/dispatcher.py:716: NumbaPerformanceWarning: Grid size 5 will likely result in GPU under-utilization due to low occupancy.
+    warn(errors.NumbaPerformanceWarning(msg))
+
+tests/test_module1.py::test_task06_rgb_to_grayscale[uint8-shape2]
+tests/test_module4.py::test_task34
+tests/test_module6.py::test_task50_rope
+  /usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/dispatcher.py:716: NumbaPerformanceWarning: Grid size 6 will likely result in GPU under-utilization due to low occupancy.
+    warn(errors.NumbaPerformanceWarning(msg))
+
+tests/test_module1.py::test_task07_vector_lerp[101]
+tests/test_spec_workloads.py::test_task01_spec_lengths[1024]
+  /usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/dispatcher.py:716: NumbaPerformanceWarning: Grid size 4 will likely result in GPU under-utilization due to low occupancy.
+    warn(errors.NumbaPerformanceWarning(msg))
+
+tests/test_spec_workloads.py::test_task02_spec_grid_stride
+  /usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/dispatcher.py:716: NumbaPerformanceWarning: Grid size 64 will likely result in GPU under-utilization due to low occupancy.
+    warn(errors.NumbaPerformanceWarning(msg))
+
+tests/test_spec_workloads.py::test_task12_spec_matmul[64]
+  /usr/local/lib/python3.13/dist-packages/numba_cuda/numba/cuda/dispatcher.py:716: NumbaPerformanceWarning: Grid size 16 will likely result in GPU under-utilization due to low occupancy.
+    warn(errors.NumbaPerformanceWarning(msg))
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED tests/test_module2.py::test_task10_shared_stencil[0-3-16] - numba.core...
+FAILED tests/test_module2.py::test_task10_shared_stencil[1-32-8] - numba.core...
+FAILED tests/test_module2.py::test_task10_shared_stencil[19-0-16] - numba.cor...
+FAILED tests/test_module2.py::test_task10_shared_stencil[35-3-16] - numba.cor...
+FAILED tests/test_module2.py::test_task10_shared_stencil[273-32-256] - numba....
+FAILED tests/test_module2.py::test_task11_shared_convolution[0-3-16] - numba....
+FAILED tests/test_module2.py::test_task11_shared_convolution[1-65-8] - numba....
+FAILED tests/test_module2.py::test_task11_shared_convolution[37-1-16] - numba...
+FAILED tests/test_module2.py::test_task11_shared_convolution[71-4-16] - numba...
+FAILED tests/test_module2.py::test_task11_shared_convolution[79-65-32] - numb...
+FAILED tests/test_module2.py::test_task13_padded_transpose[8-shape0] - numba....
+FAILED tests/test_module2.py::test_task13_padded_transpose[8-shape1] - numba....
+FAILED tests/test_module2.py::test_task13_padded_transpose[8-shape2] - numba....
+FAILED tests/test_module2.py::test_task13_padded_transpose[8-shape3] - numba....
+FAILED tests/test_module2.py::test_task13_padded_transpose[32-shape0] - numba...
+FAILED tests/test_module2.py::test_task13_padded_transpose[32-shape1] - numba...
+FAILED tests/test_module2.py::test_task13_padded_transpose[32-shape2] - numba...
+FAILED tests/test_module2.py::test_task13_padded_transpose[32-shape3] - numba...
+FAILED tests/test_module5.py::test_task42_cooperative_barrier[0] - cupy.cuda....
+FAILED tests/test_module5.py::test_task42_cooperative_barrier[1] - cupy.cuda....
+FAILED tests/test_module5.py::test_task42_cooperative_barrier[4] - cupy.cuda....
+21 failed, 130 passed, 95 warnings in 22.81s
+
+Status: incomplete_or_failed; report: /content/cuda-python-lab/result/autograder_report.json

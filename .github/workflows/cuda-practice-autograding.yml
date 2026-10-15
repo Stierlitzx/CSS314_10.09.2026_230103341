@@ -1,0 +1,58 @@
+name: CUDA practice lab checks
+
+on:
+  push:
+    paths:
+      - 'practice_cuda_50_tasks_15.10.2026_14.30/**'
+      - '.github/workflows/cuda-practice-autograding.yml'
+  pull_request:
+    paths:
+      - 'practice_cuda_50_tasks_15.10.2026_14.30/**'
+  workflow_dispatch:
+    inputs:
+      gpu:
+        description: 'Run on an already configured trusted self-hosted CUDA GPU runner'
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+env:
+  LAB_DIR: practice_cuda_50_tasks_15.10.2026_14.30/cuda-python-lab
+
+jobs:
+  simulator:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install numpy numba scipy pytest
+      - name: Functional simulation (not GPU certification)
+        working-directory: ${{ env.LAB_DIR }}
+        run: python autograder.py --simulator
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: cuda-simulator-report
+          path: ${{ env.LAB_DIR }}/result/autograder_report.json
+
+  gpu:
+    if: github.event_name == 'workflow_dispatch' && inputs.gpu && github.ref == 'refs/heads/main'
+    runs-on: [self-hosted, linux, x64, gpu]
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - name: Pre-provisioned GPU environment
+        run: nvidia-smi
+      - name: Full GPU reference suite (skips are failures)
+        working-directory: ${{ env.LAB_DIR }}
+        run: python autograder.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: cuda-real-gpu-report
+          path: ${{ env.LAB_DIR }}/result/autograder_report.json

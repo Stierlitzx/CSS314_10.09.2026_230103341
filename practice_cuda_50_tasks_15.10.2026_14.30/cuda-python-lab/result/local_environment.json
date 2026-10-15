@@ -1,0 +1,9 @@
+﻿{
+  "python": "3.14.3",
+  "platform": "Windows-11-10.0.22631-SP0",
+  "nvidia_smi": "NVIDIA GeForce RTX 4060 Laptop GPU, GPU-0c13a78b-5a3e-7434-f187-59658df572e9, 610.88, 8188 MiB",
+  "numba": "0.67.0",
+  "numpy": "2.5.3",
+  "cuda_available": false,
+  "nvvm_available": false
+}
