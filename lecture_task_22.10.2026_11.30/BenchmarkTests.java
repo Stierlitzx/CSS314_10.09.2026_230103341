@@ -59,6 +59,31 @@ public class BenchmarkTests {
                 new long[]{10, 25, 10, 25}).size() == 2, "Multiple crossings");
         check(Task5.crossoverRanges(new int[]{1, 2}, new long[]{5, 50}, new long[]{5, 25})
                 .isEmpty(), "Tie is not slower");
+        for (int workers : new int[]{1, Task6.WORKERS}) {
+            for (int iterations : new int[]{0, 10_003}) {
+                Task6.Measurement result = Task6.measure(workers, iterations, true);
+                check(result.actual() == workers * iterations && result.lostPercent() == 0,
+                        "Atomic counter exactness and reset");
+            }
+        }
+        check(Task6.measure(1, 10_003, false).actual() == 10_003, "Single-writer plain counter");
+        check(Task6.measure(Task6.WORKERS, 0, false).actual() == 0, "Empty plain workload");
+        // Never assert that an unsynchronized run MUST lose updates: scheduling can mask races.
+        BenchmarkSupport.checkClose(new Task6.Measurement(1, 6_000_000, 8_000_000).lostPercent(), 25);
+        check(new Task6.Measurement(1, 8_000_000, 8_000_000).lostPercent() == 0, "No-loss formula");
+        check(new Task6.Measurement(1, 0, 8_000_000).lostPercent() == 100, "Complete-loss formula");
+        try {
+            Task6.measure(0, 1, true);
+            throw new AssertionError("Invalid worker count accepted");
+        } catch (IllegalArgumentException expected) {
+            checks++;
+        }
+        try {
+            Task6.measure(4, Integer.MAX_VALUE, true);
+            throw new AssertionError("Overflowing workload accepted");
+        } catch (ArithmeticException expected) {
+            checks++;
+        }
         System.out.println("PASS: " + checks + " grouped checks; numerical assertions also passed.");
     }
 }

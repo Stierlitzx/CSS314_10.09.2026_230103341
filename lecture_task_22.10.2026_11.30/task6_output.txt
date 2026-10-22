@@ -1,0 +1,47 @@
+TASK 6 - Synchronization cost and race condition forensics
+Student ID: 230103341
+Recorded at: 2026-10-22T12:48:05.011213200+05:00[Asia/Qyzylorda]
+OS: Windows 11 10.0 (amd64)
+CPU/platform: AMD64 Family 25 Model 116 Stepping 1, AuthenticAMD
+Java: 21.0.2+13-LTS-58
+Logical cores: 12
+Platform threads: 4; increment attempts per thread: 2,000,000
+Expected final value per run: 8,000,000
+Each variant starts with a fresh shared counter = 0.
+Unsafe: plain int counter++; correct: AtomicInteger.incrementAndGet().
+Start/finish coordination only outside increment loops; pool startup excluded.
+Wall time includes common start release, increment loops and future joins.
+Five paired trials after warmup; variant execution order alternates.
+Trial 1 (unsafe first)
+  Unsynchronized   Expected: 8,000,000 | Actual: 3,216,641 | Updates lost: 59.791988% | Wall time: 0.095800 ms (95800 ns)
+  AtomicInteger    Expected: 8,000,000 | Actual: 8,000,000 | Updates lost: 0.000000% | Wall time: 67.373300 ms (67373300 ns)
+  Synchronization time penalty (atomic - unsafe): +67.277500 ms (+67277500 ns)
+Trial 2 (atomic first)
+  Unsynchronized   Expected: 8,000,000 | Actual: 2,861,793 | Updates lost: 64.227588% | Wall time: 0.208000 ms (208000 ns)
+  AtomicInteger    Expected: 8,000,000 | Actual: 8,000,000 | Updates lost: 0.000000% | Wall time: 58.551200 ms (58551200 ns)
+  Synchronization time penalty (atomic - unsafe): +58.343200 ms (+58343200 ns)
+Trial 3 (unsafe first)
+  Unsynchronized   Expected: 8,000,000 | Actual: 2,860,449 | Updates lost: 64.244388% | Wall time: 0.212800 ms (212800 ns)
+  AtomicInteger    Expected: 8,000,000 | Actual: 8,000,000 | Updates lost: 0.000000% | Wall time: 66.425000 ms (66425000 ns)
+  Synchronization time penalty (atomic - unsafe): +66.212200 ms (+66212200 ns)
+Trial 4 (atomic first)
+  Unsynchronized   Expected: 8,000,000 | Actual: 2,809,474 | Updates lost: 64.881575% | Wall time: 0.162600 ms (162600 ns)
+  AtomicInteger    Expected: 8,000,000 | Actual: 8,000,000 | Updates lost: 0.000000% | Wall time: 62.637300 ms (62637300 ns)
+  Synchronization time penalty (atomic - unsafe): +62.474700 ms (+62474700 ns)
+Trial 5 (unsafe first)
+  Unsynchronized   Expected: 8,000,000 | Actual: 3,138,498 | Updates lost: 60.768775% | Wall time: 0.113100 ms (113100 ns)
+  AtomicInteger    Expected: 8,000,000 | Actual: 8,000,000 | Updates lost: 0.000000% | Wall time: 64.102600 ms (64102600 ns)
+  Synchronization time penalty (atomic - unsafe): +63.989500 ms (+63989500 ns)
+Median unsynchronized wall time: 0.162600 ms
+Median atomic wall time: 64.102600 ms
+Synchronization time penalty (difference of medians): +63.940000 ms (+63940000 ns)
+Atomic / unsafe median wall-time ratio: 394.2349x
+Synchronization overhead relative to unsafe median: +39323.4932%
+Median paired synchronization penalty: +63.989500 ms
+Raw unsynchronized wall times (ns): [95800, 208000, 212800, 162600, 113100]
+Raw atomic wall times (ns): [67373300, 58551200, 66425000, 62637300, 64102600]
+AtomicInteger is an atomic primitive, not an explicit mutex/monitor lock.
+Unsafe outcomes are nondeterministic: zero observed loss would not prove safety.
+Plain racy loops may be optimized/coalesced by the JVM; no per-increment memory access guarantee.
+The timing difference is the cost of these implementations, NOT isolated lock latency.
+Lost updates (%) = 100*(expected - actual)/expected; no retries to manufacture loss.

@@ -6,7 +6,7 @@
 
 **Environment:** Windows 11, Oracle Java/JDK **21.0.2**, standard library only.
 
-The lecture is labelled **22.10.2026, 11:30**; the actual benchmark timestamps in the raw output are approximately **12:40 local time on October 22, 2026**. No measurements are fabricated or backdated.
+The lecture is labelled **22.10.2026, 11:30**; the actual benchmark timestamps in the raw output are approximately **12:40 local time on October 22, 2026** for Tasks 1–5 and **12:48** for Task 6. No measurements are fabricated or backdated.
 
 ## Deliverables
 
@@ -17,6 +17,7 @@ The lecture is labelled **22.10.2026, 11:30**; the actual benchmark timestamps i
 | 3 — false sharing | `Task3.java` | `task3_output.txt` |
 | 4 — static / dynamic scheduling | `Task4.java` | `task4_output.txt` |
 | 5 — overhead crossover | `Task5.java` | `task5_output.txt` |
+| 6 — synchronization cost / lost updates | `Task6.java` | `task6_output.txt` |
 
 `BenchmarkSupport.java` supplies shared deterministic data, scalar loops, timing helpers, pool startup and physical-core detection. Keep it beside the task sources. `BenchmarkTests.java` is a dependency-free regression suite; `test_output.txt` records its result. Generated `.class` files are ignored by the repository.
 
@@ -27,19 +28,20 @@ $lab = 'C:\Users\aiblb\PycharmProjects\CSS314_10.09.2026_230103341\lecture_task_
 & (Join-Path $lab 'run_benchmarks.ps1')
 ```
 
-This compiles with `javac -Xlint:all`, runs the regression checks, then runs Tasks 1–5 **sequentially**, printing and saving each task's stdout as UTF-8. It replaces the output files with new real measurements, including new timestamps. Run on AC power with other CPU-heavy programs stopped for a more repeatable comparison. No affinity or power-plan settings are changed automatically.
+This compiles with `javac -Xlint:all`, runs the regression checks, then runs Tasks 1–6 **sequentially**, printing and saving each task's stdout as UTF-8. It replaces the output files with new real measurements, including new timestamps. Run on AC power with other CPU-heavy programs stopped for a more repeatable comparison. No affinity or power-plan settings are changed automatically.
 
 To run one task without replacing its saved output:
 
 ```powershell
 Set-Location 'C:\Users\aiblb\PycharmProjects\CSS314_10.09.2026_230103341\lecture_task_22.10.2026_11.30'
-javac -Xlint:all BenchmarkSupport.java Task1.java Task2.java Task3.java Task4.java Task5.java BenchmarkTests.java
+javac -Xlint:all BenchmarkSupport.java Task1.java Task2.java Task3.java Task4.java Task5.java Task6.java BenchmarkTests.java
 java -ea BenchmarkTests
 java -Xms512m -Xmx2g Task1
 java -Xms512m -Xmx2g Task2
 java -Xms512m -Xmx2g Task3
 java -Xms512m -Xmx2g Task4
 java -Xms512m -Xmx2g Task5
+java -Xms512m -Xmx2g Task6
 ```
 
 Task 3 obtains physical cores from Windows CIM, summed across CPU packages. On another OS, supply the **verified physical** count with `java -Dphysical.cores=6 -Xms512m -Xmx2g Task3` (change 6 for that machine); there is deliberately no logical/2 guess.
@@ -121,11 +123,32 @@ The script programmatically reports the observed **SLOWER → FASTER bracket: `1
 
 Six sampled sizes can establish an interval, **not an exact element-level tipping point or a permanently monotonic crossover**. These raw timings support the reported classifications for this run; they do not isolate bandwidth, cache state, thermal changes or OS interference as the cause of the reversal. The code handles no crossover and multiple crossings rather than assuming a favorable result. Pool creation is excluded intentionally; including startup would answer a different, end-to-end question and generally increase overhead.
 
+### Task 6 — synchronization cost and data loss
+
+Four platform threads each attempt **2,000,000 increments**, for an expected final count of **8,000,000**. Each variant starts with a fresh zero-valued counter. The unsafe version uses an ordinary shared `int` and `counter++`, with no locks, volatile accesses, atomics, sleeps or yields in its increment loop. The correct version uses `AtomicInteger.incrementAndGet()` on a shared atomic counter. Start/finish coordination is outside the loops and does not protect the unsafe increments.
+
+| Trial | Unsafe actual | Unsafe updates lost | Atomic actual | Unsafe wall (ms) | Atomic wall (ms) | Atomic minus unsafe (ms) |
+|---:|---:|---:|---:|---:|---:|---:|
+| 1 | 3,216,641 | 59.791988% | 8,000,000 | 0.095800 | 67.373300 | +67.277500 |
+| 2 | 2,861,793 | 64.227588% | 8,000,000 | 0.208000 | 58.551200 | +58.343200 |
+| 3 | 2,860,449 | 64.244388% | 8,000,000 | 0.212800 | 66.425000 | +66.212200 |
+| 4 | 2,809,474 | 64.881575% | 8,000,000 | 0.162600 | 62.637300 | +62.474700 |
+| 5 | 3,138,498 | 60.768775% | 8,000,000 | 0.113100 | 64.102600 | +63.989500 |
+
+- Lost updates: `100.0 * (expected - actual) / expected`; every atomic run records **0% loss** and verifies its exact final count.
+- Median unsafe time: **0.162600 ms**; median atomic time: **64.102600 ms**.
+- Synchronization penalty, difference of medians: **+63.940000 ms**, or **394.2349x** atomic/unsafe wall time (**+39323.4932%** relative overhead).
+- Median of the five paired penalties: **+63.989500 ms**. This is explicitly distinguished from the difference of medians.
+
+The benchmark performs warmup, then five paired trials with alternating variant order. Pool startup is excluded; timed work includes the common latch release, the increment loops and final future joins. The raw output retains every count, percentage, wall time in milliseconds and nanoseconds, and the raw timing arrays. Earlier task logs remain unchanged.
+
+**Interpretation:** this is a deliberately incorrect implementation compared with a correct one, not equivalent successful work. Plain racy loops may be coalesced or otherwise optimized by the JVM, so their very short times do not prove that all source-level increments became individual memory operations. `AtomicInteger` supplies atomic operations without an explicit mutex/monitor; the reported penalty is the measured cost of these implementations, **not isolated lock-acquisition latency**. The race outcome is nondeterministic, and a run with no observed loss would not prove safety. No retries, artificial interleaving or expected-loss test is used to force a favorable demonstration.
+
 ## Validation and timing limits
 
 - `javac -Xlint:all`: clean compilation.
-- `java -ea BenchmarkTests`: **36 grouped checks**, plus numerical assertions, passed. Coverage includes seeded repeatability, population statistics, irregular partitions (including more workers than elements), parallel reductions, padded/unpadded counts, exact-once scheduling, requested-work totals, vector output and absent/multiple/tied crossover cases.
-- Full-size Tasks 1–5 all exited successfully; Tasks 2–5 perform runtime correctness checks.
+- `java -ea BenchmarkTests`: **46 grouped checks**, plus numerical assertions, passed. Coverage includes seeded repeatability, population statistics, irregular partitions (including more workers than elements), parallel reductions, padded/unpadded counts, exact-once scheduling, requested-work totals, vector output and absent/multiple/tied crossover cases. Task 6 adds atomic exactness/reset, zero-work cases, single-writer plain increments, loss-percentage calculations, invalid worker counts and overflow rejection; it never requires a race to lose updates.
+- Full-size Tasks 1–6 all exited successfully; Tasks 2–6 perform runtime correctness checks on their correct implementations.
 - Raw output preserves the actual timestamp, environment, trial samples and units. `System.nanoTime()` is used for elapsed time; its nanosecond unit does **not** guarantee nanosecond resolution. Especially the tiny serial vector timings should not be overinterpreted.
 - This is an educational microbenchmark, not JMH or a claim of statistically rigorous CPU certification. Re-run measurements can differ; no speedup threshold is hard-coded into a test.
 
@@ -134,6 +157,8 @@ Six sampled sizes can establish an interval, **not an exact element-level tippin
 - Oracle Java 21 API: `java.lang.invoke.VarHandle` — opaque/volatile access modes and per-variable coherence.
 - Oracle Java 21 API: `java.lang.Thread.sleep(long, int)` — requested delays are subject to system timer and scheduler precision.
 - Oracle Java 21 API: `java.lang.System.nanoTime()` — elapsed-time source, precision versus resolution.
+- Oracle Java 21 API: `java.util.concurrent.atomic.AtomicInteger.incrementAndGet()` — atomic increment with `VarHandle.getAndAdd` memory effects.
+- Java Language Specification, Java SE 21, Chapter 17 (Threads and Locks) — data races and allowed optimizations of incorrectly synchronized code.
 
 ## Requested task commits
 
@@ -142,3 +167,4 @@ Six sampled sizes can establish an interval, **not an exact element-level tippin
 3. `feat: task 3 false sharing profile`
 4. `feat: task 4 scheduling under skew`
 5. `feat: task 5 overhead crossover`
+6. `feat: task 6 race condition forensics`
