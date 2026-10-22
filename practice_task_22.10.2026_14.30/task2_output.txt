@@ -1,0 +1,32 @@
+PRACTICE TASK 2 - PRNG state bottleneck
+Session: Practice, 2026-10-22 14:30 (label, not execution timestamp)
+Student ID: 230103341
+Recorded at: 2026-10-22T15:17:57.062651700+05:00[Asia/Qyzylorda]
+OS/platform: Windows 11 10.0 / amd64
+CPU/platform: AMD64 Family 25 Model 116 Stepping 1, AuthenticAMD
+Logical cores: 12
+Java: 21.0.2+13-LTS-58
+Threads: 4; sample points per run: 40,000,000
+Both variants use SplittableRandom; fresh seed/state for every run.
+Shared seed: 230103341; independent seed[i] = Student_ID*10+i: [2301033410, 2301033411, 2301033412, 2301033413]
+Shared PRNG locked once per point for two draws; local hit counts reduced after joins.
+Timing: dispatch + worker-local PRNG initialization + sampling + joins/reduction; pool/shared-state/job setup excluded.
+Trial 1
+Shared PRNG: pi=3.141251800000 | absolute error=0.000340853590 | wall=1164.965001 ms (1164965001 ns) | hits=31412518/40000000
+Independent PRNG: pi=3.141417000000 | absolute error=0.000175653590 | wall=45.385200 ms (45385200 ns) | hits=31414170/40000000
+Trial state-isolation speedup: 25.6684x
+Trial 2
+Shared PRNG: pi=3.141251800000 | absolute error=0.000340853590 | wall=1227.108700 ms (1227108700 ns) | hits=31412518/40000000
+Independent PRNG: pi=3.141417000000 | absolute error=0.000175653590 | wall=43.353799 ms (43353799 ns) | hits=31414170/40000000
+Trial state-isolation speedup: 28.3045x
+Trial 3
+Shared PRNG: pi=3.141251800000 | absolute error=0.000340853590 | wall=1451.109000 ms (1451109000 ns) | hits=31412518/40000000
+Independent PRNG: pi=3.141417000000 | absolute error=0.000175653590 | wall=38.766300 ms (38766300 ns) | hits=31414170/40000000
+Trial state-isolation speedup: 37.4322x
+Shared PRNG median wall time: 1227.108700 ms
+Independent PRNG median wall time: 43.353799 ms
+Speedup from PRNG state isolation (ratio of medians): 28.3045x
+Raw shared wall times (ns): [1164965001, 1227108700, 1451109000]
+Raw independent wall times (ns): [45385200, 43353799, 38766300]
+Different seeded streams need not produce equal pi estimates; no statistical-accuracy threshold is asserted.
+This compares state ownership/locking, not isolated monitor latency; all samples are actually evaluated.
