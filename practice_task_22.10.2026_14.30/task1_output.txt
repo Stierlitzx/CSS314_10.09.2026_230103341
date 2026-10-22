@@ -1,0 +1,26 @@
+PRACTICE TASK 1 - Row-major versus strided cache traversal
+Session: Practice, 2026-10-22 14:30 (label, not execution timestamp)
+Student ID: 230103341
+Recorded at: 2026-10-22T15:15:50.441042100+05:00[Asia/Qyzylorda]
+OS/platform: Windows 11 10.0 / amd64
+CPU/platform: AMD64 Family 25 Model 116 Stepping 1, AuthenticAMD
+Logical cores: 12
+Java: 21.0.2+13-LTS-58
+Physical-core workers: 6
+Matrix: 8,000 x 8,000 float64; seed: 230103341; payload: 512,000,000 bytes
+Java double[][] has contiguous elements within each separately allocated row.
+Mode A: slice rows, inner loop columns. Mode B: slice columns, inner loop rows.
+Timing includes submission, traversal, joins and reduction; excludes allocation/generation and pool startup.
+Five trials after warmup, alternating mode order; medians reported. No CPU affinity/cache flushing.
+trial=1 Mode A=12.482800 ms (12482800 ns); Mode B=127.734100 ms (127734100 ns); sums=32000962.351381972000 / 32000962.351383950000
+trial=2 Mode A=12.102600 ms (12102600 ns); Mode B=136.708200 ms (136708200 ns); sums=32000962.351381972000 / 32000962.351383950000
+trial=3 Mode A=13.245400 ms (13245400 ns); Mode B=130.007901 ms (130007901 ns); sums=32000962.351381972000 / 32000962.351383950000
+trial=4 Mode A=12.577000 ms (12577000 ns); Mode B=121.943399 ms (121943399 ns); sums=32000962.351381972000 / 32000962.351383950000
+trial=5 Mode A=12.271799 ms (12271799 ns); Mode B=111.557900 ms (111557900 ns); sums=32000962.351381972000 / 32000962.351383950000
+Mode A (Row-Major) median runtime: 12.482800 ms
+Mode B (Column-Major / Strided) median runtime: 127.734100 ms
+Cache penalty factor (Mode B / Mode A): 10.2328x
+Raw Mode A wall times (ns): [12482800, 12102600, 13245400, 12577000, 12271799]
+Raw Mode B wall times (ns): [127734100, 136708200, 130007901, 121943399, 111557900]
+Verification PASS: all sums match serial reference 32000962.351374988000 (relative tolerance 1e-10).
+Timing ratio is observed traversal cost, not a hardware-counter measurement of cache misses.
