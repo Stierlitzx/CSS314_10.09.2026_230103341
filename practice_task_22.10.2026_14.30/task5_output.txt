@@ -1,0 +1,56 @@
+PRACTICE TASK 5 - Thread oversubscription threshold
+Session: Practice, 2026-10-22 14:30 (label, not execution timestamp)
+Student ID: 230103341
+Recorded at: 2026-10-22T15:15:56.935780100+05:00[Asia/Qyzylorda]
+OS/platform: Windows 11 10.0 / amd64
+CPU/platform: AMD64 Family 25 Model 116 Stepping 1, AuthenticAMD
+Logical cores: 12
+Java: 21.0.2+13-LTS-58
+Cores for requested pool-size formula = logical cores (12); physical cores=6.
+Pool sizes: [1, 6, 12, 24, 48, 192, 256]
+Batch: 10,000 independent tasks, each hashing 1,024-byte payload 500 times with SHA-256.
+Task-private digest and payload; digest feeds next 1 KiB hash; deterministic checksum checked for every batch.
+Platform threads (NOT virtual); prestart/pool startup excluded; submit, hashing, allocations and joins included.
+Three trials; rotate pool-size order; no affinity pinning or forced context switches.
+trial=1 pool=1 wall=2697.603200 ms (2697603200 ns) checksum=-1009556763675753018
+trial=1 pool=6 wall=475.595700 ms (475595700 ns) checksum=-1009556763675753018
+trial=1 pool=12 wall=321.926300 ms (321926300 ns) checksum=-1009556763675753018
+trial=1 pool=24 wall=287.979899 ms (287979899 ns) checksum=-1009556763675753018
+trial=1 pool=48 wall=289.040200 ms (289040200 ns) checksum=-1009556763675753018
+trial=1 pool=192 wall=278.819800 ms (278819800 ns) checksum=-1009556763675753018
+trial=1 pool=256 wall=272.232099 ms (272232099 ns) checksum=-1009556763675753018
+trial=2 pool=12 wall=301.220500 ms (301220500 ns) checksum=-1009556763675753018
+trial=2 pool=24 wall=291.113200 ms (291113200 ns) checksum=-1009556763675753018
+trial=2 pool=48 wall=286.129899 ms (286129899 ns) checksum=-1009556763675753018
+trial=2 pool=192 wall=281.686199 ms (281686199 ns) checksum=-1009556763675753018
+trial=2 pool=256 wall=296.947199 ms (296947199 ns) checksum=-1009556763675753018
+trial=2 pool=1 wall=2760.672801 ms (2760672801 ns) checksum=-1009556763675753018
+trial=2 pool=6 wall=486.038901 ms (486038901 ns) checksum=-1009556763675753018
+trial=3 pool=48 wall=285.663300 ms (285663300 ns) checksum=-1009556763675753018
+trial=3 pool=192 wall=282.346001 ms (282346001 ns) checksum=-1009556763675753018
+trial=3 pool=256 wall=279.071900 ms (279071900 ns) checksum=-1009556763675753018
+trial=3 pool=1 wall=2730.911100 ms (2730911100 ns) checksum=-1009556763675753018
+trial=3 pool=6 wall=469.434800 ms (469434800 ns) checksum=-1009556763675753018
+trial=3 pool=12 wall=309.659199 ms (309659199 ns) checksum=-1009556763675753018
+trial=3 pool=24 wall=306.100199 ms (306100199 ns) checksum=-1009556763675753018
+Pool Size | Execution Time (ms) | Speedup relative to 1 thread | Status
+1 | 2730.911100 | 1.0000x | BASELINE
+6 | 475.595700 | 5.7421x | NOT SLOWER
+12 | 309.659199 | 8.8191x | NOT SLOWER
+24 | 291.113200 | 9.3809x | NOT SLOWER / OVERSUBSCRIBED
+48 | 286.129899 | 9.5443x | NOT SLOWER / OVERSUBSCRIBED
+192 | 281.686199 | 9.6949x | NOT SLOWER / OVERSUBSCRIBED
+256 | 279.071900 | 9.7857x | NOT SLOWER / FASTEST / OVERSUBSCRIBED
+No worsening observed among the tested median pool sizes.
+Fastest tested pool: 256; verified batch checksum: -1009556763675753018
+Interpretation: oversubscription can add context-switching/scheduling cost, but wall times alone do NOT prove its cause.
+This is the exact first worsening among sampled sizes, NOT an exact universal OS context-switch threshold.
+Curve need not be monotonic: JVM compilation, SHA intrinsics, frequency, thermal and system load can change results.
+Idle prestarted pools coexist to rotate measurement order; their creation/memory cost is outside timing.
+Raw pool=1 wall times (ns): [2697603200, 2760672801, 2730911100]
+Raw pool=6 wall times (ns): [475595700, 486038901, 469434800]
+Raw pool=12 wall times (ns): [321926300, 301220500, 309659199]
+Raw pool=24 wall times (ns): [287979899, 291113200, 306100199]
+Raw pool=48 wall times (ns): [289040200, 286129899, 285663300]
+Raw pool=192 wall times (ns): [278819800, 281686199, 282346001]
+Raw pool=256 wall times (ns): [272232099, 296947199, 279071900]

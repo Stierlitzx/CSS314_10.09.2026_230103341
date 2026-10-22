@@ -1,0 +1,201 @@
+PASS: 3375 checks plus matrix/numerical assertions and real child-process IPC self-tests.
+PRACTICE TASK 1 - Row-major versus strided cache traversal
+Session: Practice, 2026-10-22 14:30 (label, not execution timestamp)
+Student ID: 230103341
+Recorded at: 2026-10-22T15:24:05.031196900+05:00[Asia/Qyzylorda]
+OS/platform: Windows 11 10.0 / amd64
+CPU/platform: AMD64 Family 25 Model 116 Stepping 1, AuthenticAMD
+Logical cores: 12
+Java: 21.0.2+13-LTS-58
+Physical-core workers: 6
+Matrix: 8,000 x 8,000 float64; seed: 230103341; payload: 512,000,000 bytes
+Java double[][] has contiguous elements within each separately allocated row.
+Mode A: slice rows, inner loop columns. Mode B: slice columns, inner loop rows.
+Timing includes submission, traversal, joins and reduction; excludes allocation/generation and pool startup.
+Five trials after warmup, alternating mode order; medians reported. No CPU affinity/cache flushing.
+trial=1 Mode A=21.969800 ms (21969800 ns); Mode B=298.009401 ms (298009401 ns); sums=32000962.351381972000 / 32000962.351383950000
+trial=2 Mode A=11.994100 ms (11994100 ns); Mode B=137.499500 ms (137499500 ns); sums=32000962.351381972000 / 32000962.351383950000
+trial=3 Mode A=16.929500 ms (16929500 ns); Mode B=161.939300 ms (161939300 ns); sums=32000962.351381972000 / 32000962.351383950000
+trial=4 Mode A=16.570900 ms (16570900 ns); Mode B=209.565100 ms (209565100 ns); sums=32000962.351381972000 / 32000962.351383950000
+trial=5 Mode A=18.302300 ms (18302300 ns); Mode B=153.369299 ms (153369299 ns); sums=32000962.351381972000 / 32000962.351383950000
+Mode A (Row-Major) median runtime: 16.929500 ms
+Mode B (Column-Major / Strided) median runtime: 161.939300 ms
+Cache penalty factor (Mode B / Mode A): 9.5655x
+Raw Mode A wall times (ns): [21969800, 11994100, 16929500, 16570900, 18302300]
+Raw Mode B wall times (ns): [298009401, 137499500, 161939300, 209565100, 153369299]
+Verification PASS: all sums match serial reference 32000962.351374988000 (relative tolerance 1e-10).
+Timing ratio is observed traversal cost, not a hardware-counter measurement of cache misses.
+PRACTICE TASK 2 - PRNG state bottleneck
+Session: Practice, 2026-10-22 14:30 (label, not execution timestamp)
+Student ID: 230103341
+Recorded at: 2026-10-22T15:24:09.126819800+05:00[Asia/Qyzylorda]
+OS/platform: Windows 11 10.0 / amd64
+CPU/platform: AMD64 Family 25 Model 116 Stepping 1, AuthenticAMD
+Logical cores: 12
+Java: 21.0.2+13-LTS-58
+Threads: 4; sample points per run: 40,000,000
+Both variants use SplittableRandom; fresh seed/state for every run.
+Shared seed: 230103341; independent seed[i] = Student_ID*10+i: [2301033410, 2301033411, 2301033412, 2301033413]
+Shared PRNG locked once per point for two draws; local hit counts reduced after joins.
+Timing: dispatch + worker-local PRNG initialization + sampling + joins/reduction; pool/shared-state/job setup excluded.
+Trial 1
+Shared PRNG: pi=3.141251800000 | absolute error=0.000340853590 | wall=1078.519599 ms (1078519599 ns) | hits=31412518/40000000
+Independent PRNG: pi=3.141417000000 | absolute error=0.000175653590 | wall=32.708200 ms (32708200 ns) | hits=31414170/40000000
+Trial state-isolation speedup: 32.9740x
+Trial 2
+Shared PRNG: pi=3.141251800000 | absolute error=0.000340853590 | wall=1083.189501 ms (1083189501 ns) | hits=31412518/40000000
+Independent PRNG: pi=3.141417000000 | absolute error=0.000175653590 | wall=32.570000 ms (32570000 ns) | hits=31414170/40000000
+Trial state-isolation speedup: 33.2573x
+Trial 3
+Shared PRNG: pi=3.141251800000 | absolute error=0.000340853590 | wall=1067.689101 ms (1067689101 ns) | hits=31412518/40000000
+Independent PRNG: pi=3.141417000000 | absolute error=0.000175653590 | wall=30.019999 ms (30019999 ns) | hits=31414170/40000000
+Trial state-isolation speedup: 35.5659x
+Shared PRNG median wall time: 1078.519599 ms
+Independent PRNG median wall time: 32.570000 ms
+Speedup from PRNG state isolation (ratio of medians): 33.1139x
+Raw shared wall times (ns): [1078519599, 1083189501, 1067689101]
+Raw independent wall times (ns): [32708200, 32570000, 30019999]
+Different seeded streams need not produce equal pi estimates; no statistical-accuracy threshold is asserted.
+This compares state ownership/locking, not isolated monitor latency; all samples are actually evaluated.
+PRACTICE TASK 3 - Inclusive parallel prefix scan verification
+Session: Practice, 2026-10-22 14:30 (label, not execution timestamp)
+Student ID: 230103341
+Recorded at: 2026-10-22T15:24:12.634533600+05:00[Asia/Qyzylorda]
+OS/platform: Windows 11 10.0 / amd64
+CPU/platform: AMD64 Family 25 Model 116 Stepping 1, AuthenticAMD
+Logical cores: 12
+Java: 21.0.2+13-LTS-58
+Input: 2,000,000 integers in [1,10], seed=230103341; workers=12; long prefix outputs.
+Local inclusive scans -> serial exclusive scan of chunk totals -> parallel offset application.
+O(N+p) work; two array passes, two dispatch barriers; not a logarithmic-step tree scan.
+Nine alternating-order trials; allocation/generation/pool startup/validation excluded.
+Parallel timing includes job creation, both passes, chunk-total reduction and future joins.
+Serial Time (ms) | Parallel Time (ms) | Speedup | Verification Status
+1.039200 | 2.147100 | 0.4840x | PASS
+Final prefixes: serial=10993592, parallel=10993592 (explicit equality check; mismatch exits 1).
+All 2,000,000 prefixes verified on EVERY trial (not only the final element).
+Raw serial wall times (ns): [1356500, 1005300, 1039200, 1220100, 1028100, 1254800, 900200, 1344501, 930900]
+Raw parallel wall times (ns): [2147100, 2359001, 2651500, 1603300, 1817300, 2417799, 2279500, 1713901, 1947501]
+TASK 4 - Real interprocess float64 transfer (CPU option)
+Session: Practice, 2026-10-22 14:30 (label, not execution timestamp)
+Student ID: 230103341
+Recorded at: 2026-10-22T15:24:12.951867300+05:00[Asia/Qyzylorda]
+OS/platform: Windows 11 10.0 / amd64
+CPU/platform: AMD64 Family 25 Model 116 Stepping 1, AuthenticAMD
+Logical cores: 12
+Java: 21.0.2+13-LTS-58
+A: ObjectOutputStream reset + writeUnshared(double[]) over a parent/child OS pipe.
+B: child maps the parent's raw file once using file-backed MappedByteBuffer (not allocateDirect).
+Reused B has NO repeated shared-memory payload copy; it DOES read every double for a checksum,
+and includes control IPC + acknowledgment; OS mapping/page first-use may still affect timings.
+Both wall times include the full child checksum + acknowledgment; checksums validated every trial.
+Process startup, file population, mapping/full first-touch and warmups excluded; setup reported separately.
+Five trials alternate A/B then B/A; medians are end-to-end wall times, not pure bandwidth.
+Parent never maps; child exit releases mappings before Windows deletion (fallback deleteOnExit is reported).
+
+N=100,000 float64, payload=800,000 bytes
+Excluded setup: raw file population+force=9.574 ms; process+handshake=76.263 ms;
+  child mapping+full first-touch+ack=21.126 ms (child local=19.778 ms).
+trial=1 order=1 A serialized pipe wall=4.525 ms; child checksum=0.192 ms; sum=50079.271746079285 OK
+trial=1 order=2 B reused file map wall=0.384 ms; child checksum=0.273 ms; sum=50079.271746079285 OK
+trial=2 order=1 B reused file map wall=0.400 ms; child checksum=0.306 ms; sum=50079.271746079285 OK
+trial=2 order=2 A serialized pipe wall=3.136 ms; child checksum=0.113 ms; sum=50079.271746079285 OK
+trial=3 order=1 A serialized pipe wall=2.669 ms; child checksum=0.123 ms; sum=50079.271746079285 OK
+trial=3 order=2 B reused file map wall=0.190 ms; child checksum=0.074 ms; sum=50079.271746079285 OK
+trial=4 order=1 B reused file map wall=0.187 ms; child checksum=0.074 ms; sum=50079.271746079285 OK
+trial=4 order=2 A serialized pipe wall=3.591 ms; child checksum=0.075 ms; sum=50079.271746079285 OK
+trial=5 order=1 A serialized pipe wall=2.833 ms; child checksum=0.068 ms; sum=50079.271746079285 OK
+trial=5 order=2 B reused file map wall=0.166 ms; child checksum=0.069 ms; sum=50079.271746079285 OK
+Median (5 alternating trials): A=3.136 ms; B=0.190 ms; A/B=16.541x
+Raw A serialized-pipe wall times (ns): [4525300, 3136100, 2668700, 3590600, 2832600]
+Raw B reused-file-map wall times (ns): [383900, 400300, 189601, 187001, 165800]
+
+N=1,000,000 float64, payload=8,000,000 bytes
+Excluded setup: raw file population+force=18.288 ms; process+handshake=70.162 ms;
+  child mapping+full first-touch+ack=25.011 ms (child local=24.396 ms).
+trial=1 order=1 A serialized pipe wall=25.845 ms; child checksum=0.746 ms; sum=500153.53837211896 OK
+trial=1 order=2 B reused file map wall=0.861 ms; child checksum=0.693 ms; sum=500153.53837211896 OK
+trial=2 order=1 B reused file map wall=0.787 ms; child checksum=0.669 ms; sum=500153.53837211896 OK
+trial=2 order=2 A serialized pipe wall=17.880 ms; child checksum=0.674 ms; sum=500153.53837211896 OK
+trial=3 order=1 A serialized pipe wall=17.348 ms; child checksum=0.685 ms; sum=500153.53837211896 OK
+trial=3 order=2 B reused file map wall=0.777 ms; child checksum=0.659 ms; sum=500153.53837211896 OK
+trial=4 order=1 B reused file map wall=0.787 ms; child checksum=0.675 ms; sum=500153.53837211896 OK
+trial=4 order=2 A serialized pipe wall=17.372 ms; child checksum=0.669 ms; sum=500153.53837211896 OK
+trial=5 order=1 A serialized pipe wall=17.213 ms; child checksum=0.717 ms; sum=500153.53837211896 OK
+trial=5 order=2 B reused file map wall=0.793 ms; child checksum=0.666 ms; sum=500153.53837211896 OK
+Median (5 alternating trials): A=17.372 ms; B=0.787 ms; A/B=22.068x
+Raw A serialized-pipe wall times (ns): [25845000, 17879700, 17348200, 17371700, 17212800]
+Raw B reused-file-map wall times (ns): [861200, 787100, 777300, 787200, 792599]
+
+N=10,000,000 float64, payload=80,000,000 bytes
+Excluded setup: raw file population+force=72.403 ms; process+handshake=66.354 ms;
+  child mapping+full first-touch+ack=66.968 ms (child local=66.269 ms).
+trial=1 order=1 A serialized pipe wall=159.705 ms; child checksum=8.333 ms; sum=5000455.6185746435 OK
+trial=1 order=2 B reused file map wall=7.032 ms; child checksum=6.804 ms; sum=5000455.6185746435 OK
+trial=2 order=1 B reused file map wall=7.068 ms; child checksum=6.859 ms; sum=5000455.6185746435 OK
+trial=2 order=2 A serialized pipe wall=165.131 ms; child checksum=6.776 ms; sum=5000455.6185746435 OK
+trial=3 order=1 A serialized pipe wall=156.008 ms; child checksum=7.085 ms; sum=5000455.6185746435 OK
+trial=3 order=2 B reused file map wall=6.988 ms; child checksum=6.766 ms; sum=5000455.6185746435 OK
+trial=4 order=1 B reused file map wall=6.830 ms; child checksum=6.664 ms; sum=5000455.6185746435 OK
+trial=4 order=2 A serialized pipe wall=152.154 ms; child checksum=6.708 ms; sum=5000455.6185746435 OK
+trial=5 order=1 A serialized pipe wall=151.959 ms; child checksum=6.638 ms; sum=5000455.6185746435 OK
+trial=5 order=2 B reused file map wall=6.864 ms; child checksum=6.657 ms; sum=5000455.6185746435 OK
+Median (5 alternating trials): A=156.008 ms; B=6.988 ms; A/B=22.323x
+Raw A serialized-pipe wall times (ns): [159704700, 165131199, 156007699, 152153599, 151958600]
+Raw B reused-file-map wall times (ns): [7031601, 7067800, 6988499, 6829900, 6863601]
+PRACTICE TASK 5 - Thread oversubscription threshold
+Session: Practice, 2026-10-22 14:30 (label, not execution timestamp)
+Student ID: 230103341
+Recorded at: 2026-10-22T15:24:14.953324400+05:00[Asia/Qyzylorda]
+OS/platform: Windows 11 10.0 / amd64
+CPU/platform: AMD64 Family 25 Model 116 Stepping 1, AuthenticAMD
+Logical cores: 12
+Java: 21.0.2+13-LTS-58
+Cores for requested pool-size formula = logical cores (12); physical cores=6.
+Pool sizes: [1, 6, 12, 24, 48, 192, 256]
+Batch: 10,000 independent tasks, each hashing 1,024-byte payload 500 times with SHA-256.
+Task-private digest and payload; digest feeds next 1 KiB hash; deterministic checksum checked for every batch.
+Platform threads (NOT virtual); prestart/pool startup excluded; submit, hashing, allocations and joins included.
+Three trials; rotate pool-size order; no affinity pinning or forced context switches.
+trial=1 pool=1 wall=2676.807400 ms (2676807400 ns) checksum=-1009556763675753018
+trial=1 pool=6 wall=480.784899 ms (480784899 ns) checksum=-1009556763675753018
+trial=1 pool=12 wall=301.106100 ms (301106100 ns) checksum=-1009556763675753018
+trial=1 pool=24 wall=330.630300 ms (330630300 ns) checksum=-1009556763675753018
+trial=1 pool=48 wall=279.758000 ms (279758000 ns) checksum=-1009556763675753018
+trial=1 pool=192 wall=264.199600 ms (264199600 ns) checksum=-1009556763675753018
+trial=1 pool=256 wall=253.093599 ms (253093599 ns) checksum=-1009556763675753018
+trial=2 pool=12 wall=308.089600 ms (308089600 ns) checksum=-1009556763675753018
+trial=2 pool=24 wall=288.703800 ms (288703800 ns) checksum=-1009556763675753018
+trial=2 pool=48 wall=263.632100 ms (263632100 ns) checksum=-1009556763675753018
+trial=2 pool=192 wall=247.932501 ms (247932501 ns) checksum=-1009556763675753018
+trial=2 pool=256 wall=276.603700 ms (276603700 ns) checksum=-1009556763675753018
+trial=2 pool=1 wall=2686.233900 ms (2686233900 ns) checksum=-1009556763675753018
+trial=2 pool=6 wall=465.377499 ms (465377499 ns) checksum=-1009556763675753018
+trial=3 pool=48 wall=276.294901 ms (276294901 ns) checksum=-1009556763675753018
+trial=3 pool=192 wall=280.215499 ms (280215499 ns) checksum=-1009556763675753018
+trial=3 pool=256 wall=273.538900 ms (273538900 ns) checksum=-1009556763675753018
+trial=3 pool=1 wall=3238.085499 ms (3238085499 ns) checksum=-1009556763675753018
+trial=3 pool=6 wall=771.817000 ms (771817000 ns) checksum=-1009556763675753018
+trial=3 pool=12 wall=471.309700 ms (471309700 ns) checksum=-1009556763675753018
+trial=3 pool=24 wall=398.419100 ms (398419100 ns) checksum=-1009556763675753018
+Pool Size | Execution Time (ms) | Speedup relative to 1 thread | Status
+1 | 2686.233900 | 1.0000x | BASELINE
+6 | 480.784899 | 5.5872x | NOT SLOWER
+12 | 308.089600 | 8.7190x | NOT SLOWER
+24 | 330.630300 | 8.1246x | WORSENED / FIRST OBSERVED WORSENING / OVERSUBSCRIBED
+48 | 276.294901 | 9.7223x | NOT SLOWER / OVERSUBSCRIBED
+192 | 264.199600 | 10.1674x | NOT SLOWER / FASTEST / OVERSUBSCRIBED
+256 | 273.538900 | 9.8203x | WORSENED / OVERSUBSCRIBED
+First observed worsening at tested pool size 24: 308.089600 -> 330.630300 ms from pool 12.
+Fastest tested pool: 192; verified batch checksum: -1009556763675753018
+Interpretation: oversubscription can add context-switching/scheduling cost, but wall times alone do NOT prove its cause.
+This is the exact first worsening among sampled sizes, NOT an exact universal OS context-switch threshold.
+Curve need not be monotonic: JVM compilation, SHA intrinsics, frequency, thermal and system load can change results.
+Idle prestarted pools coexist to rotate measurement order; their creation/memory cost is outside timing.
+Raw pool=1 wall times (ns): [2676807400, 2686233900, 3238085499]
+Raw pool=6 wall times (ns): [480784899, 465377499, 771817000]
+Raw pool=12 wall times (ns): [301106100, 308089600, 471309700]
+Raw pool=24 wall times (ns): [330630300, 288703800, 398419100]
+Raw pool=48 wall times (ns): [279758000, 263632100, 276294901]
+Raw pool=192 wall times (ns): [264199600, 247932501, 280215499]
+Raw pool=256 wall times (ns): [253093599, 276603700, 273538900]
