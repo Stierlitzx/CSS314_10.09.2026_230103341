@@ -6,7 +6,7 @@
 
 **Environment:** Windows 11, Oracle Java/JDK **21.0.2**, standard library only.
 
-The lecture is labelled **22.10.2026, 11:30**; the actual benchmark timestamps in the raw output are approximately **12:40 local time on October 22, 2026** for Tasks 1–5 and **12:48** for Task 6. No measurements are fabricated or backdated.
+The lecture is labelled **22.10.2026, 11:30**; the actual benchmark timestamps in the raw output are approximately **12:40 local time on October 22, 2026** for Tasks 1–5, **12:48** for Task 6, and **13:18** for Task 7. No measurements are fabricated or backdated.
 
 ## Deliverables
 
@@ -18,6 +18,7 @@ The lecture is labelled **22.10.2026, 11:30**; the actual benchmark timestamps i
 | 4 — static / dynamic scheduling | `Task4.java` | `task4_output.txt` |
 | 5 — overhead crossover | `Task5.java` | `task5_output.txt` |
 | 6 — synchronization cost / lost updates | `Task6.java` | `task6_output.txt` |
+| 7 — arithmetic intensity / memory bandwidth | `Task7.java` | `task7_output.txt` |
 
 `BenchmarkSupport.java` supplies shared deterministic data, scalar loops, timing helpers, pool startup and physical-core detection. Keep it beside the task sources. `BenchmarkTests.java` is a dependency-free regression suite; `test_output.txt` records its result. Generated `.class` files are ignored by the repository.
 
@@ -28,13 +29,13 @@ $lab = 'C:\Users\aiblb\PycharmProjects\CSS314_10.09.2026_230103341\lecture_task_
 & (Join-Path $lab 'run_benchmarks.ps1')
 ```
 
-This compiles with `javac -Xlint:all`, runs the regression checks, then runs Tasks 1–6 **sequentially**, printing and saving each task's stdout as UTF-8. It replaces the output files with new real measurements, including new timestamps. Run on AC power with other CPU-heavy programs stopped for a more repeatable comparison. No affinity or power-plan settings are changed automatically.
+This compiles with `javac -Xlint:all`, runs the regression checks, then runs Tasks 1–7 **sequentially**, printing and saving each task's stdout as UTF-8. It replaces the output files with new real measurements, including new timestamps. Run on AC power with other CPU-heavy programs stopped for a more repeatable comparison. No affinity or power-plan settings are changed automatically.
 
 To run one task without replacing its saved output:
 
 ```powershell
 Set-Location 'C:\Users\aiblb\PycharmProjects\CSS314_10.09.2026_230103341\lecture_task_22.10.2026_11.30'
-javac -Xlint:all BenchmarkSupport.java Task1.java Task2.java Task3.java Task4.java Task5.java Task6.java BenchmarkTests.java
+javac -Xlint:all BenchmarkSupport.java Task1.java Task2.java Task3.java Task4.java Task5.java Task6.java Task7.java BenchmarkTests.java
 java -ea BenchmarkTests
 java -Xms512m -Xmx2g Task1
 java -Xms512m -Xmx2g Task2
@@ -42,6 +43,7 @@ java -Xms512m -Xmx2g Task3
 java -Xms512m -Xmx2g Task4
 java -Xms512m -Xmx2g Task5
 java -Xms512m -Xmx2g Task6
+java -Xms512m -Xmx2g Task7
 ```
 
 Task 3 obtains physical cores from Windows CIM, summed across CPU packages. On another OS, supply the **verified physical** count with `java -Dphysical.cores=6 -Xms512m -Xmx2g Task3` (change 6 for that machine); there is deliberately no logical/2 guess.
@@ -144,11 +146,35 @@ The benchmark performs warmup, then five paired trials with alternating variant 
 
 **Interpretation:** this is a deliberately incorrect implementation compared with a correct one, not equivalent successful work. Plain racy loops may be coalesced or otherwise optimized by the JVM, so their very short times do not prove that all source-level increments became individual memory operations. `AtomicInteger` supplies atomic operations without an explicit mutex/monitor; the reported penalty is the measured cost of these implementations, **not isolated lock-acquisition latency**. The race outcome is nondeterministic, and a run with no observed loss would not prove safety. No retries, artificial interleaving or expected-loss test is used to force a favorable demonstration.
 
+### Task 7 — arithmetic intensity versus memory bottlenecks
+
+Both kernels use the **same 30,000,000-element float64 input** generated with student-ID seed **230103341**, and a distinct output array. Their total payload is **480,000,000 bytes** (approximately 458 MiB), much larger than the CPU cache sizes recorded in the root README. Input values are uniform in [0,1), with angles in radians, avoiding tangent singularities.
+
+- **Kernel A:** explicit vector-copy loop `B[i] = A[i]`, no floating-point arithmetic per element.
+- **Kernel B:** `B[i] = Math.sin(A[i])*Math.cos(A[i]) + Math.tan(A[i])`, without an algebraic shortcut. The expensive transcendental functions make this a higher-computation-per-byte comparison; no fixed FLOP count is assigned to a transcendental function.
+
+| Kernel | Worker count | Median wall (ms) | Speedup | Efficiency = speedup/workers | Useful GB/s |
+|---|---:|---:|---:|---:|---:|
+| A — copy | 1 | 26.987900 | 1.0000x | 100.0000% | 17.7857 |
+| A — copy | 2 | 20.952200 | 1.2881x | 64.4035% | 22.9093 |
+| A — copy | 12 | 21.416500 | 1.2601x | 10.5012% | 22.4126 |
+| B — compute | 1 | 1301.802300 | 1.0000x | 100.0000% | 0.3687 |
+| B — compute | 2 | 718.964900 | 1.8107x | 90.5331% | 0.6676 |
+| B — compute | 12 | 234.551600 | 5.5502x | 46.2515% | 2.0465 |
+
+**Observed conclusion: Kernel A (copy) stalled in scaling beyond two workers, consistent with memory-channel saturation.** Its useful throughput stays near **22–23 GB/s**, with a **0.9783x** gain from 2 to 12 workers. Kernel B continues to scale over that interval, gaining **3.0653x**, and does not exhibit the same plateau. The script selects its wording from the measured results, rather than unconditionally asserting saturation: its explicit stall heuristic is a gain of **at most 1.20x** from 2 to max workers. This threshold is a reporting heuristic, not a statistical test. It also handles a compute plateau or an absent copy plateau honestly on other runs.
+
+**Method:** seven measured trials per configuration after short-loop and full-array warmup. Worker-count order rotates each trial, and kernel order alternates. All configurations, including one worker, time task submission, kernel execution and future joins in prestarted persistent pools; generation, allocation and validation are excluded. Workers process disjoint contiguous partitions, so no output locks are required. Only one kernel/configuration is active at a time. Before every measured pass the same output buffer is reset to NaN outside the timed interval, providing consistent output initialization and allowing missing writes to be detected. There is no explicit cache flush or CPU-affinity pinning.
+
+The final pass of **each** kernel/worker combination is checked across **all 30,000,000 elements** outside timing. Copies must match the original bits; compute output is checked against the scalar `StrictMath` formula using the shared numerical tolerance `max(1, abs(expected))*1e-11`. Other trials receive sampled checks. The saved stdout includes every raw timing sample in nanoseconds, formulas, efficiency units, useful bandwidth and the conditional conclusion. Earlier task logs remain unchanged.
+
+**Limits:** useful GB/s counts only **8 bytes read + 8 bytes written per element**, divided by elapsed time, in decimal GB/s. It is not measured physical DRAM traffic: write allocation, cache effects and other bus traffic are omitted. No RAM-controller counters, theoretical/independently measured bandwidth ceiling, CPU frequency trace or thermal telemetry were collected. Thus the plateau is **evidence consistent with**, not proof of, memory-channel saturation; the benchmark does not establish which or how many physical channels are saturated. SMT (12 logical workers on six physical cores), OS interference and JVM-generated code can also affect efficiency. Raw timings vary visibly across trials; these medians are descriptive, not confidence intervals.
+
 ## Validation and timing limits
 
 - `javac -Xlint:all`: clean compilation.
-- `java -ea BenchmarkTests`: **46 grouped checks**, plus numerical assertions, passed. Coverage includes seeded repeatability, population statistics, irregular partitions (including more workers than elements), parallel reductions, padded/unpadded counts, exact-once scheduling, requested-work totals, vector output and absent/multiple/tied crossover cases. Task 6 adds atomic exactness/reset, zero-work cases, single-writer plain increments, loss-percentage calculations, invalid worker counts and overflow rejection; it never requires a race to lose updates.
-- Full-size Tasks 1–6 all exited successfully; Tasks 2–6 perform runtime correctness checks on their correct implementations.
+- `java -ea BenchmarkTests`: **82 grouped checks**, plus numerical assertions, passed. Coverage includes seeded repeatability, population statistics, irregular partitions (including more workers than elements), parallel reductions, padded/unpadded counts, exact-once scheduling, requested-work totals, vector output and absent/multiple/tied crossover cases. Task 6 adds atomic exactness/reset, zero-work cases, single-writer plain increments, loss-percentage calculations, invalid worker counts and overflow rejection; it never requires a race to lose updates. Task 7 adds both kernels on empty/singleton/uneven partitions and more workers than elements, signed-zero preservation, unwritten-output detection, numerical formula checks and the inclusive/absent scaling-stall cases.
+- Full-size Tasks 1–7 all exited successfully; Tasks 2–7 perform runtime correctness checks on their correct implementations.
 - Raw output preserves the actual timestamp, environment, trial samples and units. `System.nanoTime()` is used for elapsed time; its nanosecond unit does **not** guarantee nanosecond resolution. Especially the tiny serial vector timings should not be overinterpreted.
 - This is an educational microbenchmark, not JMH or a claim of statistically rigorous CPU certification. Re-run measurements can differ; no speedup threshold is hard-coded into a test.
 
@@ -159,6 +185,8 @@ The benchmark performs warmup, then five paired trials with alternating variant 
 - Oracle Java 21 API: `java.lang.System.nanoTime()` — elapsed-time source, precision versus resolution.
 - Oracle Java 21 API: `java.util.concurrent.atomic.AtomicInteger.incrementAndGet()` — atomic increment with `VarHandle.getAndAdd` memory effects.
 - Java Language Specification, Java SE 21, Chapter 17 (Threads and Locks) — data races and allowed optimizations of incorrectly synchronized code.
+- Oracle Java 21 API: `java.lang.Math` and `java.lang.StrictMath` — trigonometric functions and permitted result differences; compute validation uses a tolerance rather than requiring identical bits.
+- Williams, Waterman and Patterson, *Roofline: An Insightful Visual Performance Model for Floating-Point Programs and Multicore Architectures*, Berkeley technical report EECS-2008-134 — operational intensity and bandwidth/compute performance ceilings. This benchmark uses the qualitative comparison, not a calibrated Roofline model.
 
 ## Requested task commits
 
@@ -168,3 +196,4 @@ The benchmark performs warmup, then five paired trials with alternating variant 
 4. `feat: task 4 scheduling under skew`
 5. `feat: task 5 overhead crossover`
 6. `feat: task 6 race condition forensics`
+7. `feat: task 7 memory bandwidth saturation`

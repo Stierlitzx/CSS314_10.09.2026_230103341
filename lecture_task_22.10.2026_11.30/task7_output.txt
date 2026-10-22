@@ -1,0 +1,41 @@
+TASK 7 - Arithmetic intensity versus memory bandwidth
+Student ID: 230103341
+Recorded at: 2026-10-22T13:18:29.971740900+05:00[Asia/Qyzylorda]
+OS: Windows 11 10.0 (amd64)
+CPU/platform: AMD64 Family 25 Model 116 Stepping 1, AuthenticAMD
+Java: 21.0.2+13-LTS-58
+Logical cores: 12
+Elements: 30,000,000 float64 per array; seed: 230103341; workers: [1, 2, 12]
+Two-array payload: 480,000,000 bytes; useful read+write traffic per pass: 480,000,000 bytes
+Kernel A: B[i] = A[i] (explicit copy loop).
+Kernel B: B[i] = sin(A[i])*cos(A[i]) + tan(A[i]); A is uniform in [0,1), in radians.
+Same seeded input and output buffer for all runs; no fused/simplified trig expression.
+Persistent prestarted pools; dispatch + kernel + future joins timed for EVERY worker count, including 1.
+Generation, allocation, sentinel reset, warmup and validation excluded from timing.
+Output reset to NaN before every measured pass; no cache flushing or affinity pinning.
+Seven trials; rotate worker-count order and alternate kernel order to reduce order bias.
+Kernel     |   Cores | Median Wall (ms) |   Speedup | Efficiency |     Useful GB/s
+COPY       |       1 |        26.987900 |   1.0000x |  100.0000% |         17.7857
+COPY       |       2 |        20.952200 |   1.2881x |   64.4035% |         22.9093
+COPY       |      12 |        21.416500 |   1.2601x |   10.5012% |         22.4126
+COMPUTE    |       1 |      1301.802300 |   1.0000x |  100.0000% |          0.3687
+COMPUTE    |       2 |       718.964900 |   1.8107x |   90.5331% |          0.6676
+COMPUTE    |      12 |       234.551600 |   5.5502x |   46.2515% |          2.0465
+Speedup=T(1)/T(p); Efficiency=Speedup/p (displayed as percent). Cores means worker count.
+Useful GB/s=(N*8 bytes read + N*8 bytes written)/time/1e9; not measured physical RAM traffic.
+Write allocation, cache effects and other bus traffic are NOT included in useful byte counts.
+2 -> 12 worker throughput gain: copy=0.9783x, compute=3.0653x; ideal=6.0000x
+Stall heuristic: at most 20% throughput gain from 2 workers to max (gain <= 1.20x).
+Kernel A (memory-bound copy) stalled in scaling: consistent with memory channel saturation.
+Kernel B (trigonometric compute) continued scaling beyond 2 workers; no comparable plateau observed.
+Inference, not proof: no RAM-controller counters or independent bandwidth ceiling measured.
+CPU frequency, SMT, scheduling, JVM code generation and memory traffic can all affect scaling.
+Raw wall times (ns):
+kernel=COPY workers=1 [21929700, 26797900, 29752300, 28896400, 26987900, 27708400, 25096000]
+kernel=COPY workers=2 [20952200, 18985800, 23988600, 22978100, 24399400, 19495500, 20590600]
+kernel=COPY workers=12 [19781100, 21410600, 21416500, 20995400, 23352100, 22582400, 22118100]
+kernel=COMPUTE workers=1 [983862900, 1001552500, 1256178400, 1301802300, 1355257300, 1438183400, 1344895500]
+kernel=COMPUTE workers=2 [498099100, 508001600, 693794600, 751105600, 781546000, 729889000, 718964900]
+kernel=COMPUTE workers=12 [167077200, 177253600, 179781300, 285715200, 263481800, 272223100, 234551600]
+Validation PASS: final pass of every kernel/worker configuration checked across all 30,000,000 elements.
+Copy checked bit-for-bit; compute checked against StrictMath reference, relative tolerance 1e-11.

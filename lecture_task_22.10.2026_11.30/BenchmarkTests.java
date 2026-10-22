@@ -84,6 +84,40 @@ public class BenchmarkTests {
         } catch (ArithmeticException expected) {
             checks++;
         }
+        for (int size : new int[]{0, 1, 3, 101, 1_003}) {
+            double[] input = BenchmarkSupport.data(size);
+            for (int workers : new int[]{1, 2, 8}) {
+                try (ThreadPoolExecutor pool = (ThreadPoolExecutor) Executors.newFixedThreadPool(workers)) {
+                    BenchmarkSupport.startPool(pool, workers);
+                    for (Task7.Kernel kind : Task7.Kernel.values()) {
+                        double[] output = new double[size];
+                        Arrays.fill(output, Double.NaN);
+                        Task7.measure(input, output, workers, pool, kind);
+                        Task7.validate(input, output, kind, true);
+                        check(Arrays.stream(output).allMatch(Double::isFinite), "Task 7 full partition coverage");
+                    }
+                }
+            }
+        }
+        BenchmarkSupport.checkClose(Task7.speedup(120, 30), 4);
+        BenchmarkSupport.checkClose(Task7.efficiency(120, 30, 8), 0.5);
+        BenchmarkSupport.checkClose(Task7.usefulGBps(30_000_000, 10_000_000), 48);
+        check(Task7.scalingStalled(100, 100, 12), "Copy plateau detection");
+        check(Task7.scalingStalled(120, 100, 12), "Inclusive stall threshold");
+        check(!Task7.scalingStalled(200, 100, 12), "Continued scaling detection");
+        check(!Task7.scalingStalled(100, 100, 2), "No 2-to-max interval");
+        double[] special = {-0.0, 0.0, 0.125, 0.5, 0.999999};
+        double[] copied = new double[special.length];
+        Task7.kernel(special, copied, 0, special.length, Task7.Kernel.COPY);
+        Task7.validate(special, copied, Task7.Kernel.COPY, true);
+        check(Double.doubleToRawLongBits(copied[0]) == Double.doubleToRawLongBits(-0.0), "Copy signed zero");
+        try {
+            Task7.validate(new double[]{0.5}, new double[]{Double.NaN}, Task7.Kernel.COMPUTE, true);
+            throw new AssertionError("Missing compute output accepted");
+        } catch (AssertionError expected) {
+            if (expected.getMessage().equals("Missing compute output accepted")) throw expected;
+            checks++;
+        }
         System.out.println("PASS: " + checks + " grouped checks; numerical assertions also passed.");
     }
 }
