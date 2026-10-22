@@ -1,0 +1,15 @@
+TASK 1 - Hardware probe and serial baseline
+Student ID: 230103341
+Recorded at: 2026-10-22T12:40:03.330634100+05:00[Asia/Qyzylorda]
+OS: Windows 11 10.0 (amd64)
+CPU/platform: AMD64 Family 25 Model 116 Stepping 1, AuthenticAMD
+Java: 21.0.2+13-LTS-58
+Logical cores: 12
+Elements: 20,000,000 float64 (Java double), seed: 230103341
+Computation workers: 1 (explicit scalar loops, no parallel library)
+Sum: 10001769.431557730000000
+Population standard deviation (ddof=0): 0.288696318459070
+Array allocation + generation wall time: 194.469600 ms (194469600 ns)
+Serial sum + standard deviation wall time: 40.656600 ms (40656600 ns)
+Total generation + computation wall time: 235.129400 ms (235129400 ns)
+Timing excludes JVM startup, hardware reporting, warmup and printing.
