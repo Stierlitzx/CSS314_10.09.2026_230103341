@@ -1,0 +1,26 @@
+TASK 2 - Multi-core summation versus Amdahl's Law
+Student ID: 230103341
+Recorded at: 2026-10-22T12:40:03.752083400+05:00[Asia/Qyzylorda]
+OS: Windows 11 10.0 (amd64)
+CPU/platform: AMD64 Family 25 Model 116 Stepping 1, AuthenticAMD
+Java: 21.0.2+13-LTS-58
+Logical cores: 12
+Elements: 20,000,000 float64, seed: 230103341
+Timing: warmed persistent pool; submission + sum + merge + wait included.
+Generation, pool startup, warmup and result checks excluded. Median of 7 trials.
+Cores   |   Wall Time (ms) |    Speedup |  Amdahl Upper Bound
+1       |        19.147200 |    1.0000x |             1.0000x
+2       |         9.949100 |    1.9245x |             1.9048x
+4       |         5.147100 |    3.7200x |             3.4783x
+12      |         3.630900 |    5.2734x |             7.7419x
+24      |         3.669500 |    5.2179x |            11.1628x
+Raw wall times (ns):
+workers=1 [19026000, 19147200, 18683100, 19415000, 19307000, 19461700, 18927800]
+workers=2 [10705200, 9705600, 13490800, 9705600, 9949100, 10045100, 9229000]
+workers=4 [5986400, 5147100, 4859400, 4799800, 4728000, 5631800, 5275000]
+workers=12 [3510500, 3990100, 3592700, 3630900, 3745600, 3549600, 4230900]
+workers=24 [3844400, 3949600, 3276700, 3397600, 3669500, 3444100, 3901100]
+Verified sum (floating-point tolerance 1e-11 relative): 10001769.431557730000000
+T(1) is one pool worker doing SUM ONLY; Task 1 also computes standard deviation.
+Amdahl model: 1/(0.05 + 0.95/p); idealized P=0.95, not a fitted hardware limit.
+Cores column means worker count; 2*logical cores is deliberate oversubscription.
