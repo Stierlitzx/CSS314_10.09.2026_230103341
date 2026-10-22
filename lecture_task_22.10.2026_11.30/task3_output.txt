@@ -1,0 +1,22 @@
+TASK 3 - False sharing profile
+Student ID: 230103341
+Recorded at: 2026-10-22T12:40:30.006996600+05:00[Asia/Qyzylorda]
+OS: Windows 11 10.0 (amd64)
+CPU/platform: AMD64 Family 25 Model 116 Stepping 1, AuthenticAMD
+Java: 21.0.2+13-LTS-58
+Logical cores: 12
+Physical cores / platform worker threads: 6
+Increments per worker: 50,000,000
+Unpadded: shared_counts length = N; padded: counter stride = 64 bytes.
+Identical VarHandle opaque read/write loops; counts verified after join.
+Synchronized start; pool startup excluded; release + loops + joins included.
+OS selects CPU placement; no affinity pinning. Cache-line size assumed 64 bytes.
+trial=1 Unpadded Shared: 256.417900 ms (256417900 ns); Padded: 24.179200 ms (24179200 ns)
+Verified counts (both variants): [50000000, 50000000, 50000000, 50000000, 50000000, 50000000]
+trial=2 Unpadded Shared: 263.619900 ms (263619900 ns); Padded: 27.970700 ms (27970700 ns)
+Verified counts (both variants): [50000000, 50000000, 50000000, 50000000, 50000000, 50000000]
+trial=3 Unpadded Shared: 278.906400 ms (278906400 ns); Padded: 20.533100 ms (20533100 ns)
+Verified counts (both variants): [50000000, 50000000, 50000000, 50000000, 50000000, 50000000]
+Median Unpadded Shared: 263.619900 ms
+Median Padded: 24.179200 ms
+Execution ratio (Unpadded Shared / Padded): 10.9028x
