@@ -1,0 +1,19 @@
+PRACTICE TASK 3 - Inclusive parallel prefix scan verification
+Session: Practice, 2026-10-22 14:30 (label, not execution timestamp)
+Student ID: 230103341
+Recorded at: 2026-10-22T15:15:56.596637100+05:00[Asia/Qyzylorda]
+OS/platform: Windows 11 10.0 / amd64
+CPU/platform: AMD64 Family 25 Model 116 Stepping 1, AuthenticAMD
+Logical cores: 12
+Java: 21.0.2+13-LTS-58
+Input: 2,000,000 integers in [1,10], seed=230103341; workers=12; long prefix outputs.
+Local inclusive scans -> serial exclusive scan of chunk totals -> parallel offset application.
+O(N+p) work; two array passes, two dispatch barriers; not a logarithmic-step tree scan.
+Nine alternating-order trials; allocation/generation/pool startup/validation excluded.
+Parallel timing includes job creation, both passes, chunk-total reduction and future joins.
+Serial Time (ms) | Parallel Time (ms) | Speedup | Verification Status
+1.728101 | 2.963799 | 0.5831x | PASS
+Final prefixes: serial=10993592, parallel=10993592 (explicit equality check; mismatch exits 1).
+All 2,000,000 prefixes verified on EVERY trial (not only the final element).
+Raw serial wall times (ns): [1339099, 1728101, 2133101, 1593500, 1285599, 2196400, 1543500, 1751900, 1814900]
+Raw parallel wall times (ns): [3062700, 3043800, 3069300, 2310800, 2811401, 2963799, 3304899, 2874400, 2294599]
