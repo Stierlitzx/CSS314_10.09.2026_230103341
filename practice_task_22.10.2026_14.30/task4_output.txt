@@ -1,0 +1,67 @@
+﻿TASK 4 - Real interprocess float64 transfer (CPU option)
+Session: Practice, 2026-10-22 14:30 (label, not execution timestamp)
+Student ID: 230103341
+Recorded at: 2026-10-22T15:22:46.963450900+05:00[Asia/Qyzylorda]
+OS/platform: Windows 11 10.0 / amd64
+CPU/platform: AMD64 Family 25 Model 116 Stepping 1, AuthenticAMD
+Logical cores: 12
+Java: 21.0.2+13-LTS-58
+A: ObjectOutputStream reset + writeUnshared(double[]) over a parent/child OS pipe.
+B: child maps the parent's raw file once using file-backed MappedByteBuffer (not allocateDirect).
+Reused B has NO repeated shared-memory payload copy; it DOES read every double for a checksum,
+and includes control IPC + acknowledgment; OS mapping/page first-use may still affect timings.
+Both wall times include the full child checksum + acknowledgment; checksums validated every trial.
+Process startup, file population, mapping/full first-touch and warmups excluded; setup reported separately.
+Five trials alternate A/B then B/A; medians are end-to-end wall times, not pure bandwidth.
+Parent never maps; child exit releases mappings before Windows deletion (fallback deleteOnExit is reported).
+
+N=100,000 float64, payload=800,000 bytes
+Excluded setup: raw file population+force=10.562 ms; process+handshake=145.366 ms;
+  child mapping+full first-touch+ack=35.392 ms (child local=31.836 ms).
+trial=1 order=1 A serialized pipe wall=6.129 ms; child checksum=0.280 ms; sum=50079.271746079285 OK
+trial=1 order=2 B reused file map wall=0.595 ms; child checksum=0.391 ms; sum=50079.271746079285 OK
+trial=2 order=1 B reused file map wall=0.639 ms; child checksum=0.419 ms; sum=50079.271746079285 OK
+trial=2 order=2 A serialized pipe wall=5.291 ms; child checksum=0.150 ms; sum=50079.271746079285 OK
+trial=3 order=1 A serialized pipe wall=3.693 ms; child checksum=0.165 ms; sum=50079.271746079285 OK
+trial=3 order=2 B reused file map wall=0.801 ms; child checksum=0.518 ms; sum=50079.271746079285 OK
+trial=4 order=1 B reused file map wall=0.630 ms; child checksum=0.398 ms; sum=50079.271746079285 OK
+trial=4 order=2 A serialized pipe wall=4.070 ms; child checksum=0.173 ms; sum=50079.271746079285 OK
+trial=5 order=1 A serialized pipe wall=4.828 ms; child checksum=0.196 ms; sum=50079.271746079285 OK
+trial=5 order=2 B reused file map wall=0.577 ms; child checksum=0.414 ms; sum=50079.271746079285 OK
+Median (5 alternating trials): A=4.828 ms; B=0.630 ms; A/B=7.667x
+Raw A serialized-pipe wall times (ns): [6129299, 5290701, 3693300, 4069500, 4827800]
+Raw B reused-file-map wall times (ns): [594500, 639401, 801400, 629700, 576899]
+
+N=1,000,000 float64, payload=8,000,000 bytes
+Excluded setup: raw file population+force=37.291 ms; process+handshake=146.725 ms;
+  child mapping+full first-touch+ack=48.109 ms (child local=47.060 ms).
+trial=1 order=1 A serialized pipe wall=35.868 ms; child checksum=1.013 ms; sum=500153.53837211896 OK
+trial=1 order=2 B reused file map wall=1.198 ms; child checksum=0.917 ms; sum=500153.53837211896 OK
+trial=2 order=1 B reused file map wall=1.137 ms; child checksum=0.903 ms; sum=500153.53837211896 OK
+trial=2 order=2 A serialized pipe wall=27.303 ms; child checksum=0.935 ms; sum=500153.53837211896 OK
+trial=3 order=1 A serialized pipe wall=28.616 ms; child checksum=0.990 ms; sum=500153.53837211896 OK
+trial=3 order=2 B reused file map wall=1.381 ms; child checksum=1.177 ms; sum=500153.53837211896 OK
+trial=4 order=1 B reused file map wall=1.118 ms; child checksum=0.934 ms; sum=500153.53837211896 OK
+trial=4 order=2 A serialized pipe wall=28.170 ms; child checksum=0.940 ms; sum=500153.53837211896 OK
+trial=5 order=1 A serialized pipe wall=27.225 ms; child checksum=0.933 ms; sum=500153.53837211896 OK
+trial=5 order=2 B reused file map wall=1.160 ms; child checksum=0.914 ms; sum=500153.53837211896 OK
+Median (5 alternating trials): A=28.170 ms; B=1.160 ms; A/B=24.293x
+Raw A serialized-pipe wall times (ns): [35868300, 27303100, 28616200, 28169800, 27225400]
+Raw B reused-file-map wall times (ns): [1197801, 1137300, 1380801, 1118200, 1159599]
+
+N=10,000,000 float64, payload=80,000,000 bytes
+Excluded setup: raw file population+force=89.130 ms; process+handshake=131.359 ms;
+  child mapping+full first-touch+ack=96.726 ms (child local=95.873 ms).
+trial=1 order=1 A serialized pipe wall=229.073 ms; child checksum=11.033 ms; sum=5000455.6185746435 OK
+trial=1 order=2 B reused file map wall=9.940 ms; child checksum=9.707 ms; sum=5000455.6185746435 OK
+trial=2 order=1 B reused file map wall=9.328 ms; child checksum=9.043 ms; sum=5000455.6185746435 OK
+trial=2 order=2 A serialized pipe wall=222.304 ms; child checksum=9.655 ms; sum=5000455.6185746435 OK
+trial=3 order=1 A serialized pipe wall=183.925 ms; child checksum=8.831 ms; sum=5000455.6185746435 OK
+trial=3 order=2 B reused file map wall=9.017 ms; child checksum=8.786 ms; sum=5000455.6185746435 OK
+trial=4 order=1 B reused file map wall=9.834 ms; child checksum=9.581 ms; sum=5000455.6185746435 OK
+trial=4 order=2 A serialized pipe wall=195.590 ms; child checksum=8.863 ms; sum=5000455.6185746435 OK
+trial=5 order=1 A serialized pipe wall=203.610 ms; child checksum=8.875 ms; sum=5000455.6185746435 OK
+trial=5 order=2 B reused file map wall=9.441 ms; child checksum=9.215 ms; sum=5000455.6185746435 OK
+Median (5 alternating trials): A=203.610 ms; B=9.441 ms; A/B=21.567x
+Raw A serialized-pipe wall times (ns): [229072599, 222303800, 183924800, 195590099, 203610200]
+Raw B reused-file-map wall times (ns): [9940401, 9327600, 9016600, 9833600, 9440900]
