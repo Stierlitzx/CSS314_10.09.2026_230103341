@@ -1,0 +1,37 @@
+TASK 5 - Parallel overhead crossover
+Student ID: 230103341
+Recorded at: 2026-10-22T12:40:37.070655400+05:00[Asia/Qyzylorda]
+OS: Windows 11 10.0 (amd64)
+CPU/platform: AMD64 Family 25 Model 116 Stepping 1, AuthenticAMD
+Java: 21.0.2+13-LTS-58
+Logical cores: 12
+Operation: y[i] = 2.5*x[i] + 1.25, float64, seeded input.
+Parallel worker count (all logical cores): 12
+Persistent warmed pool; dispatch + operation + joins included in parallel timing.
+Allocation, generation, first-touch, warmup and validation excluded from both timings.
+15 paired trials; alternating serial/parallel order; median wall-clock times.
+           N |    Serial (ms) |  Parallel (ms) |   Speedup | Parallel status
+         100 |       0.000200 |       0.039200 |   0.0051x | SLOWER
+       1,000 |       0.000400 |       0.024900 |   0.0161x | SLOWER
+      10,000 |       0.002100 |       0.022600 |   0.0929x | SLOWER
+     100,000 |       0.029400 |       0.048000 |   0.6125x | SLOWER
+   1,000,000 |       0.434400 |       0.349500 |   1.2429x | FASTER
+  10,000,000 |       6.253500 |       6.426900 |   0.9730x | SLOWER
+Observed SLOWER -> FASTER bracket: 100000 < N <= 1000000
+Observed reversal FASTER -> SLOWER: 1000000 < N <= 10000000
+A bracket is an exact interval between sampled sizes, NOT an exact universal tipping N.
+Cache state, bandwidth, JVM compilation and OS load can move or reverse the crossover.
+Raw wall times (ns):
+N=100 serial=[200, 400, 100, 200, 100, 200, 100, 400, 200, 300, 100, 300, 100, 400, 100]
+N=100 parallel=[44200, 39500, 28100, 30200, 36800, 39200, 124300, 74500, 39300, 45200, 37800, 26000, 32000, 43500, 33900]
+N=1000 serial=[800, 400, 200, 400, 200, 700, 300, 500, 300, 400, 200, 500, 300, 600, 200]
+N=1000 parallel=[29200, 21900, 32000, 32100, 31100, 28000, 30900, 17900, 91300, 17200, 20500, 20500, 24900, 13300, 19300]
+N=10000 serial=[2200, 1700, 1600, 2300, 2400, 2500, 2300, 2800, 2000, 2100, 2000, 2200, 1600, 2100, 2100]
+N=10000 parallel=[18800, 21200, 19900, 21600, 23600, 27300, 17500, 30900, 20300, 21700, 22700, 93600, 22600, 25800, 25300]
+N=100000 serial=[37300, 21900, 19500, 23000, 20600, 31800, 29400, 30800, 28700, 30800, 29300, 30400, 28900, 32200, 29500]
+N=100000 parallel=[70000, 48900, 53900, 34900, 40000, 49800, 44600, 35500, 51900, 32400, 48000, 32000, 51900, 39000, 51600]
+N=1000000 serial=[553700, 424200, 372400, 397900, 434400, 623900, 625400, 504200, 543500, 412000, 414400, 396000, 639000, 454600, 399300]
+N=1000000 parallel=[392100, 259000, 254200, 195900, 327200, 317800, 487300, 376900, 457700, 328400, 349500, 266200, 652100, 492300, 452000]
+N=10000000 serial=[6869600, 6800100, 6230200, 6174700, 6098800, 6299800, 5994000, 6365700, 6253500, 6277800, 5945700, 6361100, 5848300, 6198400, 6516600]
+N=10000000 parallel=[6487900, 6469800, 6360200, 6450000, 6360500, 6391700, 6453700, 6426900, 6197600, 6468100, 6336600, 6513300, 6320900, 6377400, 6453500]
+Validation: all serial and parallel output elements match y=a*x+b.
