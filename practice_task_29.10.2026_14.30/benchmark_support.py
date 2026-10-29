@@ -1,7 +1,6 @@
 """Standard-library timing, topology and fixed-work scaling helpers."""
 import argparse
 import json
-import math
 import os
 from pathlib import Path
 import platform
@@ -46,7 +45,7 @@ def scaling_metrics(t1, tp, workers):
 
 def capture_host():
     host = {"captured_at": timestamp(), "student_id": STUDENT_ID,
-            "scheduled_practice": "2026-10-20 14:30",
+            "scheduled_practice": "2026-10-29 14:30",
             "cpu_model": platform.processor(), "physical_cores": None,
             "logical_threads": os.cpu_count(), "os": platform.platform(),
             "python": sys.version, "python_executable": sys.executable,
@@ -88,24 +87,35 @@ def run_suite(experiment, measure, workload, runs):
         raise RuntimeError("This handout requires four available logical execution cores")
     started = timestamp()
     samples = []
+    path = RESULTS / f"experiment_{experiment.lower()}.json"
+    if path.exists():
+        previous = read_json(path)
+        if previous.get("status") == "IN_PROGRESS" and previous["workload"] == workload and previous["runs_per_case"] == runs:
+            samples = previous["samples"]
+            started = previous["started_at"]
+            print(f"Resuming {experiment}: {len(samples)} completed samples retained", flush=True)
+    record = {"experiment": experiment, "student_id": STUDENT_ID, "status": "IN_PROGRESS",
+              "started_at": started, "runs_per_case": runs, "workload": workload,
+              "timing_scope": "End-to-end, including process/pool startup, IPC and shutdown; validation excluded",
+              "samples": samples}
     for repeat in range(runs):
         # Rotate the order once per repetition; retain every sample, including outliers.
         order = WORKERS[repeat % len(WORKERS):] + WORKERS[:repeat % len(WORKERS)]
         for workers in order:
+            if any(row["P"] == workers and row["run"] == repeat+1 for row in samples):
+                continue
             details = measure(workers)
             if not details.pop("correct"):
                 raise AssertionError(f"Experiment {experiment}, P={workers}: numerical result mismatch")
             row = {"P": workers, "run": repeat + 1, **details, "correct": True}
             samples.append(row)
+            write_json(path, record)
             print(f"{experiment} | P={workers} | run={repeat+1} | T={row['time_ns']/1e9:.6f}s | verified", flush=True)
     medians = {p: statistics.median(row["time_ns"] for row in samples if row["P"] == p) for p in WORKERS}
     metrics = [{"P": p, "median_time_ns": medians[p], "time_s": medians[p] / 1e9,
                 **scaling_metrics(medians[1], medians[p], p)} for p in WORKERS]
-    record = {"experiment": experiment, "student_id": STUDENT_ID,
-              "started_at": started, "finished_at": timestamp(), "runs_per_case": runs,
-              "workload": workload, "timing_scope": "End-to-end, including process/pool startup, IPC and shutdown; validation excluded",
-              "samples": samples, "metrics": metrics}
-    write_json(RESULTS / f"experiment_{experiment.lower()}.json", record)
+    record.update(status="COMPLETE", finished_at=timestamp(), metrics=metrics)
+    write_json(path, record)
     for row in metrics:
         e = "n/a" if row["karp_flatt"] is None else f"{row['karp_flatt']:.6f}"
         print(f"P={row['P']} | median={row['time_s']:.6f}s | S={row['speedup']:.4f}x | E={row['efficiency_percent']:.2f}% | e={e}", flush=True)
