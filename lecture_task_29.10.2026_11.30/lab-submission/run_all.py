@@ -8,15 +8,17 @@ import time
 
 ROOT = Path(__file__).resolve().parent
 sys.path.insert(0, str(ROOT / "src"))
-from common import RESULTS, build_native, timestamp, write_json
+from common import EVIDENCE, RESULTS, build_native, timestamp, write_json
 
 
 def main():
     sys.stdout.reconfigure(encoding="utf-8", errors="replace")
     parser = argparse.ArgumentParser()
     parser.add_argument("--student-id", default="230103341")
+    parser.add_argument("--verify-only", action="store_true", help="Verify retained results without rerunning benchmarks")
     args = parser.parse_args()
     RESULTS.mkdir(exist_ok=True)
+    EVIDENCE.mkdir(exist_ok=True)
     (RESULTS / "verification_receipt.sig").unlink(missing_ok=True)
     started = time.perf_counter()
     manifest = {"started_at": timestamp(), "student_id": args.student_id,
@@ -26,12 +28,15 @@ def main():
               ("M1-stride", "src/stride_bench.py"),
               ("M1-dense", "src/dense_kernel.py"),
               ("M2", "src/false_sharing.py", "--backend", "native"),
-              ("M3", "src/scaling_study.py"),
-              ("M4", "verify_outputs.py")]
-    with (RESULTS / "run.log").open("w", encoding="utf-8") as log:
+              ("M3", "src/scaling_study.py")]
+    verification = [("M4-instructor", "verify_outputs.py"), ("M4-numerical", "../verify_local_outputs.py")]
+    stages = verification if args.verify_only else stages + verification
+    manifest_path = EVIDENCE / ("verification_run.json" if args.verify_only else "run_manifest.json")
+    with (EVIDENCE / ("verification.log" if args.verify_only else "run.log")).open("w", encoding="utf-8") as log:
         try:
-            target = build_native()
-            print(f"Built native kernels: {target}", flush=True)
+            if not args.verify_only:
+                target = build_native()
+                print(f"Built native kernels: {target}", flush=True)
             for label, script, *arguments in stages:
                 command = [sys.executable, "-u", str(ROOT / script), *arguments]
                 stage = {"label": label, "command": command, "started_at": timestamp()}
@@ -49,7 +54,7 @@ def main():
                 process.wait()
                 stage.update(returncode=process.returncode, elapsed_seconds=time.perf_counter()-begin, finished_at=timestamp())
                 manifest["stages"].append(stage)
-                write_json(RESULTS / "run_manifest.json", manifest)
+                write_json(manifest_path, manifest)
                 if process.returncode:
                     raise RuntimeError(f"{label} failed with exit code {process.returncode}")
             manifest["status"] = "PASS"
@@ -58,7 +63,7 @@ def main():
             raise
         finally:
             manifest.update(finished_at=timestamp(), elapsed_seconds=time.perf_counter()-started)
-            write_json(RESULTS / "run_manifest.json", manifest)
+            write_json(manifest_path, manifest)
     print(f"\nComplete: {manifest['elapsed_seconds']:.1f} seconds; results saved in {RESULTS}")
 
 

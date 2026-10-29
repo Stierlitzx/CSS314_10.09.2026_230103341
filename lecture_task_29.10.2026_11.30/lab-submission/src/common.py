@@ -14,6 +14,7 @@ import numpy as np
 
 ROOT = Path(__file__).resolve().parents[1]
 RESULTS = ROOT / "results"
+EVIDENCE = ROOT.parent / "evidence"
 DOUBLE_PTR = ctypes.POINTER(ctypes.c_double)
 
 
@@ -67,7 +68,7 @@ def build_native():
         command.append("-fPIC")
     command += [str(source), "-o", str(target)]
     subprocess.run(command, check=True, capture_output=True, text=True)
-    write_json(RESULTS / "native_build.json", {
+    write_json(EVIDENCE / "native_build.json", {
         "command": command, "compiler": subprocess.check_output([compiler, "--version"], text=True),
         "source_sha256": hashlib.sha256(source.read_bytes()).hexdigest(),
         "note": "Scalar kernels; no BLAS, fast-math, reassociation, or automatic vectorization."})

@@ -1,0 +1,22 @@
+{
+  "description": "Charts generated from retained results; input file hashes unchanged during rendering",
+  "student_id": "230103341",
+  "input_files_sha256": {
+    "lab-submission/results/host_profile.json": "3b8f1a66f990e159d836aa18a04917b41f9d2ff02a76324aea61257023b0cd0c",
+    "lab-submission/results/salted_params.json": "f0ff77d656b4cf7a4b3725992cbe39fddb02ce0de47923a92b654ad04a4805e0",
+    "lab-submission/results/stride_results.tsv": "fe5d7b13c6b61a398ad3b06edb69aa90c463d67b115dde8caf4947a11473d25f",
+    "lab-submission/results/loop_interchange.json": "8e2b1bd161f8ead6f6059edd13fe078a77513e73c99784582ff7bb876da33bf9",
+    "lab-submission/results/false_sharing_karp_flatt.tsv": "7e6f8d6ed4ca9616b53b910d9d8e57b236cad23b39501ff509a87fd0934ca6c0",
+    "lab-submission/results/scaling_metrics.tsv": "459b3149ad65737f0ab43ba07b8a5d6cdc2c768e5a5e095fa11720528e342660",
+    "lab-submission/results/roofline_summary.json": "ece5117ca3acbee68628a3ef1a2e214bfd1d14e5b1a007f9c28378d49696b6e3",
+    "evidence/dense_outputs.npz": "bf4b55e952667baa9c0264c71f468689fa5e851ff110fc29f032a88bc60c0451",
+    "evidence/stencil_output.npy": "e06494b5989f6cb0f023979992fbb6d16bed3538b69ef41078166a9c5ecda2c0"
+  },
+  "plot_files_sha256": {
+    "memory_locality.png": "e175aba23345dc393c3396d24d4491f2b9b9fa3dd882668434cb71d4523cea4a",
+    "false_sharing.png": "f3828ffdee6494c2afe55c3d711f472f8337c0b64e772cc50358e5ded66992d9",
+    "scaling.png": "60e0032b0340379daf05c4f8d8ea906458b8d32837c8b0c60b98dbcd5a56abfd",
+    "roofline.png": "bb69658447482451271b9b85668587ff085b5c22288d457fb6df5d1215c0c364",
+    "numerical_outputs.png": "fb604305f4631683ad2a8b41c0e6da6be65dd9152c7eb3d2750339b9236eb714"
+  }
+}

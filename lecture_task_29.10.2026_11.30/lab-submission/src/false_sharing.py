@@ -7,7 +7,8 @@ import statistics
 import time
 import traceback
 
-from common import RESULTS, cpu_order, native, read_json, run_workers, write_json
+from common import EVIDENCE, RESULTS, cpu_order, native, read_json, run_workers, write_json
+from export_schema import sharing_aliases
 
 
 def worker(shared, offset, index, iterations, mode, backend, cpu, lock, gate, queue):
@@ -96,12 +97,13 @@ def main():
                    karp_flatt_handout=(p / speedup - 1) / (p - 1) if p > 1 else "",
                    throughput_speedup=p * speedup,
                    work_normalized_e=(1 / speedup - 1) / (p - 1) if p > 1 else "")
+    rows = sharing_aliases(rows)
     with (RESULTS / "false_sharing_karp_flatt.tsv").open("w", newline="", encoding="utf-8") as stream:
         writer = csv.DictWriter(stream, list(rows[0]), delimiter="\t")
         writer.writeheader()
         writer.writerows(rows)
-    write_json(RESULTS / "counter_outputs.json", counter_runs)
-    write_json(RESULTS / "false_sharing_method.json", {
+    write_json(EVIDENCE / "counter_outputs.json", counter_runs)
+    write_json(EVIDENCE / "false_sharing_method.json", {
         "backend": args.backend, "iterations_per_worker": args.iterations, "runs": args.runs,
         "allocation": "64-byte-aligned multiprocessing.RawArray(c_int64); no lock on per-iteration accesses",
         "native_semantics": "One volatile int64 load/add/store per iteration; privatized counter uses process-private memory",

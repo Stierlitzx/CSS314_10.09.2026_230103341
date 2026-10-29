@@ -1,0 +1,24 @@
+
+M4-instructor: ['C:\\Users\\aiblb\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe', '-u', 'C:\\Users\\aiblb\\PycharmProjects\\CSS314_10.09.2026_230103341\\lecture_task_29.10.2026_11.30\\lab-submission\\verify_outputs.py']
+============================================================
+CS482 Parallel Computing: Automated Practicum Verifier
+============================================================
+[[92mPASS[0m] Milestone 0 (Host & Salt): Topology verified. Student ID: 230103341 | Salted N: 1088
+[[92mPASS[0m] Milestone 1 (Locality & Interchange): Stride cliff reproduced: Stride-8 is 1.18x slower per element than Stride-1
+[[92mPASS[0m] Milestone 1 (Locality & Interchange): Loop interchange speedup verified: 2.56x (Naive: 0.23s -> i-k-j: 0.09s)
+[[93mWARN[0m] Milestone 2 (False Sharing & Karp-Flatt): Unpadded Karp-Flatt metric did not strictly increase. Hardware thread affinity or contention was low.
+[[92mPASS[0m] Milestone 3 (Scaling & Roofline): Roofline analysis complete. AI: 0.10416666666666667 FLOPs/byte | Regime: memory-bound
+
+============================================================
+[[92mCOMPLETE[0m] All milestones verified successfully!
+Generated submission receipt: results/verification_receipt.sig
+Token: dbf4fdf189425c14...
+============================================================
+
+M4-numerical: ['C:\\Users\\aiblb\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe', '-u', 'C:\\Users\\aiblb\\PycharmProjects\\CSS314_10.09.2026_230103341\\lecture_task_29.10.2026_11.30\\lab-submission\\..\\verify_local_outputs.py']
+[PASS] M0: host topology and student salting
+[PASS] M1: eight stride cases; dense arrays within 1e-12; digest 7049e0236c702aa0
+[PASS] M2: every counter exact; P=8 totals 40,000,000; Karp-Flatt and layouts validated
+[PASS] M3: all 24 stencil run digests and retained output match regenerated references
+All local numerical checks passed. Wrote evidence/local_verification.json.
+[PASS] M4: lab-submission layout and one-paragraph README validated

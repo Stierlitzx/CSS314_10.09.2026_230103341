@@ -10,8 +10,9 @@ import traceback
 
 import numpy as np
 
-from common import (RESULTS, cpu_order, digest, native, params, pointer,
+from common import (EVIDENCE, RESULTS, cpu_order, digest, native, params, pointer,
                     read_json, run_workers, write_json)
+from export_schema import roofline_aliases
 
 
 def worker(shared_input, shared_output, n, first, last, repeats, cpu, gate, queue):
@@ -111,9 +112,10 @@ def main():
                 checks.append({"mode": mode, "P": p, "N": n, "run": repeat,
                                "digest": output_digest, "reference_digest": digest(reference, settings["student_id"])})
                 print(f"{mode:6} P={p} N={n} run={repeat}: {elapsed/1e6:.3f} ms", flush=True)
-            # Persist each parallel result for independent verification, plus a reference per size.
-            np.save(RESULTS / f"stencil_{mode}_p{p}.npy", output)
-            np.save(RESULTS / f"stencil_reference_n{n}.npy", reference)
+            # Keep one real array for the report; all run digests remain in telemetry.
+            if mode == "strong" and p == counts[-1]:
+                EVIDENCE.mkdir(exist_ok=True)
+                np.save(EVIDENCE / "stencil_output.npy", output)
     medians = {(mode, p): statistics.median(r["time_ns"] for r in rows if r["mode"] == mode and r["P"] == p)
                for mode in ("strong", "weak") for p in counts}
     for row in rows:
@@ -150,8 +152,8 @@ def main():
                     if host["cpu"]["microarchitecture"] == "Zen 4" else None)
     best = max((r for r in rows if r["mode"] == "strong"), key=lambda r: r["cells_per_second"])
     measured_gflops = best["cells_per_second"] * 5 / 1e9
-    write_json(RESULTS / "stencil_checksums.json", checks)
-    write_json(RESULTS / "roofline_summary.json", {
+    write_json(EVIDENCE / "stencil_checksums.json", checks)
+    write_json(RESULTS / "roofline_summary.json", roofline_aliases({
         "stencil": "Five-point average; 4 additions + 1 multiply per interior cell; zero output boundaries",
         "repeats_semantics": "100 independent evaluations of the same input, not 100 evolving timesteps; repeats is configurable",
         "flops_per_cell": 5, "naive_bytes_per_cell": 48,
@@ -178,7 +180,7 @@ def main():
         "gustafson_caveat": "Model projection using fitted strong serial fraction, not an independently measured weak serial fraction",
         "weak_scaling_formula_note": "Handout P*W1*T1/(WP*TP) tends to T1/TP for WP=P*W1 (weak efficiency). Conventional scaled speedup is WP*T1/(W1*TP); both are logged.",
         "timing_scope": "Start-event release through completion messages; full spawn/setup/join lifecycle separately recorded",
-        "process_counts": counts})
+        "process_counts": counts}))
     print("Amdahl fit:", fit)
     print("Copy bandwidth GB/s:", bandwidth["median_gb_s"])
 

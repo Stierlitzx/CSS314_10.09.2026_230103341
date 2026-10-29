@@ -26,5 +26,7 @@
   "digest": {
     "ijk": "7049e0236c702aa0cf42937108ce8d09e9267e4d98726a7ad8483eabd3626ab8",
     "ikj": "7049e0236c702aa0cf42937108ce8d09e9267e4d98726a7ad8483eabd3626ab8"
-  }
+  },
+  "naive_time_s": 0.2261493,
+  "interchanged_time_s": 0.0884334
 }

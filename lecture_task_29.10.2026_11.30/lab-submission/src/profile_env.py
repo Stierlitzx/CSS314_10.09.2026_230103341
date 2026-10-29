@@ -9,6 +9,7 @@ import subprocess
 import time
 
 from common import RESULTS, timestamp, write_json
+from export_schema import host_aliases
 from salt import get_student_params
 
 
@@ -93,7 +94,7 @@ def main():
                                 ("l3_bytes_per_cache", 3, ("unified",))):
         summary[name] = sorted({c["size_bytes"] for c in caches if c["level"] == level and c["type"] in kinds})
     summary["cache_line_sizes_bytes"] = sorted({c["line_size_bytes"] for c in caches})
-    write_json(RESULTS / "host_profile.json", {
+    write_json(RESULTS / "host_profile.json", host_aliases({
         "captured_at": timestamp(), "topology_source": "Windows GetLogicalProcessorInformation",
         "cpu": cpu, "cache_summary": summary, "caches": caches, "memory": memory,
         "os": {"system": platform.system(), "release": platform.release(), "kernel_version": platform.version()},
@@ -101,7 +102,7 @@ def main():
                    "executable": sys.executable, "architecture": platform.machine()},
         "timer": {"name": "perf_counter_ns", "resolution_seconds": time.get_clock_info("perf_counter").resolution},
         "hardware_performance_counters": {"cache_hits": None, "cache_misses": None,
-                                          "status": "Not collected; timing measurements do not measure cache hit rates"}})
+                                          "status": "Not collected; timing measurements do not measure cache hit rates"}}))
     salted = get_student_params(args.student_id)
     write_json(RESULTS / "salted_params.json", salted)
     print(cpu)

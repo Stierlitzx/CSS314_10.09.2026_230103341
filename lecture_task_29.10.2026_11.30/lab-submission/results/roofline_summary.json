@@ -91,5 +91,7 @@
     2,
     4,
     6
-  ]
+  ],
+  "arithmetic_intensity": 0.10416666666666667,
+  "regime": "memory-bound"
 }

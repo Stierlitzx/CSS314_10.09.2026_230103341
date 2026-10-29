@@ -300,5 +300,9 @@
     "cache_hits": null,
     "cache_misses": null,
     "status": "Not collected; timing measurements do not measure cache hit rates"
-  }
+  },
+  "cpu_model": "AMD Ryzen 5 7640HS w/ Radeon 760M Graphics",
+  "physical_cores": 6,
+  "logical_threads": 12,
+  "cache_line_bytes": 64
 }

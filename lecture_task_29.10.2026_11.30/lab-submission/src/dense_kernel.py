@@ -4,7 +4,8 @@ import time
 
 import numpy as np
 
-from common import RESULTS, cpu_order, digest, native, params, pin_cpu, pointer, write_json
+from common import EVIDENCE, RESULTS, cpu_order, digest, native, params, pin_cpu, pointer, write_json
+from export_schema import dense_aliases
 
 
 def main():
@@ -30,7 +31,8 @@ def main():
     np.testing.assert_allclose(outputs["ijk"], outputs["ikj"], rtol=0, atol=1e-12)
     reference = a[:m, :m] @ b[:m, :m]
     np.testing.assert_allclose(outputs["ijk"], reference, rtol=0, atol=1e-12)
-    np.savez_compressed(RESULTS / "dense_outputs.npz", ijk=outputs["ijk"], ikj=outputs["ikj"], reference=reference)
+    EVIDENCE.mkdir(exist_ok=True)
+    np.savez_compressed(EVIDENCE / "dense_outputs.npz", ijk=outputs["ijk"], ikj=outputs["ikj"], reference=reference)
     medians = {name: statistics.median(values) for name, values in timings.items()}
     result = {"N": n, "M": m, "row_pitch_elements": n, "seed": settings["seed"],
               "backend": "ctypes C99 scalar loops", "runs_ns": timings, "median_ns": medians,
@@ -38,6 +40,7 @@ def main():
               "max_abs_difference": float(np.max(np.abs(outputs["ijk"] - outputs["ikj"]))),
               "max_abs_error_vs_numpy": float(np.max(np.abs(outputs["ijk"] - reference))),
               "digest": {name: digest(value, settings["student_id"]) for name, value in outputs.items()}}
+    result = dense_aliases(result)
     write_json(RESULTS / "loop_interchange.json", result)
     print(result)
 

@@ -1,0 +1,2 @@
+-r lab-submission/requirements.txt
+matplotlib>=3.8
