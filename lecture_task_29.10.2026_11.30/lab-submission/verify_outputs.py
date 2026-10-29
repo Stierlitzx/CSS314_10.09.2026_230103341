@@ -32,6 +32,18 @@ def close(actual, expected, label):
 def main():
     receipt = RESULTS / "verification_receipt.sig"
     receipt.unlink(missing_ok=True)
+    required_sources = ["profile_env.py", "salt.py", "stride_bench.py", "dense_kernel.py",
+                        "false_sharing.py", "scaling_study.py"]
+    required_results = ["host_profile.json", "salted_params.json", "stride_results.tsv",
+                        "loop_interchange.json", "false_sharing_karp_flatt.tsv",
+                        "scaling_metrics.tsv", "roofline_summary.json"]
+    require(ROOT.name == "lab-submission", "Task 4.2 requires a lab-submission directory")
+    for name in required_sources:
+        require((ROOT / "src" / name).is_file(), f"Missing required source: {name}")
+    for name in required_results:
+        require((RESULTS / name).is_file(), f"Missing required result: {name}")
+    paragraphs = [p for p in (ROOT / "README.md").read_text(encoding="utf-8").strip().split("\n\n") if p.strip()]
+    require(len(paragraphs) == 1, "Task 4.2 requires a one-paragraph summary README")
     settings = read_json(RESULTS / "salted_params.json")
     require(settings == get_student_params(settings["student_id"]), "Salt mismatch")
     require(settings["student_id"] == "230103341", "Wrong student ID")
@@ -160,15 +172,17 @@ def main():
 
     # Plain hashes provide local reproducibility, not a secret-key signature or certification.
     files = [p for p in (ROOT / "src").iterdir() if p.is_file()]
-    files += [ROOT / "verify_outputs.py", ROOT / "run_all.py", ROOT / "requirements.txt"]
+    files += [ROOT / "verify_outputs.py", ROOT / "run_all.py", ROOT / "requirements.txt", ROOT / "README.md"]
     files += [p for p in RESULTS.iterdir() if p.is_file() and p.suffix in (".json", ".tsv", ".npz", ".npy") and p.name != "run_manifest.json"]
     hashes = {str(p.relative_to(ROOT)).replace("\\", "/"): hashlib.sha256(p.read_bytes()).hexdigest() for p in sorted(files)}
     write_json(receipt, {"status": "PASS", "generated_at": timestamp(), "student_id": settings["student_id"],
                          "verification_type": "Local numerical checks and SHA-256 file manifest; unsigned",
                          "instructor_verifier": "Not supplied in the provided materials; this is an independent local verifier",
+                         "submission_layout": "Task 4.2 required sources, results and one-paragraph README validated",
                          "rounding": "Six decimal places, C-order little-endian float64, ID + NUL prefix",
                          "files_sha256": hashes})
     print("All local numerical checks passed. Wrote results/verification_receipt.sig (unsigned SHA-256 manifest).")
+    print("[PASS] M4: lab-submission layout and one-paragraph README validated")
 
 
 if __name__ == "__main__":

@@ -1,11 +1,13 @@
 {
   "status": "PASS",
-  "generated_at": "2026-10-29T12:22:53+0500",
+  "generated_at": "2026-10-29T12:44:27+0500",
   "student_id": "230103341",
   "verification_type": "Local numerical checks and SHA-256 file manifest; unsigned",
   "instructor_verifier": "Not supplied in the provided materials; this is an independent local verifier",
+  "submission_layout": "Task 4.2 required sources, results and one-paragraph README validated",
   "rounding": "Six decimal places, C-order little-endian float64, ID + NUL prefix",
   "files_sha256": {
+    "README.md": "091f0f5550c57f6e55c44f31416ce8ccc0f1ffa0a2c9a2efce3262caecaddcca",
     "requirements.txt": "a83a2a4ed7ab2e022b9b8a83cfa2b8cf52cc243006c597e8b96f90a8365590ac",
     "results/counter_outputs.json": "a99d6a4dbffe9c236710743f8942a170deb440816fa3eaab36b964a28eae713b",
     "results/dense_outputs.npz": "bf4b55e952667baa9c0264c71f468689fa5e851ff110fc29f032a88bc60c0451",
@@ -40,6 +42,6 @@
     "src/salt.py": "bfca3fa73d3f9c0f9ba7ff3f45323640e8cce911be6142f990202f359e47aab9",
     "src/scaling_study.py": "e3ac2ed8ac2a41abd084d8269a4c936fab7755be11ba5d324a894c4205d98cc5",
     "src/stride_bench.py": "fd6e2b3c7e0ec8b6654396d934d7c74f8fadd623d8639af768242c7e9cd056fd",
-    "verify_outputs.py": "b140af5255ab8c75190e79ce90d496dc6de12a5a1facf273aab1856c79b6d684"
+    "verify_outputs.py": "9a79ba80c99c2c89ed5bb0cb0fa0a32db2a353c02ce3d38b7eadcdd5f8e2781b"
   }
 }

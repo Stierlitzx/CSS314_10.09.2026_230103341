@@ -2,14 +2,16 @@
 
 **Student:** Ayazgaliyev Aibek, **230103341**. Salted parameters: **N = 1088**, **M = 544**, **seed = 14476**, **16,777,216 float64 buffer elements (128 MiB)**. The complete nine-digit ID is used verbatim by the handout's SHA-256 formula.
 
+The Task 4.2 submission is in [`lab-submission/`](lab-submission/README.md), whose README is the required one-paragraph bottleneck summary. This outer README contains the supplementary reproduction details. File paths below are relative to `lab-submission/`, except for the commands explicitly run from this lecture folder.
+
 ## Run
 
 Python 3.10+ and NumPy are required, together with GCC or Clang for the small scalar C kernels loaded through standard-library `ctypes`. The hardware profiler implements the Windows API used on this machine. Run from this folder:
 
 ```powershell
-python -m pip install -r requirements.txt
-python run_all.py --student-id 230103341
-python verify_outputs.py
+python -m pip install -r lab-submission/requirements.txt
+python lab-submission/run_all.py --student-id 230103341
+python lab-submission/verify_outputs.py
 ```
 
 `run_all.py` compiles the kernels and runs all milestones in order. Paths are resolved relative to the scripts. All result tables, raw timing samples, numerical output arrays, actual timestamps, compiler settings and logs are saved under `results/`. Native build products stay in ignored `build/` and are rebuilt automatically. No external profiling or Python compilation package is required.
@@ -45,6 +47,8 @@ The handout's weak formula `P*W1*T1/(WP*TP)` approaches **weak efficiency** when
 The instructor's `verify_outputs.py` was not included in the supplied materials. The local verifier independently regenerates seeded matrix/stencil references, checks every saved output, exact individual counters, timing medians and scaling formulas, then hashes source and empirical artifacts. Its `.sig` file is a transparent **unsigned manifest**, not an instructor-authenticated cryptographic signature. Real runtime performance is retained even if it differs from the handout's expected trend.
 
 The specified checkpoint names are `M0-ENV`, `M1-LOCALITY`, `M2-SHARING`, `M3-SCALING`, and `M4-FINAL`. Tags and commit times must represent actual checkpoints. Execution timestamps are recorded as captured; the lecture's 11:30 label does not backdate the run.
+
+The initial complete implementation was pushed as `0ff72e6` without these checkpoint tags. The subsequent M0–M4 commits and annotated tags record the correction to the required `lab-submission/` layout, using the handout's exact commit messages and actual creation times. They are **submission-layout checkpoints**, not retroactive evidence that tags existed during the original experiment runs. The original benchmark tables, arrays, compiler command and execution log are retained unchanged; absolute paths in historical telemetry refer to the location at the time of measurement. The configured remote is the existing GitHub `origin`; no separate course-server URL was supplied.
 
 ## Measured bottleneck findings
 
