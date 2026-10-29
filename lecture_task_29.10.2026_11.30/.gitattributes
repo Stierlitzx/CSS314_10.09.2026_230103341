@@ -1,4 +1,4 @@
 # Preserve the exact bytes covered by the empirical SHA-256 receipt.
 * -text whitespace=cr-at-eol
 # Empty final TSV fields are meaningful data, not removable whitespace.
-results/*.tsv whitespace=cr-at-eol,-blank-at-eol
+lab-submission/results/*.tsv whitespace=cr-at-eol,-blank-at-eol
