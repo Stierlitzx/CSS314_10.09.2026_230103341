@@ -1,0 +1,10 @@
+{
+  "backend": "native",
+  "iterations_per_worker": 5000000,
+  "runs": 3,
+  "allocation": "64-byte-aligned multiprocessing.RawArray(c_int64); no lock on per-iteration accesses",
+  "native_semantics": "One volatile int64 load/add/store per iteration; privatized counter uses process-private memory",
+  "cpu_selection": "One logical CPU per physical core first, then SMT siblings; P=8 exceeds six physical cores on this host",
+  "timing": "Start gate through all completion messages; spawn/import/setup/join excluded. lifecycle_ns includes them.",
+  "caveat": "K is per worker, so total work grows with P. Handout e uses T1/TP and is not a strong-scaling serial fraction. Even ideal flat TP yields e=1. work_normalized_e uses throughput speedup P*T1/TP."
+}

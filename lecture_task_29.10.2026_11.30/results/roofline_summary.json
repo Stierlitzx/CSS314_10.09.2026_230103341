@@ -1,0 +1,95 @@
+{
+  "stencil": "Five-point average; 4 additions + 1 multiply per interior cell; zero output boundaries",
+  "repeats_semantics": "100 independent evaluations of the same input, not 100 evolving timesteps; repeats is configurable",
+  "flops_per_cell": 5,
+  "naive_bytes_per_cell": 48,
+  "naive_arithmetic_intensity_flop_per_byte": 0.10416666666666667,
+  "ideal_streaming_bytes_per_cell": 16,
+  "ideal_streaming_arithmetic_intensity_flop_per_byte": 0.3125,
+  "write_allocate_streaming_bytes_per_cell": 24,
+  "traffic_caveat": "48B is five loads plus one store before cache reuse; 16B assumes full input reuse and no write allocation; 24B includes read-for-ownership. None is a measured DRAM byte count.",
+  "cache_summary": {
+    "l1_data_bytes_per_cache": [
+      32768
+    ],
+    "l2_bytes_per_cache": [
+      1048576
+    ],
+    "l3_bytes_per_cache": [
+      16777216
+    ],
+    "cache_line_sizes_bytes": [
+      64
+    ]
+  },
+  "strong_input_output_bytes": 18939904,
+  "row_working_set_bytes_3_input_1_output": 34816,
+  "bandwidth_calibration": {
+    "method": "Single-process NumPy copy, 128 MiB input + 128 MiB output, five warmups/five samples",
+    "runs_ns": [
+      5312600,
+      5150400,
+      5162500,
+      5254700,
+      5103600
+    ],
+    "median_ns": 5162500,
+    "traffic_bytes": 268435456,
+    "median_gb_s": 51.997182760290556,
+    "kind": "empirical sustainable copy bandwidth, not theoretical hardware peak"
+  },
+  "theoretical_peak_memory_bandwidth_gb_s": 89.6,
+  "memory_peak_source": {
+    "source": "Win32_PhysicalMemory via Get-CimInstance",
+    "modules": [
+      {
+        "BankLabel": "P0 CHANNEL A",
+        "DeviceLocator": "DIMM 0",
+        "ConfiguredClockSpeed": 5600,
+        "Speed": 5600,
+        "DataWidth": 64,
+        "TotalWidth": 64,
+        "Capacity": 8589934592,
+        "SMBIOSMemoryType": 34
+      },
+      {
+        "BankLabel": "P0 CHANNEL B",
+        "DeviceLocator": "DIMM 0",
+        "ConfiguredClockSpeed": 5600,
+        "Speed": 5600,
+        "DataWidth": 64,
+        "TotalWidth": 64,
+        "Capacity": 8589934592,
+        "SMBIOSMemoryType": 34
+      }
+    ],
+    "theoretical_peak_bandwidth_gb_s": 89.6,
+    "bandwidth_model": "Sum distinct firmware-labelled DDR5 channels: configured rate (interpreted as MT/s) * data width / 8. Payload upper bound, not measured sustained bandwidth; assumes labelled channels are independent."
+  },
+  "theoretical_peak_compute_gflops": 412.032,
+  "compute_peak_model": "Zen 4 model: 2 x 256-bit FP64 FMA pipes x 4 lanes x 2 FLOPs = 16 FLOPs/core/cycle, times physical cores and registry nominal GHz. Assumes ideal vectorized FMA; scalar stencil is not expected to attain this.",
+  "ridge_point_flop_per_byte": 4.598571428571429,
+  "theoretical_streaming_roof_gflops": 28.0,
+  "copy_based_streaming_roof_gflops": 16.2491196125908,
+  "best_measured_stencil_gflops": 22.68845874164618,
+  "classification": "Memory-Bandwidth Bound in the theoretical streaming Roofline model",
+  "classification_scope": "AI is below the model ridge point; this is not proof of saturated DRAM in the scalar implementation. Cache reuse, scalar instruction throughput, barriers and ctypes overhead also affect runtime. DRAM traffic is modelled, not counted.",
+  "amdahl_fit": {
+    "method": "Least-squares normalized wall time; raw and [0,1]-constrained estimates",
+    "raw_serial_fraction": 0.02101950225026993,
+    "fitted_serial_fraction": 0.02101950225026993,
+    "asymptotic_speedup_ceiling": 47.57486585997336,
+    "ceiling_note": "null if fitted s=0 or no multi-core samples; finite data do not establish infinite scaling",
+    "time_ratio_rmse": 0.014542347831142392
+  },
+  "gustafson_scaled_speedup_at_max_P": 5.8949024887486505,
+  "gustafson_caveat": "Model projection using fitted strong serial fraction, not an independently measured weak serial fraction",
+  "weak_scaling_formula_note": "Handout P*W1*T1/(WP*TP) tends to T1/TP for WP=P*W1 (weak efficiency). Conventional scaled speedup is WP*T1/(W1*TP); both are logged.",
+  "timing_scope": "Start-event release through completion messages; full spawn/setup/join lifecycle separately recorded",
+  "process_counts": [
+    1,
+    2,
+    4,
+    6
+  ]
+}

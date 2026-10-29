@@ -1,0 +1,304 @@
+{
+  "captured_at": "2026-10-29T12:22:12+0500",
+  "topology_source": "Windows GetLogicalProcessorInformation",
+  "cpu": {
+    "model": "AMD Ryzen 5 7640HS w/ Radeon 760M Graphics",
+    "identifier": "AMD64 Family 25 Model 116 Stepping 1",
+    "microarchitecture": "Zen 4",
+    "microarchitecture_source": "AMD model mapping",
+    "base_frequency_mhz": 4292,
+    "frequency_source": "Windows registry ~MHz (reported nominal)",
+    "physical_cores": 6,
+    "logical_threads": 12,
+    "smt_present": true,
+    "core_logical_cpu_ids": [
+      [
+        0,
+        1
+      ],
+      [
+        2,
+        3
+      ],
+      [
+        4,
+        5
+      ],
+      [
+        6,
+        7
+      ],
+      [
+        8,
+        9
+      ],
+      [
+        10,
+        11
+      ]
+    ]
+  },
+  "cache_summary": {
+    "l1_data_bytes_per_cache": [
+      32768
+    ],
+    "l2_bytes_per_cache": [
+      1048576
+    ],
+    "l3_bytes_per_cache": [
+      16777216
+    ],
+    "cache_line_sizes_bytes": [
+      64
+    ]
+  },
+  "caches": [
+    {
+      "level": 1,
+      "type": "data",
+      "size_bytes": 32768,
+      "line_size_bytes": 64,
+      "logical_cpu_ids": [
+        0,
+        1
+      ]
+    },
+    {
+      "level": 1,
+      "type": "instruction",
+      "size_bytes": 32768,
+      "line_size_bytes": 64,
+      "logical_cpu_ids": [
+        0,
+        1
+      ]
+    },
+    {
+      "level": 2,
+      "type": "unified",
+      "size_bytes": 1048576,
+      "line_size_bytes": 64,
+      "logical_cpu_ids": [
+        0,
+        1
+      ]
+    },
+    {
+      "level": 1,
+      "type": "data",
+      "size_bytes": 32768,
+      "line_size_bytes": 64,
+      "logical_cpu_ids": [
+        2,
+        3
+      ]
+    },
+    {
+      "level": 1,
+      "type": "instruction",
+      "size_bytes": 32768,
+      "line_size_bytes": 64,
+      "logical_cpu_ids": [
+        2,
+        3
+      ]
+    },
+    {
+      "level": 2,
+      "type": "unified",
+      "size_bytes": 1048576,
+      "line_size_bytes": 64,
+      "logical_cpu_ids": [
+        2,
+        3
+      ]
+    },
+    {
+      "level": 1,
+      "type": "data",
+      "size_bytes": 32768,
+      "line_size_bytes": 64,
+      "logical_cpu_ids": [
+        4,
+        5
+      ]
+    },
+    {
+      "level": 1,
+      "type": "instruction",
+      "size_bytes": 32768,
+      "line_size_bytes": 64,
+      "logical_cpu_ids": [
+        4,
+        5
+      ]
+    },
+    {
+      "level": 2,
+      "type": "unified",
+      "size_bytes": 1048576,
+      "line_size_bytes": 64,
+      "logical_cpu_ids": [
+        4,
+        5
+      ]
+    },
+    {
+      "level": 1,
+      "type": "data",
+      "size_bytes": 32768,
+      "line_size_bytes": 64,
+      "logical_cpu_ids": [
+        6,
+        7
+      ]
+    },
+    {
+      "level": 1,
+      "type": "instruction",
+      "size_bytes": 32768,
+      "line_size_bytes": 64,
+      "logical_cpu_ids": [
+        6,
+        7
+      ]
+    },
+    {
+      "level": 2,
+      "type": "unified",
+      "size_bytes": 1048576,
+      "line_size_bytes": 64,
+      "logical_cpu_ids": [
+        6,
+        7
+      ]
+    },
+    {
+      "level": 1,
+      "type": "data",
+      "size_bytes": 32768,
+      "line_size_bytes": 64,
+      "logical_cpu_ids": [
+        8,
+        9
+      ]
+    },
+    {
+      "level": 1,
+      "type": "instruction",
+      "size_bytes": 32768,
+      "line_size_bytes": 64,
+      "logical_cpu_ids": [
+        8,
+        9
+      ]
+    },
+    {
+      "level": 2,
+      "type": "unified",
+      "size_bytes": 1048576,
+      "line_size_bytes": 64,
+      "logical_cpu_ids": [
+        8,
+        9
+      ]
+    },
+    {
+      "level": 1,
+      "type": "data",
+      "size_bytes": 32768,
+      "line_size_bytes": 64,
+      "logical_cpu_ids": [
+        10,
+        11
+      ]
+    },
+    {
+      "level": 1,
+      "type": "instruction",
+      "size_bytes": 32768,
+      "line_size_bytes": 64,
+      "logical_cpu_ids": [
+        10,
+        11
+      ]
+    },
+    {
+      "level": 2,
+      "type": "unified",
+      "size_bytes": 1048576,
+      "line_size_bytes": 64,
+      "logical_cpu_ids": [
+        10,
+        11
+      ]
+    },
+    {
+      "level": 3,
+      "type": "unified",
+      "size_bytes": 16777216,
+      "line_size_bytes": 64,
+      "logical_cpu_ids": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11
+      ]
+    }
+  ],
+  "memory": {
+    "source": "Win32_PhysicalMemory via Get-CimInstance",
+    "modules": [
+      {
+        "BankLabel": "P0 CHANNEL A",
+        "DeviceLocator": "DIMM 0",
+        "ConfiguredClockSpeed": 5600,
+        "Speed": 5600,
+        "DataWidth": 64,
+        "TotalWidth": 64,
+        "Capacity": 8589934592,
+        "SMBIOSMemoryType": 34
+      },
+      {
+        "BankLabel": "P0 CHANNEL B",
+        "DeviceLocator": "DIMM 0",
+        "ConfiguredClockSpeed": 5600,
+        "Speed": 5600,
+        "DataWidth": 64,
+        "TotalWidth": 64,
+        "Capacity": 8589934592,
+        "SMBIOSMemoryType": 34
+      }
+    ],
+    "theoretical_peak_bandwidth_gb_s": 89.6,
+    "bandwidth_model": "Sum distinct firmware-labelled DDR5 channels: configured rate (interpreted as MT/s) * data width / 8. Payload upper bound, not measured sustained bandwidth; assumes labelled channels are independent."
+  },
+  "os": {
+    "system": "Windows",
+    "release": "11",
+    "kernel_version": "10.0.22631"
+  },
+  "python": {
+    "implementation": "CPython",
+    "version": "3.14.3 (tags/v3.14.3:323c59a, Feb  3 2026, 16:04:56) [MSC v.1944 64 bit (AMD64)]",
+    "executable": "C:\\Users\\aiblb\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe",
+    "architecture": "AMD64"
+  },
+  "timer": {
+    "name": "perf_counter_ns",
+    "resolution_seconds": 1e-07
+  },
+  "hardware_performance_counters": {
+    "cache_hits": null,
+    "cache_misses": null,
+    "status": "Not collected; timing measurements do not measure cache hit rates"
+  }
+}

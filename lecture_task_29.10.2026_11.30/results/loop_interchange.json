@@ -1,0 +1,30 @@
+{
+  "N": 1088,
+  "M": 544,
+  "row_pitch_elements": 1088,
+  "seed": 14476,
+  "backend": "ctypes C99 scalar loops",
+  "runs_ns": {
+    "ijk": [
+      225349000,
+      226261100,
+      226149300
+    ],
+    "ikj": [
+      88433400,
+      88031800,
+      88471600
+    ]
+  },
+  "median_ns": {
+    "ijk": 226149300,
+    "ikj": 88433400
+  },
+  "speedup": 2.557283786442679,
+  "max_abs_difference": 0.0,
+  "max_abs_error_vs_numpy": 4.263256414560601e-13,
+  "digest": {
+    "ijk": "7049e0236c702aa0cf42937108ce8d09e9267e4d98726a7ad8483eabd3626ab8",
+    "ikj": "7049e0236c702aa0cf42937108ce8d09e9267e4d98726a7ad8483eabd3626ab8"
+  }
+}

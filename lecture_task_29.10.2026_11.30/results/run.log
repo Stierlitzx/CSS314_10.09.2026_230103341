@@ -1,0 +1,92 @@
+
+M0: ['C:\\Users\\aiblb\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe', '-u', 'C:\\Users\\aiblb\\PycharmProjects\\CSS314_10.09.2026_230103341\\lecture_task_29.10.2026_11.30\\src\\profile_env.py', '--student-id', '230103341']
+{'model': 'AMD Ryzen 5 7640HS w/ Radeon 760M Graphics', 'identifier': 'AMD64 Family 25 Model 116 Stepping 1', 'microarchitecture': 'Zen 4', 'microarchitecture_source': 'AMD model mapping', 'base_frequency_mhz': 4292, 'frequency_source': 'Windows registry ~MHz (reported nominal)', 'physical_cores': 6, 'logical_threads': 12, 'smt_present': True, 'core_logical_cpu_ids': [[0, 1], [2, 3], [4, 5], [6, 7], [8, 9], [10, 11]]}
+{'l1_data_bytes_per_cache': [32768], 'l2_bytes_per_cache': [1048576], 'l3_bytes_per_cache': [16777216], 'cache_line_sizes_bytes': [64]}
+Memory: {'source': 'Win32_PhysicalMemory via Get-CimInstance', 'modules': [{'BankLabel': 'P0 CHANNEL A', 'DeviceLocator': 'DIMM 0', 'ConfiguredClockSpeed': 5600, 'Speed': 5600, 'DataWidth': 64, 'TotalWidth': 64, 'Capacity': 8589934592, 'SMBIOSMemoryType': 34}, {'BankLabel': 'P0 CHANNEL B', 'DeviceLocator': 'DIMM 0', 'ConfiguredClockSpeed': 5600, 'Speed': 5600, 'DataWidth': 64, 'TotalWidth': 64, 'Capacity': 8589934592, 'SMBIOSMemoryType': 34}], 'theoretical_peak_bandwidth_gb_s': 89.6, 'bandwidth_model': 'Sum distinct firmware-labelled DDR5 channels: configured rate (interpreted as MT/s) * data width / 8. Payload upper bound, not measured sustained bandwidth; assumes labelled channels are independent.'}
+{'student_id': '230103341', 'N': 1088, 'buffer_elements': 16777216, 'seed': 14476}
+
+M1-stride: ['C:\\Users\\aiblb\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe', '-u', 'C:\\Users\\aiblb\\PycharmProjects\\CSS314_10.09.2026_230103341\\lecture_task_29.10.2026_11.30\\src\\stride_bench.py']
+stride   1: 1.233 ns/element
+stride   2: 1.237 ns/element
+stride   4: 1.242 ns/element
+stride   8: 1.460 ns/element
+stride  16: 5.185 ns/element
+stride  32: 5.316 ns/element
+stride  64: 5.512 ns/element
+stride 128: 6.681 ns/element
+
+M1-dense: ['C:\\Users\\aiblb\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe', '-u', 'C:\\Users\\aiblb\\PycharmProjects\\CSS314_10.09.2026_230103341\\lecture_task_29.10.2026_11.30\\src\\dense_kernel.py']
+{'N': 1088, 'M': 544, 'row_pitch_elements': 1088, 'seed': 14476, 'backend': 'ctypes C99 scalar loops', 'runs_ns': {'ijk': [225349000, 226261100, 226149300], 'ikj': [88433400, 88031800, 88471600]}, 'median_ns': {'ijk': 226149300, 'ikj': 88433400}, 'speedup': 2.557283786442679, 'max_abs_difference': 0.0, 'max_abs_error_vs_numpy': 4.263256414560601e-13, 'digest': {'ijk': '7049e0236c702aa0cf42937108ce8d09e9267e4d98726a7ad8483eabd3626ab8', 'ikj': '7049e0236c702aa0cf42937108ce8d09e9267e4d98726a7ad8483eabd3626ab8'}}
+
+M2: ['C:\\Users\\aiblb\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe', '-u', 'C:\\Users\\aiblb\\PycharmProjects\\CSS314_10.09.2026_230103341\\lecture_task_29.10.2026_11.30\\src\\false_sharing.py', '--backend', 'native']
+padded     P=1 run=1: 2.957 ms; total=5000000
+privatized P=1 run=1: 2.497 ms; total=5000000
+unpadded   P=1 run=1: 2.269 ms; total=5000000
+privatized P=1 run=2: 2.362 ms; total=5000000
+unpadded   P=1 run=2: 2.345 ms; total=5000000
+padded     P=1 run=2: 2.457 ms; total=5000000
+unpadded   P=1 run=3: 2.373 ms; total=5000000
+padded     P=1 run=3: 2.365 ms; total=5000000
+privatized P=1 run=3: 2.437 ms; total=5000000
+padded     P=2 run=1: 3.025 ms; total=10000000
+privatized P=2 run=1: 2.999 ms; total=10000000
+unpadded   P=2 run=1: 34.849 ms; total=10000000
+privatized P=2 run=2: 2.999 ms; total=10000000
+unpadded   P=2 run=2: 34.559 ms; total=10000000
+padded     P=2 run=2: 3.089 ms; total=10000000
+unpadded   P=2 run=3: 53.894 ms; total=10000000
+padded     P=2 run=3: 2.758 ms; total=10000000
+privatized P=2 run=3: 2.680 ms; total=10000000
+padded     P=4 run=1: 7.239 ms; total=20000000
+privatized P=4 run=1: 3.077 ms; total=20000000
+unpadded   P=4 run=1: 24.655 ms; total=20000000
+privatized P=4 run=2: 3.047 ms; total=20000000
+unpadded   P=4 run=2: 23.642 ms; total=20000000
+padded     P=4 run=2: 2.930 ms; total=20000000
+unpadded   P=4 run=3: 23.706 ms; total=20000000
+padded     P=4 run=3: 2.912 ms; total=20000000
+privatized P=4 run=3: 3.270 ms; total=20000000
+padded     P=8 run=1: 18.789 ms; total=40000000
+privatized P=8 run=1: 6.117 ms; total=40000000
+unpadded   P=8 run=1: 48.338 ms; total=40000000
+privatized P=8 run=2: 4.593 ms; total=40000000
+unpadded   P=8 run=2: 47.931 ms; total=40000000
+padded     P=8 run=2: 4.922 ms; total=40000000
+unpadded   P=8 run=3: 49.336 ms; total=40000000
+padded     P=8 run=3: 4.747 ms; total=40000000
+privatized P=8 run=3: 5.870 ms; total=40000000
+
+M3: ['C:\\Users\\aiblb\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe', '-u', 'C:\\Users\\aiblb\\PycharmProjects\\CSS314_10.09.2026_230103341\\lecture_task_29.10.2026_11.30\\src\\scaling_study.py']
+strong P=1 N=1088 run=1: 157.512 ms
+strong P=1 N=1088 run=2: 144.416 ms
+strong P=1 N=1088 run=3: 144.927 ms
+strong P=2 N=1088 run=1: 77.984 ms
+strong P=2 N=1088 run=2: 72.585 ms
+strong P=2 N=1088 run=3: 77.278 ms
+strong P=4 N=1088 run=1: 46.810 ms
+strong P=4 N=1088 run=2: 37.102 ms
+strong P=4 N=1088 run=3: 36.703 ms
+strong P=6 N=1088 run=1: 25.991 ms
+strong P=6 N=1088 run=2: 25.330 ms
+strong P=6 N=1088 run=3: 30.518 ms
+weak   P=1 N=1088 run=1: 140.831 ms
+weak   P=1 N=1088 run=2: 146.338 ms
+weak   P=1 N=1088 run=3: 162.774 ms
+weak   P=2 N=1539 run=1: 157.251 ms
+weak   P=2 N=1539 run=2: 196.192 ms
+weak   P=2 N=1539 run=3: 197.399 ms
+weak   P=4 N=2176 run=1: 301.004 ms
+weak   P=4 N=2176 run=2: 259.517 ms
+weak   P=4 N=2176 run=3: 245.183 ms
+weak   P=6 N=2666 run=1: 412.607 ms
+weak   P=6 N=2666 run=2: 409.172 ms
+weak   P=6 N=2666 run=3: 400.490 ms
+Amdahl fit: {'method': 'Least-squares normalized wall time; raw and [0,1]-constrained estimates', 'raw_serial_fraction': 0.02101950225026993, 'fitted_serial_fraction': 0.02101950225026993, 'asymptotic_speedup_ceiling': 47.57486585997336, 'ceiling_note': 'null if fitted s=0 or no multi-core samples; finite data do not establish infinite scaling', 'time_ratio_rmse': 0.014542347831142392}
+Copy bandwidth GB/s: 51.997182760290556
+
+M4: ['C:\\Users\\aiblb\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe', '-u', 'C:\\Users\\aiblb\\PycharmProjects\\CSS314_10.09.2026_230103341\\lecture_task_29.10.2026_11.30\\verify_outputs.py']
+[PASS] M0: host topology and student salting
+[PASS] M1: eight stride cases; dense arrays within 1e-12; digest 7049e0236c702aa0
+[PASS] M2: every counter exact; P=8 totals 40,000,000; Karp-Flatt and layouts validated
+[PASS] M3: all parallel stencil outputs match regenerated single-process references
+All local numerical checks passed. Wrote results/verification_receipt.sig (unsigned SHA-256 manifest).

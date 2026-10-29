@@ -1,0 +1,18 @@
+{
+  "command": [
+    "C:\\Users\\aiblb\\AppData\\Local\\Programs\\CLion\\bin\\mingw\\bin\\gcc.exe",
+    "-O2",
+    "-std=c99",
+    "-shared",
+    "-static-libgcc",
+    "-fno-fast-math",
+    "-ffp-contract=off",
+    "-fno-tree-vectorize",
+    "C:\\Users\\aiblb\\PycharmProjects\\CSS314_10.09.2026_230103341\\lecture_task_29.10.2026_11.30\\src\\kernels.c",
+    "-o",
+    "C:\\Users\\aiblb\\PycharmProjects\\CSS314_10.09.2026_230103341\\lecture_task_29.10.2026_11.30\\build\\kernels.dll"
+  ],
+  "compiler": "gcc.exe (GCC) 15.2.0\nCopyright (C) 2025 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\n",
+  "source_sha256": "6ad67ffccacf48d1f29757147893d77db0ba7417a4fe56c268928ba8bb428615",
+  "note": "Scalar kernels; no BLAS, fast-math, reassociation, or automatic vectorization."
+}

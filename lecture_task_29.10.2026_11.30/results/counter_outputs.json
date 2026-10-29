@@ -1,0 +1,839 @@
+[
+  {
+    "mode": "padded",
+    "P": 1,
+    "run": 1,
+    "iterations_per_worker": 5000000,
+    "counts": [
+      5000000
+    ],
+    "indices": [
+      0
+    ],
+    "counter_offsets_bytes": [
+      0
+    ]
+  },
+  {
+    "mode": "privatized",
+    "P": 1,
+    "run": 1,
+    "iterations_per_worker": 5000000,
+    "counts": [
+      5000000
+    ],
+    "indices": [
+      0
+    ],
+    "counter_offsets_bytes": [
+      0
+    ]
+  },
+  {
+    "mode": "unpadded",
+    "P": 1,
+    "run": 1,
+    "iterations_per_worker": 5000000,
+    "counts": [
+      5000000
+    ],
+    "indices": [
+      0
+    ],
+    "counter_offsets_bytes": [
+      0
+    ]
+  },
+  {
+    "mode": "privatized",
+    "P": 1,
+    "run": 2,
+    "iterations_per_worker": 5000000,
+    "counts": [
+      5000000
+    ],
+    "indices": [
+      0
+    ],
+    "counter_offsets_bytes": [
+      0
+    ]
+  },
+  {
+    "mode": "unpadded",
+    "P": 1,
+    "run": 2,
+    "iterations_per_worker": 5000000,
+    "counts": [
+      5000000
+    ],
+    "indices": [
+      0
+    ],
+    "counter_offsets_bytes": [
+      0
+    ]
+  },
+  {
+    "mode": "padded",
+    "P": 1,
+    "run": 2,
+    "iterations_per_worker": 5000000,
+    "counts": [
+      5000000
+    ],
+    "indices": [
+      0
+    ],
+    "counter_offsets_bytes": [
+      0
+    ]
+  },
+  {
+    "mode": "unpadded",
+    "P": 1,
+    "run": 3,
+    "iterations_per_worker": 5000000,
+    "counts": [
+      5000000
+    ],
+    "indices": [
+      0
+    ],
+    "counter_offsets_bytes": [
+      0
+    ]
+  },
+  {
+    "mode": "padded",
+    "P": 1,
+    "run": 3,
+    "iterations_per_worker": 5000000,
+    "counts": [
+      5000000
+    ],
+    "indices": [
+      0
+    ],
+    "counter_offsets_bytes": [
+      0
+    ]
+  },
+  {
+    "mode": "privatized",
+    "P": 1,
+    "run": 3,
+    "iterations_per_worker": 5000000,
+    "counts": [
+      5000000
+    ],
+    "indices": [
+      0
+    ],
+    "counter_offsets_bytes": [
+      0
+    ]
+  },
+  {
+    "mode": "padded",
+    "P": 2,
+    "run": 1,
+    "iterations_per_worker": 5000000,
+    "counts": [
+      5000000,
+      5000000
+    ],
+    "indices": [
+      0,
+      8
+    ],
+    "counter_offsets_bytes": [
+      0,
+      64
+    ]
+  },
+  {
+    "mode": "privatized",
+    "P": 2,
+    "run": 1,
+    "iterations_per_worker": 5000000,
+    "counts": [
+      5000000,
+      5000000
+    ],
+    "indices": [
+      0,
+      1
+    ],
+    "counter_offsets_bytes": [
+      0,
+      8
+    ]
+  },
+  {
+    "mode": "unpadded",
+    "P": 2,
+    "run": 1,
+    "iterations_per_worker": 5000000,
+    "counts": [
+      5000000,
+      5000000
+    ],
+    "indices": [
+      0,
+      1
+    ],
+    "counter_offsets_bytes": [
+      0,
+      8
+    ]
+  },
+  {
+    "mode": "privatized",
+    "P": 2,
+    "run": 2,
+    "iterations_per_worker": 5000000,
+    "counts": [
+      5000000,
+      5000000
+    ],
+    "indices": [
+      0,
+      1
+    ],
+    "counter_offsets_bytes": [
+      0,
+      8
+    ]
+  },
+  {
+    "mode": "unpadded",
+    "P": 2,
+    "run": 2,
+    "iterations_per_worker": 5000000,
+    "counts": [
+      5000000,
+      5000000
+    ],
+    "indices": [
+      0,
+      1
+    ],
+    "counter_offsets_bytes": [
+      0,
+      8
+    ]
+  },
+  {
+    "mode": "padded",
+    "P": 2,
+    "run": 2,
+    "iterations_per_worker": 5000000,
+    "counts": [
+      5000000,
+      5000000
+    ],
+    "indices": [
+      0,
+      8
+    ],
+    "counter_offsets_bytes": [
+      0,
+      64
+    ]
+  },
+  {
+    "mode": "unpadded",
+    "P": 2,
+    "run": 3,
+    "iterations_per_worker": 5000000,
+    "counts": [
+      5000000,
+      5000000
+    ],
+    "indices": [
+      0,
+      1
+    ],
+    "counter_offsets_bytes": [
+      0,
+      8
+    ]
+  },
+  {
+    "mode": "padded",
+    "P": 2,
+    "run": 3,
+    "iterations_per_worker": 5000000,
+    "counts": [
+      5000000,
+      5000000
+    ],
+    "indices": [
+      0,
+      8
+    ],
+    "counter_offsets_bytes": [
+      0,
+      64
+    ]
+  },
+  {
+    "mode": "privatized",
+    "P": 2,
+    "run": 3,
+    "iterations_per_worker": 5000000,
+    "counts": [
+      5000000,
+      5000000
+    ],
+    "indices": [
+      0,
+      1
+    ],
+    "counter_offsets_bytes": [
+      0,
+      8
+    ]
+  },
+  {
+    "mode": "padded",
+    "P": 4,
+    "run": 1,
+    "iterations_per_worker": 5000000,
+    "counts": [
+      5000000,
+      5000000,
+      5000000,
+      5000000
+    ],
+    "indices": [
+      0,
+      8,
+      16,
+      24
+    ],
+    "counter_offsets_bytes": [
+      0,
+      64,
+      128,
+      192
+    ]
+  },
+  {
+    "mode": "privatized",
+    "P": 4,
+    "run": 1,
+    "iterations_per_worker": 5000000,
+    "counts": [
+      5000000,
+      5000000,
+      5000000,
+      5000000
+    ],
+    "indices": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "counter_offsets_bytes": [
+      0,
+      8,
+      16,
+      24
+    ]
+  },
+  {
+    "mode": "unpadded",
+    "P": 4,
+    "run": 1,
+    "iterations_per_worker": 5000000,
+    "counts": [
+      5000000,
+      5000000,
+      5000000,
+      5000000
+    ],
+    "indices": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "counter_offsets_bytes": [
+      0,
+      8,
+      16,
+      24
+    ]
+  },
+  {
+    "mode": "privatized",
+    "P": 4,
+    "run": 2,
+    "iterations_per_worker": 5000000,
+    "counts": [
+      5000000,
+      5000000,
+      5000000,
+      5000000
+    ],
+    "indices": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "counter_offsets_bytes": [
+      0,
+      8,
+      16,
+      24
+    ]
+  },
+  {
+    "mode": "unpadded",
+    "P": 4,
+    "run": 2,
+    "iterations_per_worker": 5000000,
+    "counts": [
+      5000000,
+      5000000,
+      5000000,
+      5000000
+    ],
+    "indices": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "counter_offsets_bytes": [
+      0,
+      8,
+      16,
+      24
+    ]
+  },
+  {
+    "mode": "padded",
+    "P": 4,
+    "run": 2,
+    "iterations_per_worker": 5000000,
+    "counts": [
+      5000000,
+      5000000,
+      5000000,
+      5000000
+    ],
+    "indices": [
+      0,
+      8,
+      16,
+      24
+    ],
+    "counter_offsets_bytes": [
+      0,
+      64,
+      128,
+      192
+    ]
+  },
+  {
+    "mode": "unpadded",
+    "P": 4,
+    "run": 3,
+    "iterations_per_worker": 5000000,
+    "counts": [
+      5000000,
+      5000000,
+      5000000,
+      5000000
+    ],
+    "indices": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "counter_offsets_bytes": [
+      0,
+      8,
+      16,
+      24
+    ]
+  },
+  {
+    "mode": "padded",
+    "P": 4,
+    "run": 3,
+    "iterations_per_worker": 5000000,
+    "counts": [
+      5000000,
+      5000000,
+      5000000,
+      5000000
+    ],
+    "indices": [
+      0,
+      8,
+      16,
+      24
+    ],
+    "counter_offsets_bytes": [
+      0,
+      64,
+      128,
+      192
+    ]
+  },
+  {
+    "mode": "privatized",
+    "P": 4,
+    "run": 3,
+    "iterations_per_worker": 5000000,
+    "counts": [
+      5000000,
+      5000000,
+      5000000,
+      5000000
+    ],
+    "indices": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "counter_offsets_bytes": [
+      0,
+      8,
+      16,
+      24
+    ]
+  },
+  {
+    "mode": "padded",
+    "P": 8,
+    "run": 1,
+    "iterations_per_worker": 5000000,
+    "counts": [
+      5000000,
+      5000000,
+      5000000,
+      5000000,
+      5000000,
+      5000000,
+      5000000,
+      5000000
+    ],
+    "indices": [
+      0,
+      8,
+      16,
+      24,
+      32,
+      40,
+      48,
+      56
+    ],
+    "counter_offsets_bytes": [
+      0,
+      64,
+      128,
+      192,
+      256,
+      320,
+      384,
+      448
+    ]
+  },
+  {
+    "mode": "privatized",
+    "P": 8,
+    "run": 1,
+    "iterations_per_worker": 5000000,
+    "counts": [
+      5000000,
+      5000000,
+      5000000,
+      5000000,
+      5000000,
+      5000000,
+      5000000,
+      5000000
+    ],
+    "indices": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "counter_offsets_bytes": [
+      0,
+      8,
+      16,
+      24,
+      32,
+      40,
+      48,
+      56
+    ]
+  },
+  {
+    "mode": "unpadded",
+    "P": 8,
+    "run": 1,
+    "iterations_per_worker": 5000000,
+    "counts": [
+      5000000,
+      5000000,
+      5000000,
+      5000000,
+      5000000,
+      5000000,
+      5000000,
+      5000000
+    ],
+    "indices": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "counter_offsets_bytes": [
+      0,
+      8,
+      16,
+      24,
+      32,
+      40,
+      48,
+      56
+    ]
+  },
+  {
+    "mode": "privatized",
+    "P": 8,
+    "run": 2,
+    "iterations_per_worker": 5000000,
+    "counts": [
+      5000000,
+      5000000,
+      5000000,
+      5000000,
+      5000000,
+      5000000,
+      5000000,
+      5000000
+    ],
+    "indices": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "counter_offsets_bytes": [
+      0,
+      8,
+      16,
+      24,
+      32,
+      40,
+      48,
+      56
+    ]
+  },
+  {
+    "mode": "unpadded",
+    "P": 8,
+    "run": 2,
+    "iterations_per_worker": 5000000,
+    "counts": [
+      5000000,
+      5000000,
+      5000000,
+      5000000,
+      5000000,
+      5000000,
+      5000000,
+      5000000
+    ],
+    "indices": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "counter_offsets_bytes": [
+      0,
+      8,
+      16,
+      24,
+      32,
+      40,
+      48,
+      56
+    ]
+  },
+  {
+    "mode": "padded",
+    "P": 8,
+    "run": 2,
+    "iterations_per_worker": 5000000,
+    "counts": [
+      5000000,
+      5000000,
+      5000000,
+      5000000,
+      5000000,
+      5000000,
+      5000000,
+      5000000
+    ],
+    "indices": [
+      0,
+      8,
+      16,
+      24,
+      32,
+      40,
+      48,
+      56
+    ],
+    "counter_offsets_bytes": [
+      0,
+      64,
+      128,
+      192,
+      256,
+      320,
+      384,
+      448
+    ]
+  },
+  {
+    "mode": "unpadded",
+    "P": 8,
+    "run": 3,
+    "iterations_per_worker": 5000000,
+    "counts": [
+      5000000,
+      5000000,
+      5000000,
+      5000000,
+      5000000,
+      5000000,
+      5000000,
+      5000000
+    ],
+    "indices": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "counter_offsets_bytes": [
+      0,
+      8,
+      16,
+      24,
+      32,
+      40,
+      48,
+      56
+    ]
+  },
+  {
+    "mode": "padded",
+    "P": 8,
+    "run": 3,
+    "iterations_per_worker": 5000000,
+    "counts": [
+      5000000,
+      5000000,
+      5000000,
+      5000000,
+      5000000,
+      5000000,
+      5000000,
+      5000000
+    ],
+    "indices": [
+      0,
+      8,
+      16,
+      24,
+      32,
+      40,
+      48,
+      56
+    ],
+    "counter_offsets_bytes": [
+      0,
+      64,
+      128,
+      192,
+      256,
+      320,
+      384,
+      448
+    ]
+  },
+  {
+    "mode": "privatized",
+    "P": 8,
+    "run": 3,
+    "iterations_per_worker": 5000000,
+    "counts": [
+      5000000,
+      5000000,
+      5000000,
+      5000000,
+      5000000,
+      5000000,
+      5000000,
+      5000000
+    ],
+    "indices": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "counter_offsets_bytes": [
+      0,
+      8,
+      16,
+      24,
+      32,
+      40,
+      48,
+      56
+    ]
+  }
+]
