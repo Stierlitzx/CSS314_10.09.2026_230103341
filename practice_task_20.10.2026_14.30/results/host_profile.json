@@ -1,0 +1,26 @@
+{
+  "captured_at": "2026-10-29T14:40:53+0500",
+  "student_id": "230103341",
+  "scheduled_practice": "2026-10-20 14:30",
+  "cpu_model": "AMD Ryzen 5 7640HS w/ Radeon 760M Graphics",
+  "physical_cores": 6,
+  "logical_threads": 12,
+  "os": "Windows-11-10.0.22631-SP0",
+  "python": "3.14.3 (tags/v3.14.3:323c59a, Feb  3 2026, 16:04:56) [MSC v.1944 64 bit (AMD64)]",
+  "python_executable": "C:\\Users\\aiblb\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe",
+  "start_method": "spawn",
+  "affinity": "OS-managed; no affinity or power-plan changes",
+  "timer": {
+    "name": "perf_counter_ns",
+    "resolution_seconds": 1e-07
+  },
+  "topology_source": "Windows CIM Win32_Processor",
+  "cpu_packages": [
+    {
+      "Name": "AMD Ryzen 5 7640HS w/ Radeon 760M Graphics     ",
+      "NumberOfCores": 6,
+      "NumberOfLogicalProcessors": 12,
+      "MaxClockSpeed": 4301
+    }
+  ]
+}
