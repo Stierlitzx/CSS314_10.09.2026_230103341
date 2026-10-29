@@ -1,0 +1,20 @@
+{
+  "status": "PASS",
+  "checked_at": "2026-10-29T15:01:45+0500",
+  "verified_samples": 36,
+  "correctness_scope": "Recorded checksums, exact counts, partitions, raw timing medians and scaling formulas",
+  "rubric_observations": {
+    "A_flatness_ratio_in_range": true,
+    "B_T4_greater_than_T1": true,
+    "B_e4_greater_than_e2": false,
+    "C_T4_less_than_T1": true,
+    "C_end_to_end_E4_over_70_percent": false,
+    "C_supplementary_prestarted_E4_over_70_percent": true
+  },
+  "raw_data_sha256": {
+    "A": "6e9dd903d0eab0471f274190f5402ba0337d8244e02ff9fc5e9cbfbb9dfceea9",
+    "B": "8bf419169117e601b3fa31f00615c50125d0e69b7fce03eccc79b76c117ce33a",
+    "C": "1e18d6b097e1d0755cf18600884b09579f3d35fdea6a1125c38f8a1f42e5b137",
+    "C-steady": "1766c21f2a532109e4a07b68e0d8db2ada4b79ab13e9a1ac07cbbc813182f905"
+  }
+}

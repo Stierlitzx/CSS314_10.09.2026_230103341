@@ -1,0 +1,239 @@
+{
+  "experiment": "C-steady",
+  "student_id": "230103341",
+  "status": "COMPLETE",
+  "started_at": "2026-10-29T14:54:42+0500",
+  "runs_per_case": 3,
+  "workload": {
+    "total_increments": 20000000,
+    "synchronization": "Zero shared writes in the loop; one final parent sum over worker results"
+  },
+  "timing_scope": "Supplementary: prestarted ready pool; includes map, IPC, private loops and reduction; excludes pool startup/shutdown",
+  "samples": [
+    {
+      "P": 1,
+      "run": 1,
+      "time_ns": 828145400,
+      "lifecycle_ns": 1081788200,
+      "worker_pids": [
+        34000
+      ],
+      "assigned_increments": [
+        20000000
+      ],
+      "partial_totals": [
+        20000000
+      ],
+      "actual_total": 20000000,
+      "expected_total": 20000000,
+      "correct": true
+    },
+    {
+      "P": 2,
+      "run": 1,
+      "time_ns": 506306900,
+      "lifecycle_ns": 710615800,
+      "worker_pids": [
+        27088,
+        28940
+      ],
+      "assigned_increments": [
+        10000000,
+        10000000
+      ],
+      "partial_totals": [
+        10000000,
+        10000000
+      ],
+      "actual_total": 20000000,
+      "expected_total": 20000000,
+      "correct": true
+    },
+    {
+      "P": 4,
+      "run": 1,
+      "time_ns": 204196800,
+      "lifecycle_ns": 496844300,
+      "worker_pids": [
+        9444,
+        31152,
+        15832,
+        26804
+      ],
+      "assigned_increments": [
+        5000000,
+        5000000,
+        5000000,
+        5000000
+      ],
+      "partial_totals": [
+        5000000,
+        5000000,
+        5000000,
+        5000000
+      ],
+      "actual_total": 20000000,
+      "expected_total": 20000000,
+      "correct": true
+    },
+    {
+      "P": 2,
+      "run": 2,
+      "time_ns": 520201500,
+      "lifecycle_ns": 716576000,
+      "worker_pids": [
+        9632,
+        32896
+      ],
+      "assigned_increments": [
+        10000000,
+        10000000
+      ],
+      "partial_totals": [
+        10000000,
+        10000000
+      ],
+      "actual_total": 20000000,
+      "expected_total": 20000000,
+      "correct": true
+    },
+    {
+      "P": 4,
+      "run": 2,
+      "time_ns": 271106500,
+      "lifecycle_ns": 500606600,
+      "worker_pids": [
+        17456,
+        30968,
+        27904,
+        21032
+      ],
+      "assigned_increments": [
+        5000000,
+        5000000,
+        5000000,
+        5000000
+      ],
+      "partial_totals": [
+        5000000,
+        5000000,
+        5000000,
+        5000000
+      ],
+      "actual_total": 20000000,
+      "expected_total": 20000000,
+      "correct": true
+    },
+    {
+      "P": 1,
+      "run": 2,
+      "time_ns": 825575300,
+      "lifecycle_ns": 1025377900,
+      "worker_pids": [
+        34356
+      ],
+      "assigned_increments": [
+        20000000
+      ],
+      "partial_totals": [
+        20000000
+      ],
+      "actual_total": 20000000,
+      "expected_total": 20000000,
+      "correct": true
+    },
+    {
+      "P": 4,
+      "run": 3,
+      "time_ns": 324967800,
+      "lifecycle_ns": 584089500,
+      "worker_pids": [
+        33004,
+        24892,
+        30564,
+        1824
+      ],
+      "assigned_increments": [
+        5000000,
+        5000000,
+        5000000,
+        5000000
+      ],
+      "partial_totals": [
+        5000000,
+        5000000,
+        5000000,
+        5000000
+      ],
+      "actual_total": 20000000,
+      "expected_total": 20000000,
+      "correct": true
+    },
+    {
+      "P": 1,
+      "run": 3,
+      "time_ns": 1270500600,
+      "lifecycle_ns": 1473115900,
+      "worker_pids": [
+        23920
+      ],
+      "assigned_increments": [
+        20000000
+      ],
+      "partial_totals": [
+        20000000
+      ],
+      "actual_total": 20000000,
+      "expected_total": 20000000,
+      "correct": true
+    },
+    {
+      "P": 2,
+      "run": 3,
+      "time_ns": 491068600,
+      "lifecycle_ns": 704488600,
+      "worker_pids": [
+        29684,
+        23912
+      ],
+      "assigned_increments": [
+        10000000,
+        10000000
+      ],
+      "partial_totals": [
+        10000000,
+        10000000
+      ],
+      "actual_total": 20000000,
+      "expected_total": 20000000,
+      "correct": true
+    }
+  ],
+  "finished_at": "2026-10-29T14:54:50+0500",
+  "metrics": [
+    {
+      "P": 1,
+      "median_time_ns": 828145400,
+      "time_s": 0.8281454,
+      "speedup": 1.0,
+      "efficiency_percent": 100.0,
+      "karp_flatt": null
+    },
+    {
+      "P": 2,
+      "median_time_ns": 506306900,
+      "time_s": 0.5063069,
+      "speedup": 1.6356589254462066,
+      "efficiency_percent": 81.78294627231033,
+      "karp_flatt": 0.22274880715391276
+    },
+    {
+      "P": 4,
+      "median_time_ns": 271106500,
+      "time_s": 0.2711065,
+      "speedup": 3.054686626842219,
+      "efficiency_percent": 76.36716567105547,
+      "karp_flatt": 0.1031544299668472
+    }
+  ]
+}

@@ -1,0 +1,2 @@
+# Optional report images only; all benchmark scripts use the standard library.
+matplotlib>=3.8

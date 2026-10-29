@@ -79,7 +79,7 @@ def parser(description):
     return result
 
 
-def run_suite(experiment, measure, workload, runs):
+def run_suite(experiment, measure, workload, runs, timing_scope="End-to-end, including process/pool startup, IPC and shutdown; validation excluded"):
     RESULTS.mkdir(exist_ok=True)
     if not (RESULTS / "host_profile.json").exists():
         capture_host()
@@ -96,7 +96,7 @@ def run_suite(experiment, measure, workload, runs):
             print(f"Resuming {experiment}: {len(samples)} completed samples retained", flush=True)
     record = {"experiment": experiment, "student_id": STUDENT_ID, "status": "IN_PROGRESS",
               "started_at": started, "runs_per_case": runs, "workload": workload,
-              "timing_scope": "End-to-end, including process/pool startup, IPC and shutdown; validation excluded",
+              "timing_scope": timing_scope,
               "samples": samples}
     for repeat in range(runs):
         # Rotate the order once per repetition; retain every sample, including outliers.
