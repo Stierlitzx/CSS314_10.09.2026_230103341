@@ -1,0 +1,2 @@
+# Already used in this repository; benchmark and regression need only the standard library.
+matplotlib>=3.8
