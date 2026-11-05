@@ -33,6 +33,18 @@ def require(condition, message):
         raise AssertionError(message)
 
 
+def check_markdown(text, path):
+    """Reject unsupported raw TeX in prose/math without flagging shell paths."""
+    fence = None
+    tex = re.compile(r"\\(?:[A-Za-z]+|[\[\]()])|\$")
+    for line_number, line in enumerate(text.splitlines(), 1):
+        if line.startswith("```"):
+            fence = line[3:].strip() if fence is None else None
+        elif fence in (None, "", "text"):
+            require(not tex.search(line), f"Unreadable raw math: {path}:{line_number}")
+    require(fence is None, f"Unclosed Markdown fence: {path}")
+
+
 def main():
     checks = {}
     for task, name in TASK_FILES.items():
@@ -43,6 +55,7 @@ def main():
     links = 0
     for path in markdowns:
         text = path.read_text(encoding="utf-8")
+        check_markdown(text, path)
         for target in re.findall(r"\]\(([^)]+)\)", text):
             target = target.strip().split("#", 1)[0]
             if not target or "://" in target or target.startswith("mailto:"):
@@ -50,6 +63,7 @@ def main():
             require((path.parent / target).exists(), f"Broken local link: {path} -> {target}")
             links += 1
     checks["markdown_files"] = len(markdowns)
+    checks["readable_markdown_math"] = True
     checks["valid_local_links"] = links
     sources = list((ROOT / "benchmarks").rglob("*.py"))
     for path in sources:

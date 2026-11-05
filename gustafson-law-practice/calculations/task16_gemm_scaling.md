@@ -1,106 +1,66 @@
-# Task 16 — Scaling the dimension, work, and storage of GEMM
+# Task 16 — GEMM dimension, work, and storage scaling
 
 **Student ID:** 230103341
 
-## Model and assumptions
+## My constant-compute-time model
 
-Consider classical dense square matrix multiplication `C = AB`, with all matrices of order `N`. Let `N₁` be the order handled by one processing element and `P` the number of equal-speed processing elements. Assume balanced division of classical arithmetic, unchanged arithmetic rate, and negligible communication, synchronization, startup, and serial overhead for the **ideal constant-compute-time derivation**. An integer dimension may require rounding and a particular implementation may impose block-size constraints.
+I consider classical square multiplication C = AB, with global order N, one-processor order N₁, and P equal-speed processors. I assume balanced arithmetic, unchanged processing rate, and negligible communication, synchronization, startup, and serial overhead. Integer dimensions and block sizes may require rounding; Strassen-like algorithms are excluded.
 
-Classical GEMM has leading-order work
+```text
+Leading work: W(N) ≈ 2N³ FLOPs
+Constant work per processor: 2N³/P = 2N₁³
+Therefore N = N₁P^(1/3)
+```
 
-\[
-W(N)\simeq 2N^3\ \text{FLOPs}.
-\]
+I count multiplication and addition as two FLOPs. A literal dot-product implementation instead performs exactly 2N³ − N² operations. My cube-root rule holds per-processor work constant at leading order: dimension grows as P^(1/3), entries as P^(2/3), and work as P.
 
-Here a multiply and an addition count as two FLOPs. A literal dot-product implementation uses `N³` multiplies and `N²(N−1)` adds, hence exactly `2N³−N²` operations; `2N³` is the standard leading-order convention, not an exact count for every implementation. Strassen-like algorithms are outside this model.
+If I used square-root dimension growth, I would obtain memory weak scaling, not constant compute time:
 
-## Constant per-processor work
+```text
+N = N₁sqrt(P) ⇒ N²/P = N₁²
+W/W₁ ≈ P^(3/2); W/(PW₁) ≈ sqrt(P)
+```
 
-Keeping arithmetic time approximately fixed requires `W(N)/P = W(N₁)` in the leading-order model:
+## My storage and result tables
 
-\[
-\frac{2N^3}{P}=2N_1^3
-\Longrightarrow N^3=PN_1^3
-\Longrightarrow\boxed{N=N_1P^{1/3}}.
-\]
+With three resident matrices, b bytes per element, and no replication, workspace, or buffers, I obtain:
 
-Thus the **problem dimension** grows as `P^(1/3)`, the **number of matrix entries** grows as `P^(2/3)`, and the **arithmetic work** grows as `P`. These are different quantities.
+```text
+W₁ = 2N₁³; M₁ = 3bN₁²; T₁ = baseline ideal compute time
+M = 3bN² = M₁P^(2/3); M/P = M₁P^(−1/3)
+At P = 64: N = 4N₁, W ≈ 128N₁³ = 64W₁, M = 16M₁
+```
 
-Using `N = N₁ sqrt(P)` would instead keep matrix storage per processor constant under ideal distribution:
-
-\[
-\frac{N^2}{P}=N_1^2,
-\quad \frac{W(N)}{W(N_1)}=P^{3/2},
-\quad \frac{W(N)}{P W(N_1)}=P^{1/2}.
-\]
-
-It would increase per-processor compute work and ideal compute time by `sqrt(P)`. It is **memory weak scaling, not constant-compute-time weak scaling for classical GEMM**.
-
-## Storage and worked table
-
-If three matrices are resident and each element occupies `b` bytes, without replication, workspace, or communication buffers,
-
-\[
-M(N)=3bN^2=3bN_1^2P^{2/3},\qquad
-\frac{M(N)}P=3bN_1^2P^{-1/3}.
-\]
-
-At `P=64`, for example,
-
-\[
-N=N_1\sqrt[3]{64}=4N_1,\quad
-W\simeq 2(4N_1)^3=128N_1^3=64W_1,
-\quad M=3b(4N_1)^2=16M_1.
-\]
-
-The table uses perfect cubes to make every dimension multiplier exact. It is a parameter table in `N₁`, not a claim that a numerical baseline order was supplied.
-
-| P | N/N₁ | Work W/W₁, leading order | Work per processor / W₁ | Total memory M/M₁ | Memory per processor / M₁ | Ideal compute time / T₁ |
+| P | N/N₁ | Leading W/W₁ | Work per processor / W₁ | M/M₁ | Memory per processor / M₁ | Ideal time / T₁ |
 |---:|---:|---:|---:|---:|---:|---:|
 | 1 | 1 | 1 | 1 | 1 | 1 | 1 |
 | 8 | 2 | 8 | 1 | 4 | 1/2 | 1 |
 | 64 | 4 | 64 | 1 | 16 | 1/4 | 1 |
 | 512 | 8 | 512 | 1 | 64 | 1/8 | 1 |
 
-For an **illustrative**, not inferred, baseline `N₁ = 1,000` and `b = 8` bytes, the same substitutions give:
+I use N₁ = 1000 and b = 8 only as an illustration, not supplied measurements.
 
-| P | Global order N | Leading work 2N³ (FLOPs) | Three-matrix storage (bytes) | Ideal average storage per processor (bytes) |
+| P | Global N | Leading 2N³ (FLOPs) | Three-matrix bytes | Average bytes per processor |
 |---:|---:|---:|---:|---:|
 | 1 | 1,000 | 2,000,000,000 | 24,000,000 | 24,000,000 |
 | 8 | 2,000 | 16,000,000,000 | 96,000,000 | 12,000,000 |
 | 64 | 4,000 | 128,000,000,000 | 384,000,000 | 6,000,000 |
 | 512 | 8,000 | 1,024,000,000,000 | 1,536,000,000 | 3,000,000 |
 
-For the literal exact operation count, `N=N₁P^(1/3)` gives
-
-\[
-\frac{W_{\rm exact}(N)}P=2N_1^3-N_1^2P^{-1/3},
-\]
-
-which is only asymptotically equal to the one-processor count `2N₁³−N₁²`. If strict equality for that exact counting convention is required, solve `(2N³−N²)/P = 2N₁³−N₁²` and handle integer rounding. This lower-order distinction does not change the cube-root scaling exponent.
-
-## Gustafson interpretation and practical limits
-
-If the measured non-scaling fraction **of the P-processor elapsed time** is `α`, Gustafson's ideal scaled speedup is
-
-\[
-S_G(P)=\alpha+P(1-\alpha)=P-\alpha(P-1),\qquad E_G=S_G/P.
-\]
-
-The cube-root rule above concerns scaling of the parallel arithmetic kernel; it does not prove that `α` remains fixed or that wall-clock time is constant. The serial fraction `f` of a one-processor baseline is not generally equal to this `α`. For a matched workload in the two-component ideal model, `f = α/[α+P(1−α)]`.
-
-Distributed GEMM must move matrix blocks and can require replicated panels, buffers, collective communication, and redistribution. The `M/P` entries are ideal averages for storage without replication, not guarantees for every algorithm or processor layout. At increasing `P`, local memory decreases under this scaling, potentially reducing arithmetic intensity and making communication relatively more important.
-
-## Arithmetic validation log
-
-Python integer arithmetic verified the illustrative rows using `N = 1000q`, `P = q³`, `W = 2N³`, and `M = 24N²`.
+For strict equality under literal counting, I would solve the lower-order equation and round appropriately:
 
 ```text
-P=1:   N=1000, W/W1=1,   M/M1=1,  M/(P*M1)=1
-P=8:   N=2000, W/W1=8,   M/M1=4,  M/(P*M1)=1/2
-P=64:  N=4000, W/W1=64,  M/M1=16, M/(P*M1)=1/4
-P=512: N=8000, W/W1=512, M/M1=64, M/(P*M1)=1/8
-All rows: W/P = 2000000000 leading-order FLOPs. PASS
+At N = N₁P^(1/3): W_exact/P = 2N₁³ − N₁²P^(−1/3)
+Strict target: (2N³ − N²)/P = 2N₁³ − N₁²
 ```
 
-**Conclusion:** use `N=N₁P^(1/3)`, not `N₁sqrt(P)`, for constant per-processor classical GEMM work. Total work grows linearly, but total three-matrix memory grows only as `P^(2/3)` under the stated idealization.
+## My interpretation
+
+For parallel elapsed-time non-scaling fraction α, speedup S_G, efficiency E_G, and matched serial fraction f:
+
+```text
+S_G = P − α(P − 1); E_G = S_G/P
+f = α/[α + P(1 − α)]
+```
+
+I do not infer fixed α or constant wall time from kernel scaling. Communication, replicated panels, redistribution, and buffers invalidate ideal storage averages; shrinking local storage can reduce arithmetic intensity. I checked both tables exactly: every illustrative row has 2,000,000,000 leading FLOPs per processor.

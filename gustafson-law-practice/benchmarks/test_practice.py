@@ -1,16 +1,21 @@
 """Deterministic model/data tests and a small real multiprocessing smoke test."""
 import csv
+from contextlib import redirect_stdout
+import io
 import math
 import os
 from pathlib import Path
 import tempfile
 import sys
 import unittest
+from unittest.mock import patch
 
+import report_results
 from fit_gustafson import fit, load_results
 from models import amdahl, equivalent_serial_fraction, gustafson
 from simulator import parse_cores, parse_fractions, simulate
 from weak_scale_bench import benchmark
+from verify_artifacts import check_markdown
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -150,6 +155,36 @@ class RegressionTests(unittest.TestCase):
                     writer.writerows(rows)
                 with self.assertRaises(ValueError):
                     load_results(path)
+
+
+class DocumentationTests(unittest.TestCase):
+    def test_markdown_math_is_readable(self):
+        for path in ROOT.rglob("*.md"):
+            with self.subTest(path=path.relative_to(ROOT)):
+                check_markdown(path.read_text(encoding="utf-8"), path)
+
+    def test_rejects_raw_tex_and_unclosed_fences(self):
+        for text in (r"\[ S=\frac{1}{P} \]", "$S=P$", "```text\nS = P"):
+            with self.subTest(text=text), self.assertRaises(AssertionError):
+                check_markdown(text, "example.md")
+        check_markdown("```powershell\n$root = 'C:\\practice'\n```", "example.md")
+        check_markdown("```text\nS = P − α × (P − 1)\n```", "example.md")
+
+    def test_report_regenerates_submission_style(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            (root / "benchmarks").mkdir()
+            for name in ("results.csv", "results.metadata.json"):
+                (root / "benchmarks" / name).write_bytes((ROOT / "benchmarks" / name).read_bytes())
+            with patch.object(report_results, "ROOT", root), redirect_stdout(io.StringIO()):
+                report_results.main()
+            relative = Path("analysis/task23_experimental_results.md")
+            report = (root / relative).read_text(encoding="utf-8")
+            self.assertEqual(report, (ROOT / relative).read_text(encoding="utf-8"))
+            self.assertIn("I measured 60 real trials", report)
+            self.assertIn("effective overhead parameter", report)
+            self.assertIn("0.784991225892", report)
+            check_markdown(report, relative)
 
 
 class WorkloadTests(unittest.TestCase):

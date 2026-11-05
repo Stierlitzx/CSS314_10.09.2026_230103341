@@ -1,71 +1,52 @@
-# Task 13 — Two concrete limits of Gustafson-style reasoning
+# Task 13 — Two limits of Gustafson-style reasoning
 
 **Student ID:** 230103341
 
-## 1. A conditional identity is not a scalability guarantee
+## Conditional scaling
 
-For useful serial work \(A\) and balanced useful parallel time \(B\), an overhead-free run gives
+For useful serial time A and balanced parallel time B, I obtain the overhead-free identity:
 
-\[
-S=\frac{A+PB}{A+B}=\alpha+P(1-\alpha),
-\qquad \alpha=\frac{A}{A+B}.
-\]
+```text
+α = A/(A+B)
+S = (A+PB)/(A+B) = α+P(1−α)
+```
 
-Gustafson's original argument changes the problem size rather than demanding a large speedup for an unchanged small input. [G88] Failure means the application cannot realize the assumed workload family, constant serial fraction, or negligible overhead—not that the algebraic identity is false. Two algorithms expose different limitations.
+Failure means an application cannot realize the workload family, constant fraction or negligible overhead—not that this identity is false. [G88]
 
-## 2. Case A: Thomas algorithm for a tridiagonal system
+## Single-system Thomas algorithm
 
-The standard Thomas algorithm solves a tridiagonal linear system using forward elimination followed by back substitution, provided its elimination pivots are nonzero. In its usual formulation, a modified coefficient at row \(i\) depends on row \(i-1\); back substitution depends on the next unknown. Both passes have \(\Theta(N)\) work and \(\Theta(N)\) dependency depth. [T]
+I consider the standard Thomas tridiagonal solver with nonzero elimination pivots. Forward elimination depends on the previous row; back substitution depends on the next unknown. Both work W and dependency depth D are Θ(N), giving available parallelism W/D = Θ(1). [T]
 
-For **one system using this algorithm**, merely dividing the rows among \(P\) workers does not produce \(P\) independent forward recurrences. With unit-cost row operations, the work/depth bound gives available parallelism \(W/D=\Theta(1)\). Growing the system to \(PN\) grows both work and the critical path by the same factor. It cannot keep runtime constant while turning the new rows into independent useful worker time.
+Dividing rows among P workers does not create independent recurrences. Enlarging one system to PN grows work and critical path together, so runtime cannot remain constant. With implementation-dependent positive constants c,k, an illustrative bound is:
 
-An illustrative execution model is
+```text
+Tₚ(N) ≥ cN; T₁(N) ≈ kN; S(P,N) ≤ k/c
+```
 
-\[
-T_P(N)\geq cN,\qquad T_1(N)\approx kN,
-\qquad S(P,N)\leq k/c,
-\]
+I do not treat k/c as a measured numerical limit. Assuming a small fixed α would hide the dominant dependency. A batch of independent systems supplies outer parallelism; cyclic reduction or parallel prefix changes the algorithm. Neither proves that the original single-system Thomas execution scales. The limitation concerns this algorithm, not every solver for the mathematical problem.
 
-where constants depend on the implementation. This is a dependency argument, not a measured speedup bound with a known numerical constant. Substituting a small fixed \(\alpha\) into Gustafson's law would assume away the dominant recurrence.
+## Distributed three-dimensional FFT
 
-**What can change?** A batch of independent systems provides outer parallelism and can be an excellent scaled workload. Cyclic reduction or parallel prefix formulations change the algorithm and its work/depth trade-off. Those are legitimate remedies, but they do not demonstrate that the original single-system Thomas execution scales. Distinguish “this algorithm has a serial dependency” from “this mathematical problem admits no parallel algorithm.”
+Slab/pencil FFT decompositions require global redistributions between directional transforms. FFTW documents distributed transposes explicitly. [F] I use the illustrative model:
 
-## 3. Case B: Distributed three-dimensional FFT
+```text
+Tₚ(N) ≈ k N log(N)/P + τ q(P) + V(P,N)/B_eff(P) + I(P,N)
+```
 
-A distributed 3-D FFT has substantial local computation, but common slab/pencil decompositions require global redistributions between transforms along different dimensions. FFTW's MPI documentation explicitly describes distributed transposes and their communication role. [F] Increasing global data so each rank holds the same number of grid values does not ensure constant time: transform lengths, partner counts, contention and exposed communication can all grow.
+Here N counts grid values, k scales arithmetic time, τ is exchange latency, q counts critical-path exchanges, V is per-rank transferred volume, B_eff is effective bandwidth and I is imbalance. Overlap and collective algorithms change these terms.
 
-For \(N\) grid values, a simple analytical model is
+At memory-weak scaling N = nP, arithmetic per rank is approximately kn log(nP), not constant. Even a time-scaled family keeping N log(N)/P constant retains transpose costs. With constant useful A+B and illustrative exposed C(P) = c log P, c > 0:
 
-\[
-T_P(N)\approx k\frac{N\log N}{P}
-+\tau q(P)+\frac{V(P,N)}{\mathcal B(P)}+I(P,N),
-\]
+```text
+E(P) = (B+A/P)/(A+B+c log P) → 0
+```
 
-where \(q\) is the number of latency-bearing exchanges on the critical path, \(V\) is per-rank transferred data, \(\mathcal B\) is effective bandwidth, and \(I\) is imbalance. This is not a universal FFT performance formula. Overlap and collective algorithms change its terms.
+Coordination is not necessarily useful serial work and must not enter the reconstructed useful-work numerator. Buffers and network bisection bandwidth may also constrain scaling. Better decomposition, placement, collectives and overlap can help; more work per rank changes the size/time family.
 
-At memory-weak scaling \(N=nP\), local useful arithmetic is approximately \(kn\log(nP)\), not constant. Even if a time-scaled family instead keeps \(N\log N/P\) constant, the transpose cost remains. For an illustrative exposed cost \(C(P)=c\log P\) and constant useful elapsed work \(A+B\),
+I would measure critical-path time for Thomas, and compute/transpose/imbalance/total time for FFT. Comparisons must match system and solver, or grid, precision and transform convention. Larger inputs must remain scientifically useful; initialization and output may grow too. Comparing a small serial input directly with a large parallel input measures time/throughput, not matched-work speedup.
 
-\[
-E(P)=\frac{B+A/P}{A+B+c\log P}\longrightarrow0.
-\]
+## References
 
-The global coordination is not necessarily useful serial work. Folding its elapsed time into a reconstructed useful-work numerator would report fictitious computation. At larger scale, memory buffers and network bisection bandwidth may constrain the workload before arithmetic capacity does.
-
-**What can change?** Better decomposition, topology-aware placement, collective tuning and communication overlap can move the practical limit. Increasing work per rank may amortize latency, but changes the time/size family. A larger FFT can still provide valuable higher-resolution output even when its efficiency decreases.
-
-## 4. Diagnostic checklist
-
-| Question | Thomas single-system example | Distributed FFT example |
-|---|---|---|
-| Main obstruction | Dependency depth | Redistribution and changing local cost |
-| Does larger input guarantee more parallelism? | No | Some, but not communication-free |
-| Most revealing measurement | Critical-path time / available tasks | Compute, transpose, imbalance, total time |
-| Honest comparison | Same system and solver | Same grid, precision and transform convention |
-
-Also test whether the enlarged input is scientifically useful and whether serial initialization/output grows with it. Scaled speedup is a statement about matched useful work on one versus many processors; comparing the small one-processor input directly to the large parallel input is only a time/throughput comparison.
-
-## Sources
-
-- [G88] Gustafson (1988): <https://doi.org/10.1145/42411.42415>.
-- [T] LAPACK's reference tridiagonal solver implementation, showing the recurrences: <https://www.netlib.org/lapack/double/dgtsv.f>. Pivoting variants differ in detail but retain the sequential sweep structure discussed here.
-- [F] FFTW authors' MPI transpose documentation: <https://www.fftw.org/fftw3_doc/FFTW-MPI-Transposes.html>.
+- **[G88]** Gustafson (1988): [DOI](https://doi.org/10.1145/42411.42415).
+- **[T]** [LAPACK tridiagonal reference implementation](https://www.netlib.org/lapack/double/dgtsv.f). Its pivoting details differ from standard Thomas, but retain sequential sweeps.
+- **[F]** [FFTW MPI transpose documentation](https://www.fftw.org/fftw3_doc/FFTW-MPI-Transposes.html).

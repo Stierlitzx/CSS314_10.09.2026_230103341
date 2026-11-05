@@ -2,87 +2,61 @@
 
 **Student ID:** 230103341
 
-## 1. Specify the meaning of active power
+## Power and workload definitions
 
-Let \(P\) denote the number of identical nodes, not power. Each powered node consumes baseline/idle power \(p_i\geq0\) watts and **incremental dynamic power** \(p_d\geq0\) watts when computing. Total active-node power is \(p_i+p_d\). If a specification instead calls the **total active power** \(p_a\), use \(p_d=p_a-p_i\), not \(p_i+p_a\). Adding idle power to an already-total active value double-counts it.
+I use P for identical nodes, p_i ≥ 0 for baseline watts/node, and p_d ≥ 0 for **incremental** dynamic watts while computing. Total active power is p_i+p_d. If p_a already means total active power, I use p_d = p_a−p_i to avoid double-counting. Energy is J = ∫p(t) dt.
 
-Energy is \(J=\int p(t)\,dt\). The constant-power models below are analytical illustrations; no measured watts or joules are claimed. Assume identical node speed, constant active power, and no frequency-dependent changes. Network, cooling and shared infrastructure are excluded initially and must be added consistently in a real comparison.
+I assume unchanged node speed and constant phase power, initially excluding network, cooling and shared infrastructure. These are analytical models, not measurements.
 
-## 2. Equal walltime does not mean equal workload
+For constant serial phase A and parallel phase B per worker, I define:
 
-Consider the ideal scaled family with serial useful phase \(A\), parallel useful phase \(B\) per worker and total parallel time \(T=A+B\). The expanded job \(W_P\) takes
+```text
+T = A+B; α = A/T
+S = α+P(1−α); E = S/P
+T₁(Wₚ) = A+PB = ST
+```
 
-\[
-T_1(W_P)=A+PB=ST,\qquad
-S=\alpha+P(1-\alpha),\quad \alpha=A/T.
-\]
+The small job W₁ takes T. If every allocated node draws full active power throughout, J₁(W₁) = (p_i+p_d)T and Jₚ(Wₚ) = P(p_i+p_d)T. Their ratio P compares different workloads. Relative useful work per joule is S/P = E, not S.
 
-The original one-node job \(W_1\) takes \(T\). If every allocated node draws total active power throughout the run, then
+## Matched expanded job
 
-\[
-J_1(W_1)=(p_i+p_d)T,\qquad
-J_P(W_P)=P(p_i+p_d)T.
-\]
+For the same expanded workload, I obtain:
 
-The ratio is \(P\), but the workloads differ. The parallel job performs \(S\) times as much reference useful work in the same time. Its useful work per joule relative to the small one-node job is \(S/P=E\), not \(S\). Equal-time weak scaling is a capacity/throughput comparison, not an energy-to-solution comparison for one fixed job.
+```text
+J₁(Wₚ) = (p_i+p_d)ST
+Full-active model: Jₚ/J₁ = P/S = 1/E ≥ 1
+```
 
-## 3. Compare the same expanded job
+This is an upper power model for idle workers, not useful computation on every node during A. In a phase-aware model, all nodes retain baseline power, one computes during A, and all compute during B:
 
-Serial execution of \(W_P\) requires \(ST\), so under the same active power
+```text
+Jₚ = P p_i T+p_d(A+PB) = T(P p_i+S p_d)
+R_J = Jₚ/J₁ = [(P/S)p_i+p_d]/(p_i+p_d)
+1 ≤ R_J ≤ P/S       for p_i+p_d > 0 and 1 ≤ S ≤ P
+```
 
-\[
-J_1(W_P)=(p_i+p_d)ST.
-\]
+Dynamic energy matches serial dynamic energy; excess comes from baseline draw. If p_i = 0 or S = P, R_J = 1. Switching unused nodes off could remove idle baseline energy, but needs explicit transition-cost and availability assumptions.
 
-If all \(P\) nodes remain fully active for the entire parallel run,
+## Numerical check and saving criterion
 
-\[
-\frac{J_P(W_P)}{J_1(W_P)}=\frac{P}{S}=\frac1E\geq1
-\]
+For P = 16, α = 0.1, T = 10 s, p_i = 30 W and p_d = 70 W, I obtain S = 14.5, E = 0.90625 and matched serial runtime 145 s.
 
-for ideal \(S\leq P\). Faster completion alone therefore does not prove an energy saving. This full-active assumption is an upper model for otherwise idle workers, not a claim that useful arithmetic occurs on every node during the serial phase.
-
-A more phase-aware model keeps every node powered at baseline, but only one node draws incremental dynamic power during \(A\); all nodes compute during \(B\). Then
-
-\[
-J_P=Pp_iT+p_d(A+PB)=T(Pp_i+Sp_d),
-\]
-
-\[
-\boxed{R_J=\frac{J_P}{J_1(W_P)}
-=\frac{(P/S)p_i+p_d}{p_i+p_d}}.
-\]
-
-For \(p_i+p_d>0\), \(1\leq S\leq P\),
-
-\[
-\boxed{1\leq R_J\leq P/S}.
-\]
-
-Dynamic energy is identical to serial dynamic energy in this ideal work-conserving model; extra energy comes from baseline power on idle allocated nodes. If \(p_i=0\), the ratio is 1. If \(S=P\), it is also 1. Perfectly powering off unused nodes during the serial phase could remove their baseline contribution, but requires explicit assumptions about transition costs and availability.
-
-## 4. Numerical example and a general saving criterion
-
-Take illustrative values \(P=16\), \(\alpha=0.1\), \(T=10\) s, \(p_i=30\) W and \(p_d=70\) W. Then \(S=14.5\), \(E=0.90625\), and the matched serial job takes 145 s.
-
-| Comparison quantity | Energy |
+| Execution | Energy |
 |---|---:|
-| Small one-node job, 10 s | 1,000 J |
+| Small job, one node, 10 s | 1,000 J |
 | Expanded job, one node, 145 s | 14,500 J |
-| Expanded job, 16 fully active nodes, 10 s | 16,000 J |
-| Expanded job, phase-aware power, 10 s | 14,950 J |
+| Expanded job, 16 fully active nodes | 16,000 J |
+| Expanded job, phase-aware power | 14,950 J |
 
-The matched-work ratios are 1.10345 and 1.03103, respectively. Neither equals the unmatched equal-time ratio 16.
+Matched ratios are 1.10345 and 1.03103, not 16. For actual matched-work speedup S and average total-system powers p̄ₚ,p̄₁:
 
-More generally, let \(\bar p_P\) be average **total system** power for the parallel job and \(\bar p_1\) the corresponding serial power. Using the actual matched-work speedup \(S=T_1/T_P\),
+```text
+Jₚ/J₁ = (p̄ₚ/p̄₁)/S
+Jₚ ≤ J₁  ⇔  p̄ₚ/p̄₁ ≤ S
+```
 
-\[
-\frac{J_P}{J_1}=\frac{\bar p_P/\bar p_1}{S},\qquad
-\boxed{J_P\leq J_1\iff\bar p_P/\bar p_1\leq S}.
-\]
+Thus energy savings require power growth no greater than speedup. Lower voltage, sleeping nodes or shared baseline amortization may help; communication and busy waiting may hurt. I would report the power boundary and joules per matched validated result.
 
-Thus energy saving is possible if power grows less than speedup—for example through lower voltage, sleeping idle nodes, or amortizing substantial shared baseline power. It is not guaranteed by Gustafson scaling. Communication, busy waiting and longer runtime can increase energy without adding useful work; real measurements should include these phases, clearly specify the power boundary, and report joules per matched solution or per validated useful result.
+## Reference
 
-## Source and scope
-
-The workload accounting follows Gustafson's original scaled-work interpretation: <https://doi.org/10.1145/42411.42415>. Power assumptions, energy equations and numerical examples here are derived analytical models, not hardware measurements or an empirical energy law.
+I use [Gustafson's scaled-work interpretation (1988)](https://doi.org/10.1145/42411.42415); the power equations and examples are derived models, not an empirical energy law.

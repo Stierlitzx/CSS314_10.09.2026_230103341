@@ -2,78 +2,56 @@
 
 **Student ID:** 230103341
 
-## 1. Count useful work independently of overhead
+## Useful work and exposed overhead
 
-Consider a scaled workload with useful serial time \(A\geq0\) and useful parallel work costing \(B>0\) seconds **per worker**, constant as \(P\) grows. The ideal parallel time is \(T_0=A+B\); serial execution of this same scaled workload takes \(A+PB\). Let \(C(P)\geq0\) be additional exposed communication/synchronization time on the critical path, measured in seconds. Then
+I take constant serial useful time A ≥ 0 and balanced parallel useful time B > 0 per worker. The scaled workload has ideal elapsed time T₀ = A+B and one-core useful time A+PB. Let C(P) ≥ 0 be exposed communication/synchronization time on the critical path, absent from the serial reference.
 
-\[
-T_P=A+B+C(P),\qquad
-\boxed{S_{\mathrm{useful}}(P)=\frac{A+PB}{A+B+C(P)}}.
-\]
+```text
+Tₚ = A+B+C(P)
+S = (A+PB)/[A+B+C(P)]
+α = A/T₀; c(P) = C(P)/T₀
+S = [α+P(1−α)]/[1+c(P)]
+E = [1−α+α/P]/[1+c(P)]
+```
 
-The reference serial algorithm is assumed not to need this distributed communication. Consequently overhead belongs in the denominator, **not in the useful-work numerator**. If communication overlaps computation, \(C\) means only its unhidden contribution; adding full transfer time would double-count overlap. Setup or imbalance can be modeled separately or included in a clearly labeled total overhead.
+I put overhead only in the denominator. C includes only unhidden communication; otherwise overlap is double-counted. The fraction α uses ideal useful time, not measured Tₚ. Applying Gustafson directly to A/Tₚ would wrongly reconstruct communication as useful computation. [G88]
 
-Writing \(\alpha=A/T_0\), \(c(P)=C(P)/T_0\),
+## Growth models
 
-\[
-S_{\mathrm{useful}}
-=\frac{\alpha+P(1-\alpha)}{1+c(P)},\qquad
-E=\frac{S_{\mathrm{useful}}}{P}
-=\frac{1-\alpha+\alpha/P}{1+c(P)}.
-\]
+I require positive coefficients and equalities or matching Θ growth, meaning matching asymptotic upper and lower bounds. An O(log P) upper bound alone also permits bounded or zero cost.
 
-The fraction \(\alpha\) is relative to useful ideal elapsed time. It is not \(A/T_P\) once communication is added. Applying the ordinary Gustafson formula to \(A/T_P\) and treating all remaining elapsed time as useful parallel work would falsely credit communication as computation. The ideal expression itself comes from reconstructing serial useful work, not from subtracting an arbitrary “communication speedup penalty.” [G88]
+```text
+C(P) = c log₂P, c > 0, P a power of two:
+S = Θ(P/log P); E = Θ(1/log P) → 0
 
-## 2. Two explicit growth models
+C(P) = d(√P−1), d > 0:
+S = Θ(√P); E = Θ(P⁻¹ᐟ²) → 0
+```
 
-A statement \(C(P)=O(\log P)\) is only an upper bound: zero or bounded cost also satisfies it. To obtain the following limits, assume positive coefficients and the stated **equalities**, or corresponding \(\Theta\) growth.
+A fixed-fan-in tree with fixed-size messages motivates the first model; topology-dependent exchange may motivate the second. Neither is universal. The subtraction in √P−1 merely makes C(1) = 0.
 
-### Tree-like latency
+For constant A,B, any C → ∞ forces E → 0. If C → C∞, then E → B/(A+B+C∞). For C = Θ(P), speedup stays bounded; superlinear communication can make S → 0.
 
-Let \(C(P)=c\log_2P\), \(c>0\), for powers of two. Then
+## Numerical example and budget
 
-\[
-S=\frac{A+PB}{T_0+c\log_2P}
-=\Theta(P/\log P),\quad
-E=\Theta(1/\log P)\longrightarrow0.
-\]
+At A = 1 s, B = 9 s and P = 64, I obtain 577 s one-core useful time and 10 s ideal parallel time. These are calculations, not measurements.
 
-Speedup grows without bound but efficiency falls: more total work is done, with less useful throughput per worker. A fixed fan-in tree with a fixed-size message motivates this model; it is not a universal cost law for every collective.
-
-### Square-root communication
-
-Let \(C(P)=d(\sqrt P-1)\), \(d>0\). The subtraction only enforces zero extra cost at \(P=1\); communication is still added to runtime. Now
-
-\[
-S=\Theta(\sqrt P),\qquad E=\Theta(P^{-1/2})\longrightarrow0.
-\]
-
-An exposed cost with this growth might model a topology-dependent exchange; it must be justified for the particular algorithm and network rather than inferred from processor count alone.
-
-More generally, at constant \(A,B\), any \(C(P)\to\infty\) forces \(E\to0\). Bounded overhead \(C\to C_\infty\) instead gives \(E\to B/(A+B+C_\infty)\). If \(C=\Theta(P)\), speedup remains bounded; superlinear \(C\) can eventually make speedup tend to zero.
-
-## 3. Illustrative calculation and overhead budget
-
-Take \(A=1\) s, \(B=9\) s and \(P=64\). Useful serial time is 577 s and ideal parallel time is 10 s. The following numbers are analytical examples, not network measurements.
-
-| Exposed cost model | \(C(64)\), s | \(T_{64}\), s | Useful speedup | Efficiency |
+| Cost model | C(64), s | T₆₄, s | S | E |
 |---|---:|---:|---:|---:|
-| No overhead | 0 | 10 | 57.700 | 0.90156 |
-| \(0.1\log_2P\) s | 0.6 | 10.6 | 54.434 | 0.85053 |
-| \(0.1(\sqrt P-1)\) s | 0.7 | 10.7 | 53.925 | 0.84258 |
+| None | 0 | 10 | 57.700 | 0.90156 |
+| 0.1 log₂P s | 0.6 | 10.6 | 54.434 | 0.85053 |
+| 0.1(√P−1) s | 0.7 | 10.7 | 53.925 | 0.84258 |
 
-For target efficiency \(E_0>0\), rearrangement gives the allowable exposed communication budget:
+For target E₀ > 0, I derive:
 
-\[
-C(P)\leq\frac{B+A/P}{E_0}-(A+B).
-\]
+```text
+E ≥ E₀  ⇔  C(P) ≤ (B+A/P)/E₀−(A+B)
+```
 
-A negative right-hand side means the target is impossible even without communication at that processor count. With fixed useful per-worker work, the budget approaches a constant; divergent communication eventually violates any fixed positive target.
+A negative budget makes the target impossible even without communication. Its asymptotic budget is constant, so divergent C eventually violates every positive target.
 
-## 4. What a real experiment must report
+For empirical comparison I would separate compute, collectives, imbalance and message volume without summing overlapping intervals, and preserve matched useful results. Increasing B may amortize communication, but changes the workload family and abandons this constant-work-per-worker premise.
 
-Measure useful computation, collective time, imbalance, message volume and total elapsed time without summing overlapping intervals. Preserve the same useful result in the serial reference. If per-worker work is increased to hide growing communication, label this as a new workload family: it may restore efficiency but is no longer the constant-\(B\) family above. Report both useful speedup and elapsed time, since the ideal fixed-time premise has been lost whenever \(C(P)\) grows.
+## Reference
 
-## Source
-
-- [G88] J. L. Gustafson, “Reevaluating Amdahl's Law” (1988), original scaled-work interpretation: <https://doi.org/10.1145/42411.42415>. Communication equations and examples here are explicit analytical extensions, not claims from that paper.
+- **[G88]** Gustafson, “Reevaluating Amdahl's Law” (1988): [DOI](https://doi.org/10.1145/42411.42415). I derive the communication extensions here; they are not reported network measurements.
