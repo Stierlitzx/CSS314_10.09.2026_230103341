@@ -1,0 +1,60 @@
+P= 8 run=1 Ts=1.641853s Tp=0.562572s S=2.918 correct=True
+P=12 run=1 Ts=2.251412s Tp=0.813607s S=2.767 correct=True
+P=11 run=1 Ts=2.063166s Tp=0.710689s S=2.903 correct=True
+P= 7 run=1 Ts=1.399859s Tp=0.526539s S=2.659 correct=True
+P= 2 run=1 Ts=0.393520s Tp=0.402407s S=0.978 correct=True
+P= 6 run=1 Ts=1.210857s Tp=1.228674s S=0.985 correct=True
+P= 3 run=1 Ts=0.823879s Tp=0.524212s S=1.572 correct=True
+P= 5 run=1 Ts=1.514077s Tp=0.574466s S=2.636 correct=True
+P= 4 run=1 Ts=0.838082s Tp=0.483114s S=1.735 correct=True
+P= 1 run=1 Ts=0.212299s Tp=0.388135s S=0.547 correct=True
+P= 9 run=1 Ts=1.882286s Tp=0.636374s S=2.958 correct=True
+P=10 run=1 Ts=1.962930s Tp=0.751479s S=2.612 correct=True
+P= 7 run=2 Ts=1.316085s Tp=0.544200s S=2.418 correct=True
+P=10 run=2 Ts=2.007775s Tp=0.805895s S=2.491 correct=True
+P= 6 run=2 Ts=1.129904s Tp=0.519605s S=2.175 correct=True
+P= 4 run=2 Ts=0.733198s Tp=0.410208s S=1.787 correct=True
+P= 2 run=2 Ts=0.378747s Tp=0.403327s S=0.939 correct=True
+P=12 run=2 Ts=2.308544s Tp=0.793582s S=2.909 correct=True
+P= 3 run=2 Ts=0.565579s Tp=0.410798s S=1.377 correct=True
+P= 9 run=2 Ts=1.742241s Tp=0.543544s S=3.205 correct=True
+P= 5 run=2 Ts=0.937645s Tp=0.484620s S=1.935 correct=True
+P= 1 run=2 Ts=0.186580s Tp=0.344790s S=0.541 correct=True
+P=11 run=2 Ts=2.087165s Tp=0.668601s S=3.122 correct=True
+P= 8 run=2 Ts=1.486977s Tp=0.572749s S=2.596 correct=True
+P=11 run=3 Ts=2.237376s Tp=0.786082s S=2.846 correct=True
+P= 3 run=3 Ts=0.651544s Tp=0.494688s S=1.317 correct=True
+P= 4 run=3 Ts=0.733435s Tp=0.495805s S=1.479 correct=True
+P= 1 run=3 Ts=0.195145s Tp=0.392358s S=0.497 correct=True
+P= 7 run=3 Ts=1.365494s Tp=0.546094s S=2.500 correct=True
+P= 2 run=3 Ts=0.403137s Tp=0.369722s S=1.090 correct=True
+P= 9 run=3 Ts=1.609339s Tp=0.554349s S=2.903 correct=True
+P= 5 run=3 Ts=0.972647s Tp=0.447089s S=2.176 correct=True
+P=10 run=3 Ts=1.923800s Tp=0.576845s S=3.335 correct=True
+P= 6 run=3 Ts=1.119949s Tp=0.520976s S=2.150 correct=True
+P= 8 run=3 Ts=1.415152s Tp=0.542140s S=2.610 correct=True
+P=12 run=3 Ts=2.130768s Tp=0.672194s S=3.170 correct=True
+P= 3 run=4 Ts=0.607983s Tp=0.368093s S=1.652 correct=True
+P= 5 run=4 Ts=1.030403s Tp=0.491254s S=2.097 correct=True
+P= 6 run=4 Ts=1.273161s Tp=0.546357s S=2.330 correct=True
+P= 9 run=4 Ts=1.967816s Tp=0.604213s S=3.257 correct=True
+P= 8 run=4 Ts=1.474967s Tp=0.583801s S=2.526 correct=True
+P= 4 run=4 Ts=0.737013s Tp=0.454575s S=1.621 correct=True
+P= 7 run=4 Ts=1.255470s Tp=0.527834s S=2.379 correct=True
+P=10 run=4 Ts=1.851887s Tp=0.594045s S=3.117 correct=True
+P=12 run=4 Ts=2.333249s Tp=0.737729s S=3.163 correct=True
+P= 2 run=4 Ts=0.387164s Tp=0.401248s S=0.965 correct=True
+P=11 run=4 Ts=2.033450s Tp=0.684048s S=2.973 correct=True
+P= 1 run=4 Ts=0.181869s Tp=0.356170s S=0.511 correct=True
+P= 7 run=5 Ts=1.296212s Tp=0.520467s S=2.490 correct=True
+P= 5 run=5 Ts=0.905106s Tp=0.461458s S=1.961 correct=True
+P= 4 run=5 Ts=0.839684s Tp=0.416634s S=2.015 correct=True
+P= 2 run=5 Ts=0.415881s Tp=0.402511s S=1.033 correct=True
+P= 3 run=5 Ts=0.547795s Tp=0.378652s S=1.447 correct=True
+P= 1 run=5 Ts=0.177445s Tp=0.326751s S=0.543 correct=True
+P= 9 run=5 Ts=1.655689s Tp=0.674157s S=2.456 correct=True
+P=12 run=5 Ts=2.129649s Tp=0.823112s S=2.587 correct=True
+P= 6 run=5 Ts=1.219704s Tp=0.475928s S=2.563 correct=True
+P= 8 run=5 Ts=1.558045s Tp=0.530006s S=2.940 correct=True
+P=11 run=5 Ts=2.093400s Tp=0.642752s S=3.257 correct=True
+P=10 run=5 Ts=1.932304s Tp=0.570650s S=3.386 correct=True

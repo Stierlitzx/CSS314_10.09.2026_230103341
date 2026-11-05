@@ -1,0 +1,74 @@
+{
+  "alpha_observed": 0.78499122589222,
+  "alpha_in_physical_range": true,
+  "fitting_method": "unweighted least squares of per-configuration mean paired Ts(P*k)/Tp(P*k); intercept fixed at S(1)=1",
+  "formula": "alpha=sum((P-1)*(P-Smean))/sum((P-1)^2)",
+  "alpha_residual_standard_error": 0.011439270620585862,
+  "alpha_se_caveat": "OLS residual-based diagnostic, not a direct measurement or calibrated confidence interval; heteroscedasticity/model mismatch possible",
+  "rmse": 0.24636517171912709,
+  "r_squared": 0.905843330259464,
+  "free_intercept_diagnostic": {
+    "intercept": 0.7287831796854174,
+    "slope": 0.22149431790087262,
+    "expected_intercept": 0.78499122589222,
+    "expected_slope": 0.21500877410777997
+  },
+  "residuals": [
+    {
+      "P": 1,
+      "residual": -0.4721684206777892
+    },
+    {
+      "P": 2,
+      "residual": -0.21391460185390754
+    },
+    {
+      "P": 3,
+      "residual": 0.04276565039110003
+    },
+    {
+      "P": 4,
+      "residual": 0.08260059820933408
+    },
+    {
+      "P": 5,
+      "residual": 0.30093333719111826
+    },
+    {
+      "P": 6,
+      "residual": -0.03448076080126938
+    },
+    {
+      "P": 7,
+      "residual": 0.19924155425741397
+    },
+    {
+      "P": 8,
+      "residual": 0.2131694315452628
+    },
+    {
+      "P": 9,
+      "residual": 0.23573780206560135
+    },
+    {
+      "P": 10,
+      "residual": 0.053330931930164915
+    },
+    {
+      "P": 11,
+      "residual": -0.1299720810797691
+    },
+    {
+      "P": 12,
+      "residual": -0.44586757979766567
+    }
+  ],
+  "warnings": [
+    "P=1 startup-inclusive speedup need not be one: reference is direct, not a spawned worker.",
+    "A fitted effective alpha includes overhead and imbalance; it is not instrumentation of serial code.",
+    "Amdahl with the same numerical fraction is a different-workload illustration, not a matched-work prediction."
+  ],
+  "source": "benchmarks\\results.csv",
+  "configurations": 12,
+  "trials": 60
+}
