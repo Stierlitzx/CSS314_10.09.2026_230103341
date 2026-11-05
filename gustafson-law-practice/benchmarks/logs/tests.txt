@@ -1,0 +1,20 @@
+test_cli_ranges (__main__.ModelTests.test_cli_ranges) ... ok
+test_csv_export (__main__.ModelTests.test_csv_export) ... ok
+test_endpoints (__main__.ModelTests.test_endpoints) ... ok
+test_invalid_models (__main__.ModelTests.test_invalid_models) ... ok
+test_known_calculations (__main__.ModelTests.test_known_calculations) ... ok
+test_reference_conversion (__main__.ModelTests.test_reference_conversion) ... ok
+test_does_not_clamp_nonphysical_fit (__main__.RegressionTests.test_does_not_clamp_nonphysical_fit) ... ok
+test_exact_recovery (__main__.RegressionTests.test_exact_recovery) ... ok
+test_fit_identifiability (__main__.RegressionTests.test_fit_identifiability) ... ok
+test_rejects_corrupt_data (__main__.RegressionTests.test_rejects_corrupt_data) ... ok
+test_rejects_duplicate_missing_and_empty (__main__.RegressionTests.test_rejects_duplicate_missing_and_empty) ... ok
+test_statistics_and_validation (__main__.RegressionTests.test_statistics_and_validation) ... ok
+test_chunks_cover_exactly_the_scaled_domain (__main__.WorkloadTests.test_chunks_cover_exactly_the_scaled_domain) ... ok
+test_real_spawn (__main__.WorkloadTests.test_real_spawn) ... ok
+test_retained_empirical_dataset (__main__.WorkloadTests.test_retained_empirical_dataset) ... ok
+
+----------------------------------------------------------------------
+Ran 15 tests in 0.369s
+
+OK
