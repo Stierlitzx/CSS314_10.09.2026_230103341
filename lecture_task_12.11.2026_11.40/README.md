@@ -18,6 +18,7 @@ only the Python standard library and are written for Windows `spawn`.
 | Weak scaling | 564.216–939.685 ms | Runtime grows as the per-worker workload is increased |
 | Roofline copy bandwidth | **2.1975 GB/s** | Standard-library byte-copy ceiling on this run |
 | Roofline compute ceiling | **0.1677 GFLOP/s** | Scalar Python arithmetic is interpreter-bound |
+| GEMM optimization | Three variants and ten tile sizes | Quick validation best tile: BS=24 |
 | Dynamic scheduling | **14343.952 ms**, chunk 64 | Best dynamic wall time; imbalance factor lambda = 1.022 |
 
 The complete raw capture is [`full_run_2026-11-12.txt`](full_run_2026-11-12.txt).
@@ -27,17 +28,19 @@ The measured analysis is [`lab_report_230103341.md`](lab_report_230103341.md).
 
 | Property | Recorded value |
 |---|---|
-| CPU model | AMD Ryzen 5 7640HS |
+| CPU model | AMD Ryzen 5 7640HS w/ Radeon 760M Graphics |
 | Physical cores / logical threads | **6 / 12** |
+| L2 / L3 cache | **6144 KB / 16384 KB** |
+| Cache-line size | **64 bytes** (x86-64 baseline) |
 | Operating system | Windows 11 |
 | Python runtime | CPython 3.14.3 |
 | Multiprocessing start method | `spawn` |
 | Timer | `time.perf_counter_ns()` |
 | Dependencies | Python standard library only |
 
-The current Phase 0 script records processor counts and timer calibration. It
-does not yet query L1d, L2, L3, or cache-line size directly through Windows;
-those values are intentionally marked unavailable rather than fabricated.
+Phase 0 queries processor counts and L2/L3 values through Windows CIM and
+records the x86-64 cache-line baseline. Windows CIM does not expose L1d size in
+this script.
 
 ## M0 — Harness and verification
 
@@ -110,9 +113,10 @@ unrolled scalar floating-point loop across six workers.
 | Measured ridge point | **0.076331 FLOP/byte** |
 
 These values characterize the supplied Python microbenchmarks, not the
-processor's theoretical vector peak. The current implementation does not yet
-contain the assignment's three GEMM variants, ten-point tile-size sweep,
-numerical equivalence check, or GEMM roofline placement.
+processor's theoretical vector peak. The same phase also runs naive `i-j-k`,
+reordered `i-k-j`, and cache-blocked GEMM variants at
+`BS = {4,8,12,16,24,32,48,64,96,128}`, checking blocked output against the
+reordered output with a maximum absolute error threshold of `1e-9`.
 
 ## M4 — Skewed scheduling and load imbalance
 

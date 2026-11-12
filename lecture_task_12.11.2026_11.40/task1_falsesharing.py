@@ -63,9 +63,11 @@ def main() -> None:
                 baseline = stats.median_ms if baseline is None else baseline
                 speedup = baseline / stats.median_ms
                 efficiency = speedup / count
+                karp_flatt = ((1.0 / speedup) - 1.0 / count) / (1.0 - 1.0 / count) if count > 1 else 0.0
                 scaling[(stride, count)] = stats.median_ms
                 print(f"scale stride={stride} p={count} median_ms={stats.median_ms:.3f} "
-                      f"speedup={speedup:.3f} efficiency={efficiency:.3f}")
+                      f"speedup={speedup:.3f} efficiency={efficiency:.3f} "
+                      f"karp_flatt={karp_flatt:.6f}")
         print(emit_verify_tag("PHASE1", "230103341",
                               scaling[(1, processes)], scaling[(16, processes)]))
     finally:
