@@ -21,7 +21,7 @@ only the Python standard library and are written for Windows `spawn`.
 | GEMM optimization | N=256, six tile sizes | Best measured tile: BS=64, 0.030422 GFLOP/s |
 | Dynamic scheduling | **10257.402 ms**, chunk 1 | Best dynamic wall time; imbalance factor lambda = 1.004 |
 
-The complete raw capture is [`full_run_2026-11-12.txt`](full_run_2026-11-12.txt).
+The complete raw capture is [`minimal_full_final_2026-11-12.txt`](minimal_full_final_2026-11-12.txt).
 The measured analysis is [`lab_report_230103341.md`](lab_report_230103341.md).
 
 ## Hardware and runtime baseline
