@@ -5,7 +5,7 @@ from multiprocessing import shared_memory
 
 from harness import emit_verify_tag, physical_cpu_count, run_benchmark
 
-M = 24_000_000
+M = 16_000_000
 STRIDES = (1, 2, 4, 8, 16, 32)
 
 
@@ -16,7 +16,7 @@ def fs_worker(shm_name: str, slot_idx: int, iters: int) -> None:
         acc = values[slot_idx]
         for i in range(iters):
             acc = (acc * 6364136223846793005 + (i | 1)) & 0xFFFFFFFFFFFFFFFF
-        values[slot_idx] = acc
+            values[slot_idx] = acc
         del values
     finally:
         shm.close()
@@ -35,7 +35,7 @@ def measure(shm_name: str, processes: int, stride: int, iterations: int):
             if child.exitcode != 0:
                 raise RuntimeError(f"false-sharing worker failed: {child.exitcode}")
 
-    return run_benchmark(run, warmup_runs=1, timed_runs=3)
+    return run_benchmark(run, warmup_runs=2, timed_runs=7)
 
 
 def main() -> None:

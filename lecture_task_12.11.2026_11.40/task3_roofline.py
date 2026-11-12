@@ -6,13 +6,17 @@ import time
 
 from harness import emit_verify_tag
 
-TILES = (4, 8, 12, 16, 24, 32, 48, 64, 96, 128)
+TILES = (8, 16, 32, 64, 96, 128)
 
 
-def copy_worker(size):
-    source = bytearray(size)
-    target = bytearray(size)
-    target[:] = source
+def copy_worker(names):
+    source_shm = shared_memory.SharedMemory(name=names[0])
+    target_shm = shared_memory.SharedMemory(name=names[1])
+    try:
+        target_shm.buf[:] = source_shm.buf
+    finally:
+        source_shm.close()
+        target_shm.close()
 
 
 def fma_worker(iterations):
@@ -110,13 +114,19 @@ def main():
     parser.add_argument("--quick", action="store_true")
     args = parser.parse_args()
     workers = min(physical_count(), 4) if args.quick else physical_count()
-    size = 48 if args.quick else 384
-    copy_size = 1 << 20 if args.quick else 96 * 10**6
+    size = 48 if args.quick else 256
+    copy_size = 1 << 20 if args.quick else 64 * 10**6
+    source = shared_memory.SharedMemory(create=True, size=copy_size)
+    target = shared_memory.SharedMemory(create=True, size=copy_size)
     start = time.perf_counter_ns()
     with mp.Pool(workers) as pool:
-        pool.map(copy_worker, [copy_size] * workers)
+        pool.map(copy_worker, [(source.name, target.name)] * workers)
     bandwidth = 2 * copy_size * workers / ((time.perf_counter_ns() - start) / 1e9) / 1e9
-    fma_iterations = 10_000 if args.quick else 80_000_000
+    source.close()
+    target.close()
+    source.unlink()
+    target.unlink()
+    fma_iterations = 10_000 if args.quick else 60_000_000
     start = time.perf_counter_ns()
     with mp.Pool(workers) as pool:
         pool.map(fma_worker, [fma_iterations] * workers)

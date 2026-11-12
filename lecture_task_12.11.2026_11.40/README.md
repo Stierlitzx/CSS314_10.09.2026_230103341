@@ -12,14 +12,14 @@ only the Python standard library and are written for Windows `spawn`.
 
 | Experiment | Measured result | Main finding |
 |---|---:|---|
-| Hardware calibration | 88.0587 ns timer-call latency | 6 physical / 12 logical processors |
-| False-sharing stride sweep | 754.682 ms at stride 1, `p=6` | Process launch and OS noise dominate this run; no reliable cache-line cliff was isolated |
-| Strong scaling | **5.5823x** at 12 workers | Fixed workload falls from 2995.906 ms to 536.681 ms |
-| Weak scaling | 564.216–939.685 ms | Runtime grows as the per-worker workload is increased |
-| Roofline copy bandwidth | **2.1975 GB/s** | Standard-library byte-copy ceiling on this run |
-| Roofline compute ceiling | **0.1677 GFLOP/s** | Scalar Python arithmetic is interpreter-bound |
-| GEMM optimization | Three variants and ten tile sizes | Quick validation best tile: BS=24 |
-| Dynamic scheduling | **14343.952 ms**, chunk 64 | Best dynamic wall time; imbalance factor lambda = 1.022 |
+| Hardware calibration | 167.7681 ns timer-call latency | 6 physical / 12 logical processors |
+| False-sharing stride sweep | 1403.072 ms at stride 1, `p=6` | 64-byte separation was fastest in this run |
+| Strong scaling | **7.3216x** at 12 workers | Fixed 1.2M-element workload |
+| Weak scaling | 1344.886–1900.783 ms | Runtime grows beyond six physical cores |
+| Roofline copy bandwidth | **2.3236 GB/s** | 64 MB shared-buffer copy benchmark |
+| Roofline compute ceiling | **0.1366 GFLOP/s** | 60M-FLOP scalar FMA benchmark |
+| GEMM optimization | N=256, six tile sizes | Best measured tile: BS=64, 0.030422 GFLOP/s |
+| Dynamic scheduling | **10257.402 ms**, chunk 1 | Best dynamic wall time; imbalance factor lambda = 1.004 |
 
 The complete raw capture is [`full_run_2026-11-12.txt`](full_run_2026-11-12.txt).
 The measured analysis is [`lab_report_230103341.md`](lab_report_230103341.md).
@@ -65,17 +65,16 @@ words, followed by scaling at strides 1 and 16.
 
 | Stride | Separation | Median ms | IQR ms | Mops/s |
 |---:|---:|---:|---:|---:|
-| 1 | 8 bytes | 754.682 | 359.697 | 31.801 |
-| 2 | 16 bytes | 1383.462 | 408.856 | 17.348 |
-| 4 | 32 bytes | 1254.488 | 30.434 | 19.131 |
-| 8 | 64 bytes | 1386.869 | 412.643 | 17.305 |
-| 16 | 128 bytes | 1271.015 | 93.098 | 18.883 |
-| 32 | 256 bytes | 1414.416 | 186.283 | 16.968 |
+| 1 | 8 bytes | 1403.072 | 103.365 | 11.404 |
+| 2 | 16 bytes | 1385.897 | 30.681 | 11.545 |
+| 4 | 32 bytes | 1348.652 | 53.895 | 11.864 |
+| 8 | 64 bytes | 1334.728 | 57.164 | 11.987 |
+| 16 | 128 bytes | 1349.644 | 181.554 | 11.855 |
+| 32 | 256 bytes | 1349.901 | 58.564 | 11.853 |
 
-The run does not support claiming a clean cache-line boundary: stride 1 was
-faster than the larger strides at `p=6`, and process creation, scheduling, and
-Windows variance are substantial relative to the Python loop. At `p=12`,
-stride 1 measured 1094.568 ms and stride 16 measured 1087.476 ms.
+The best measured separation was 32 bytes, not a clean cache-line boundary.
+At `p=12`, stride 1 measured 875.277 ms and stride 16 measured 914.189 ms.
+The Karp-Flatt values are printed for every scaling point in the raw capture.
 
 ## M2 — Strong and weak scaling
 
@@ -84,21 +83,21 @@ pool-based floating-point kernel.
 
 | Workers | Strong ms | Weak ms |
 |---:|---:|---:|
-| 1 | 2995.906 | 564.216 |
-| 2 | 1540.211 | 467.837 |
-| 3 | 1128.215 | 549.988 |
-| 4 | 931.393 | 555.418 |
-| 5 | 739.682 | 563.870 |
-| 6 | 762.785 | 585.265 |
-| 7 | 705.041 | 730.721 |
-| 8 | 843.016 | 736.664 |
-| 9 | 634.297 | 755.296 |
-| 10 | 475.786 | 840.668 |
-| 11 | 481.871 | 979.176 |
-| 12 | 536.681 | 939.685 |
+| 1 | 7987.341 | 1671.923 |
+| 2 | 3555.843 | 1849.839 |
+| 3 | 2292.564 | 1502.625 |
+| 4 | 2001.573 | 1544.008 |
+| 5 | 1635.643 | 1462.344 |
+| 6 | 1380.468 | 1344.886 |
+| 7 | 1189.918 | 1430.807 |
+| 8 | 1180.617 | 1620.975 |
+| 9 | 1088.278 | 1663.532 |
+| 10 | 992.521 | 1707.785 |
+| 11 | 965.664 | 1831.083 |
+| 12 | 1090.925 | 1900.783 |
 
-Observed strong speedup at 12 workers is **5.5823x**. The measured serial
-fraction is **0.070063**. Weak-scaling time increases after the physical-core
+Observed strong speedup at 12 workers is **7.3216x**. The measured serial
+fraction is **0.021040**. Weak-scaling time increases after the physical-core
 boundary as the workload grows and logical processors contend for resources.
 
 ## M3 — Empirical roofline probe
@@ -108,47 +107,45 @@ unrolled scalar floating-point loop across six workers.
 
 | Quantity | Value |
 |---|---:|
-| Sustained copy bandwidth | **2.1975 GB/s** |
-| Sustained compute throughput | **0.1677 GFLOP/s** |
-| Measured ridge point | **0.076331 FLOP/byte** |
+| Sustained copy bandwidth | **2.3236 GB/s** |
+| Sustained compute throughput | **0.1366 GFLOP/s** |
+| Measured ridge point | **0.058769 FLOP/byte** |
 
 These values characterize the supplied Python microbenchmarks, not the
 processor's theoretical vector peak. The same phase also runs naive `i-j-k`,
 reordered `i-k-j`, and cache-blocked GEMM variants at
-`BS = {4,8,12,16,24,32,48,64,96,128}`, checking blocked output against the
+`N=256` and `BS = {8,16,32,64,96,128}`, checking blocked output against the
 reordered output with a maximum absolute error threshold of `1e-9`.
 
 ## M4 — Skewed scheduling and load imbalance
 
 [`task4_scheduling.py`](task4_scheduling.py) evaluates contiguous static,
 cyclic static, and shared-counter dynamic scheduling over the triangular
-workload `K(i) = 1 + floor(i / 60)^2`.
+workload `K(i) = 1 + floor(i / 40)^2` over 8,000 items.
 
 | Strategy | Chunk | Wall ms | Imbalance lambda |
 |---|---:|---:|---:|
-| Contiguous block static | — | 24854.597 | not retained |
-| Cyclic static | — | 15319.219 | not retained |
-| Dynamic | 1 | 16037.395 | 1.002 |
-| Dynamic | 4 | 15807.804 | 1.004 |
-| Dynamic | 16 | 14585.968 | 1.011 |
-| Dynamic | 64 | **14343.952** | **1.022** |
-| Dynamic | 256 | 15049.897 | 1.118 |
-| Dynamic | 1024 | 18520.081 | 1.433 |
+| Contiguous block static | — | 22998.501 | not retained |
+| Cyclic static | — | 11082.593 | not retained |
+| Dynamic | 1 | **10257.402** | **1.004** |
+| Dynamic | 8 | 10361.800 | 1.006 |
+| Dynamic | 64 | 10720.637 | 1.065 |
+| Dynamic | 512 | 14085.482 | 1.328 |
 
-Chunk 64 is the best measured dynamic configuration. Small chunks reduce
+Chunk 1 is the best measured dynamic configuration. Small chunks reduce
 tail skew but increase shared-counter synchronization; large chunks reduce
 locking overhead while leaving a heavier final tail assigned to fewer workers.
 
 ## Verification hashes
 
-These values are copied verbatim from the full run:
+These values are copied verbatim from the Minimal Lab full run:
 
 ```text
-VERIFY_HASH[PHASE0]: CF673008A43F97AF (P_log=12)
-VERIFY_HASH[PHASE1]: 97ED22DCE41CE521 (P_log=12)
-VERIFY_HASH[PHASE2]: 606C7130DF4D8A61 (P_log=12)
-VERIFY_HASH[PHASE3]: A224B1EDA0C2FDE6 (P_log=12)
-VERIFY_HASH[PHASE4]: 81849DF6007B8D4A (P_log=12)
+VERIFY_HASH[PHASE0]: 44E99E04AEEB6783 (P_log=12)
+VERIFY_HASH[PHASE1]: 9B5DEA72F6947F37 (P_log=12)
+VERIFY_HASH[PHASE2]: D5A10D4FC85C47E3 (P_log=12)
+VERIFY_HASH[PHASE3]: CAC1A5BEC1704C15 (P_log=12)
+VERIFY_HASH[PHASE4]: 64BE1E5AD5965F27 (P_log=12)
 ```
 
 ## Submission layout
@@ -157,7 +154,7 @@ VERIFY_HASH[PHASE4]: 81849DF6007B8D4A (P_log=12)
 lecture_task_12.11.2026_11.40/
 ├── README.md
 ├── lab_report_230103341.md
-├── full_run_2026-11-12.txt
+├── minimal_full_2026-11-12.txt
 ├── harness.py
 ├── lab_runner.py
 ├── task0_cal.py
@@ -173,7 +170,7 @@ Run these commands from this directory:
 
 ```powershell
 py lab_runner.py --quick
-py lab_runner.py *> full_run_YYYY-MM-DD.txt
+py lab_runner.py *> minimal_full_YYYY-MM-DD.txt
 ```
 
 The quick mode validates process creation and output shape. The full mode

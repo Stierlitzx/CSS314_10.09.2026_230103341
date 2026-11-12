@@ -5,12 +5,12 @@ import time
 
 from harness import emit_verify_tag
 
-N = 12_000
-CHUNKS = (1, 4, 16, 64, 256, 1024)
+N = 8_000
+CHUNKS = (1, 8, 64, 512)
 
 
 def item_cost(index):
-    return 1 + (index // 60) ** 2
+    return 1 + (index // 40) ** 2
 
 
 def do_items(indices, timings, slot):
@@ -81,7 +81,7 @@ def main():
     parser.add_argument("--quick", action="store_true")
     args = parser.parse_args()
     workers = min(physical_count(), 4) if args.quick else physical_count()
-    n = 1_200 if args.quick else N
+    n = 800 if args.quick else N
     wall_block, _ = run("block", workers, n=n)
     wall_cyclic, _ = run("cyclic", workers, n=n)
     print(f"block wall_ms={wall_block:.3f}")

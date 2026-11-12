@@ -11,7 +11,7 @@ def kernel(bounds):
     total = 0.0
     for i in range(start, end):
         x = i * 1.0e-6
-        for _ in range(8):
+        for _ in range(30):
             x = math.sin(x) * 0.5 + math.sqrt(abs(x) + 1.0)
         total += x
     return total
@@ -21,7 +21,7 @@ def serial_stage(n):
     total = 0.0
     for i in range(max(1, n // 20)):
         x = i * 1.0e-5
-        for _ in range(12):
+        for _ in range(10):
             x = math.sin(x) + math.sqrt(abs(x) + 1.0)
         total += x
     return total
@@ -41,8 +41,8 @@ def main():
     parser.add_argument("--quick", action="store_true")
     args = parser.parse_args()
     logical = mp.cpu_count() or 1
-    strong_n = 20_000 if args.quick else 1_600_000
-    base_n = 4_000 if args.quick else 250_000
+    strong_n = 20_000 if args.quick else 1_200_000
+    base_n = 4_000 if args.quick else 200_000
     strong = {}
     weak = {}
     for workers in range(1, logical + 1):
