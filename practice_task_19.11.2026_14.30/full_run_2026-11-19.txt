@@ -1,0 +1,86 @@
+==============================================================================
+Cache Line & False Sharing Mechanics - Numba nogil threads
+==============================================================================
+Git identity        : Stierlitzx
+CPU                 : AMD Ryzen 5 7640HS w/ Radeon 760M Graphics
+cpu_sig             : AMD64::AMD64 Family 25 Model 116 Stepping 1, AuthenticAMD::12
+Logical / physical  : 12 / 6
+Cache line size     : 64 B
+INSTANCE_SEED       : 16200051438975350361 (0xe0d224f3c32e7659)
+Affinity            : supported=True pin_cpus=[0, 2, 4, 6] (one logical CPU per physical core)
+Power state         : {'battery_percent': 54, 'ac_plugged': False}
+Python / NumPy / Numba : 3.14.3 / 2.5.3 / 0.67.0  GIL enabled=True
+Workload            : 4 threads x 60,000,000 updates, 5 trials per layout (median)
+
+[Task 3/4] Wall-clock medians (4 concurrent threads unless noted)
+  layout                                   median ns  ns/update  vs stride 8   lines touched
+  single thread (stride n/a)              40,602,800      0.677       0.961x
+  stride_1 (8 B spacing)                 339,939,400      5.666       8.043x   [0]
+  stride_4 (32 B spacing)                169,377,500      2.823       4.008x   [0, 1]
+  stride_8 (64 B spacing)                 42,262,700      0.704       1.000x   [0, 1, 2, 3]
+  stride_16 (128 B spacing)               46,693,300      0.778       1.105x   [0, 2, 4, 6]
+  register-private (Task 4)                8,506,700      0.142       0.201x
+  naive promotable loop, stride 1          8,529,800      0.142       0.202x
+
+  slowdown stride 1 / stride 8  = 8.043x
+  slowdown stride 4 / stride 8  = 4.008x
+  stride 16 / stride 8          = 1.105x
+  stride 8 / private register   = 4.968x
+
+  Context switches per trial (voluntary/involuntary):
+    stride_1   46/0  53/0  -2/0  29/0  85/0
+    stride_4   294/0  118/0  12/0  29/0  29/0
+    stride_8   5/0  12/0  14/0  -8/0  12/0
+    stride_16  29/0  22/0  11/0  19/0  10/0
+    private    9/0  -8/0  12/0  7/0  4/0
+    source: psutil.num_ctx_switches (Windows: involuntary not separated)
+
+  Per-thread elapsed ns (median trial):
+    stride_1   T0@cpu0=328,390,000  T1@cpu2=339,651,700  T2@cpu4=324,253,700  T3@cpu6=337,240,200
+    stride_4   T0@cpu0=169,292,700  T1@cpu2=164,975,700  T2@cpu4=145,913,400  T3@cpu6=148,580,600
+    stride_8   T0@cpu0=42,092,900  T1@cpu2=40,579,700  T2@cpu4=40,570,300  T3@cpu6=40,991,900
+    stride_16  T0@cpu0=46,925,200  T1@cpu2=40,502,800  T2@cpu4=40,585,700  T3@cpu6=44,840,500
+
+[Q5] Pure-Python bytecode threads (GIL held), per-thread iterations 300,000
+  stride_1_T1    wall      85,328,000 ns   aggregate    284.43 ns/update
+  stride_1_T2    wall     183,843,700 ns   aggregate    306.41 ns/update
+  stride_1_T4    wall     361,207,200 ns   aggregate    301.01 ns/update
+  stride_8_T1    wall     137,826,600 ns   aggregate    459.42 ns/update
+  stride_8_T2    wall     250,841,700 ns   aggregate    418.07 ns/update
+  stride_8_T4    wall     360,081,500 ns   aggregate    300.07 ns/update
+
+[Task 5] Parity (final counters must equal the register-private reference)
+  reference counters : [1949999939, 1950000037, 1950000048, 1950000014]
+  stride_1         OK
+  stride_4         OK
+  stride_8         OK
+  stride_16        OK
+  private          OK
+  naive_promoted   OK
+
+[Task 5] LLVM IR audit (inspect_llvm)
+  worker_strided_accumulate: loop blocks ['B34.prol', 'B34']  store i64 in loop=9 load i64 in loop=9  (total store/load 13/12)  pyobject=False  calls=[]
+      %.182.prol = load i64, ptr %.181.prol, align 8
+      store i64 %.185.prol, ptr %.181.prol, align 8
+      br i1 %prol.iter.cmp.not, label %B34.prol.loopexit.loopexit, label %B34.prol, !llvm.loop !0
+      %.182 = load i64, ptr %.181, align 8
+      store i64 %.185, ptr %.181, align 8
+      %.182.1 = load i64, ptr %.181.1, align 8
+      store i64 %.185.1, ptr %.181.1, align 8
+      %.182.2 = load i64, ptr %.181.2, align 8
+      store i64 %.185.2, ptr %.181.2, align 8
+      %.182.3 = load i64, ptr %.181.3, align 8
+      store i64 %.185.3, ptr %.181.3, align 8
+      %.182.4 = load i64, ptr %.181.4, align 8
+  naive_promotable_accumulate: loop blocks ['vector.body', 'vec.epilog.vector.body', 'B34']  store i64 in loop=0 load i64 in loop=0  (total store/load 5/4)  pyobject=False  calls=[]
+      br i1 %19, label %middle.block, label %vector.body, !llvm.loop !0
+      br i1 %32, label %vec.epilog.middle.block, label %vec.epilog.vector.body, !llvm.loop !4
+      br i1 %.107, label %B34, label %B30.B144_crit_edge, !llvm.loop !5
+  worker_private_accumulate: loop blocks ['vector.body', 'vec.epilog.vector.body', 'B78']  store i64 in loop=0 load i64 in loop=0  (total store/load 5/3)  pyobject=False  calls=['llvm.smax.i64']
+      br i1 %18, label %middle.block, label %vector.body, !llvm.loop !0
+      br i1 %31, label %vec.epilog.middle.block, label %vec.epilog.vector.body, !llvm.loop !4
+      br i1 %.110, label %B78, label %B170.loopexit, !llvm.loop !5
+
+  GIL released (4-thread stride 16 < 2x single thread): True
+  verification_passed: True
+  cache_lab_manifest.json written (sha256 e865527cc49da583...)

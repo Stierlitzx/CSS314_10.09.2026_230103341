@@ -1,0 +1,602 @@
+{
+  "git_username": "Stierlitzx",
+  "mode": "full",
+  "cpu_model": "AMD Ryzen 5 7640HS w/ Radeon 760M Graphics",
+  "cpu_sig": "AMD64::AMD64 Family 25 Model 116 Stepping 1, AuthenticAMD::12",
+  "platform": "Windows-11-10.0.26300-SP0",
+  "logical_cores": 12,
+  "physical_cores": 6,
+  "core_groups": [
+    [
+      0,
+      1
+    ],
+    [
+      2,
+      3
+    ],
+    [
+      4,
+      5
+    ],
+    [
+      6,
+      7
+    ],
+    [
+      8,
+      9
+    ],
+    [
+      10,
+      11
+    ]
+  ],
+  "cache_line_size": 64,
+  "instance_seed": 16200051438975350361,
+  "instance_seed_hex": "0xe0d224f3c32e7659",
+  "thread_seeds": [
+    9797562186397776315,
+    8112684708424031679,
+    9009565161487647945,
+    17124540145932199051
+  ],
+  "affinity_supported": true,
+  "pin_cpus": [
+    0,
+    2,
+    4,
+    6
+  ],
+  "power": {
+    "battery_percent": 54,
+    "ac_plugged": false
+  },
+  "num_threads": 4,
+  "iterations_per_thread": 60000000,
+  "trials": 5,
+  "buffer_alignment_bytes": 128,
+  "single_thread_reference": {
+    "wall_ns_trials": [
+      40864800,
+      40684400,
+      40346900,
+      40602800,
+      40521800
+    ],
+    "wall_ns_median": 40602800,
+    "ns_per_update": 0.6767133333333333
+  },
+  "stride_results": {
+    "stride_1": {
+      "stride_elems": 1,
+      "byte_offsets": [
+        0,
+        8,
+        16,
+        24
+      ],
+      "cache_lines_touched": [
+        0
+      ],
+      "wall_ns_trials": [
+        339939400,
+        342529400,
+        336419600,
+        337339400,
+        344704600
+      ],
+      "wall_ns_median": 339939400,
+      "wall_ns_min": 336419600,
+      "ns_per_update_per_thread": 5.665656666666667,
+      "aggregate_updates_per_ns": 0.7060081885183065,
+      "per_thread_ns_median_trial": [
+        {
+          "thread": 0,
+          "slot": 0,
+          "cpu": 0,
+          "elapsed_ns": 328390000
+        },
+        {
+          "thread": 1,
+          "slot": 1,
+          "cpu": 2,
+          "elapsed_ns": 339651700
+        },
+        {
+          "thread": 2,
+          "slot": 2,
+          "cpu": 4,
+          "elapsed_ns": 324253700
+        },
+        {
+          "thread": 3,
+          "slot": 3,
+          "cpu": 6,
+          "elapsed_ns": 337240200
+        }
+      ],
+      "ctx_switches_per_trial": [
+        {
+          "voluntary": 46,
+          "involuntary": 0,
+          "source": "psutil.num_ctx_switches (Windows: involuntary not separated)"
+        },
+        {
+          "voluntary": 53,
+          "involuntary": 0,
+          "source": "psutil.num_ctx_switches (Windows: involuntary not separated)"
+        },
+        {
+          "voluntary": -2,
+          "involuntary": 0,
+          "source": "psutil.num_ctx_switches (Windows: involuntary not separated)"
+        },
+        {
+          "voluntary": 29,
+          "involuntary": 0,
+          "source": "psutil.num_ctx_switches (Windows: involuntary not separated)"
+        },
+        {
+          "voluntary": 85,
+          "involuntary": 0,
+          "source": "psutil.num_ctx_switches (Windows: involuntary not separated)"
+        }
+      ]
+    },
+    "stride_4": {
+      "stride_elems": 4,
+      "byte_offsets": [
+        0,
+        32,
+        64,
+        96
+      ],
+      "cache_lines_touched": [
+        0,
+        1
+      ],
+      "wall_ns_trials": [
+        185750300,
+        179540400,
+        169377500,
+        168893300,
+        165464300
+      ],
+      "wall_ns_median": 169377500,
+      "wall_ns_min": 165464300,
+      "ns_per_update_per_thread": 2.8229583333333332,
+      "aggregate_updates_per_ns": 1.4169532553025048,
+      "per_thread_ns_median_trial": [
+        {
+          "thread": 0,
+          "slot": 0,
+          "cpu": 0,
+          "elapsed_ns": 169292700
+        },
+        {
+          "thread": 1,
+          "slot": 4,
+          "cpu": 2,
+          "elapsed_ns": 164975700
+        },
+        {
+          "thread": 2,
+          "slot": 8,
+          "cpu": 4,
+          "elapsed_ns": 145913400
+        },
+        {
+          "thread": 3,
+          "slot": 12,
+          "cpu": 6,
+          "elapsed_ns": 148580600
+        }
+      ],
+      "ctx_switches_per_trial": [
+        {
+          "voluntary": 294,
+          "involuntary": 0,
+          "source": "psutil.num_ctx_switches (Windows: involuntary not separated)"
+        },
+        {
+          "voluntary": 118,
+          "involuntary": 0,
+          "source": "psutil.num_ctx_switches (Windows: involuntary not separated)"
+        },
+        {
+          "voluntary": 12,
+          "involuntary": 0,
+          "source": "psutil.num_ctx_switches (Windows: involuntary not separated)"
+        },
+        {
+          "voluntary": 29,
+          "involuntary": 0,
+          "source": "psutil.num_ctx_switches (Windows: involuntary not separated)"
+        },
+        {
+          "voluntary": 29,
+          "involuntary": 0,
+          "source": "psutil.num_ctx_switches (Windows: involuntary not separated)"
+        }
+      ]
+    },
+    "stride_8": {
+      "stride_elems": 8,
+      "byte_offsets": [
+        0,
+        64,
+        128,
+        192
+      ],
+      "cache_lines_touched": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "wall_ns_trials": [
+        49659500,
+        48180500,
+        42226700,
+        41678200,
+        42262700
+      ],
+      "wall_ns_median": 42262700,
+      "wall_ns_min": 41678200,
+      "ns_per_update_per_thread": 0.7043783333333333,
+      "aggregate_updates_per_ns": 5.678766382649476,
+      "per_thread_ns_median_trial": [
+        {
+          "thread": 0,
+          "slot": 0,
+          "cpu": 0,
+          "elapsed_ns": 42092900
+        },
+        {
+          "thread": 1,
+          "slot": 8,
+          "cpu": 2,
+          "elapsed_ns": 40579700
+        },
+        {
+          "thread": 2,
+          "slot": 16,
+          "cpu": 4,
+          "elapsed_ns": 40570300
+        },
+        {
+          "thread": 3,
+          "slot": 24,
+          "cpu": 6,
+          "elapsed_ns": 40991900
+        }
+      ],
+      "ctx_switches_per_trial": [
+        {
+          "voluntary": 5,
+          "involuntary": 0,
+          "source": "psutil.num_ctx_switches (Windows: involuntary not separated)"
+        },
+        {
+          "voluntary": 12,
+          "involuntary": 0,
+          "source": "psutil.num_ctx_switches (Windows: involuntary not separated)"
+        },
+        {
+          "voluntary": 14,
+          "involuntary": 0,
+          "source": "psutil.num_ctx_switches (Windows: involuntary not separated)"
+        },
+        {
+          "voluntary": -8,
+          "involuntary": 0,
+          "source": "psutil.num_ctx_switches (Windows: involuntary not separated)"
+        },
+        {
+          "voluntary": 12,
+          "involuntary": 0,
+          "source": "psutil.num_ctx_switches (Windows: involuntary not separated)"
+        }
+      ]
+    },
+    "stride_16": {
+      "stride_elems": 16,
+      "byte_offsets": [
+        0,
+        128,
+        256,
+        384
+      ],
+      "cache_lines_touched": [
+        0,
+        2,
+        4,
+        6
+      ],
+      "wall_ns_trials": [
+        46693300,
+        46965700,
+        42216300,
+        47117300,
+        43245600
+      ],
+      "wall_ns_median": 46693300,
+      "wall_ns_min": 42216300,
+      "ns_per_update_per_thread": 0.7782216666666667,
+      "aggregate_updates_per_ns": 5.139923714965531,
+      "per_thread_ns_median_trial": [
+        {
+          "thread": 0,
+          "slot": 0,
+          "cpu": 0,
+          "elapsed_ns": 46925200
+        },
+        {
+          "thread": 1,
+          "slot": 16,
+          "cpu": 2,
+          "elapsed_ns": 40502800
+        },
+        {
+          "thread": 2,
+          "slot": 32,
+          "cpu": 4,
+          "elapsed_ns": 40585700
+        },
+        {
+          "thread": 3,
+          "slot": 48,
+          "cpu": 6,
+          "elapsed_ns": 44840500
+        }
+      ],
+      "ctx_switches_per_trial": [
+        {
+          "voluntary": 29,
+          "involuntary": 0,
+          "source": "psutil.num_ctx_switches (Windows: involuntary not separated)"
+        },
+        {
+          "voluntary": 22,
+          "involuntary": 0,
+          "source": "psutil.num_ctx_switches (Windows: involuntary not separated)"
+        },
+        {
+          "voluntary": 11,
+          "involuntary": 0,
+          "source": "psutil.num_ctx_switches (Windows: involuntary not separated)"
+        },
+        {
+          "voluntary": 19,
+          "involuntary": 0,
+          "source": "psutil.num_ctx_switches (Windows: involuntary not separated)"
+        },
+        {
+          "voluntary": 10,
+          "involuntary": 0,
+          "source": "psutil.num_ctx_switches (Windows: involuntary not separated)"
+        }
+      ]
+    }
+  },
+  "private_baseline": {
+    "layout": "register-private accumulator, one final store per thread (slots 0..3, stride 1)",
+    "wall_ns_trials": [
+      8108500,
+      8323000,
+      11031300,
+      8939500,
+      8506700
+    ],
+    "wall_ns_median": 8506700,
+    "wall_ns_min": 8108500,
+    "ns_per_update_per_thread": 0.14177833333333334,
+    "ctx_switches_per_trial": [
+      {
+        "voluntary": 9,
+        "involuntary": 0,
+        "source": "psutil.num_ctx_switches (Windows: involuntary not separated)"
+      },
+      {
+        "voluntary": -8,
+        "involuntary": 0,
+        "source": "psutil.num_ctx_switches (Windows: involuntary not separated)"
+      },
+      {
+        "voluntary": 12,
+        "involuntary": 0,
+        "source": "psutil.num_ctx_switches (Windows: involuntary not separated)"
+      },
+      {
+        "voluntary": 7,
+        "involuntary": 0,
+        "source": "psutil.num_ctx_switches (Windows: involuntary not separated)"
+      },
+      {
+        "voluntary": 4,
+        "involuntary": 0,
+        "source": "psutil.num_ctx_switches (Windows: involuntary not separated)"
+      }
+    ]
+  },
+  "naive_promoted_stride1": {
+    "wall_ns_trials": [
+      8677600,
+      8238600,
+      8234900,
+      8529800,
+      8606200
+    ],
+    "wall_ns_median": 8529800,
+    "ns_per_update_per_thread": 0.14216333333333334
+  },
+  "slowdown_stride1_vs_stride8": 8.043485153575139,
+  "slowdown_stride4_vs_stride8": 4.007730220738382,
+  "ratio_stride16_vs_stride8": 1.1048347597290282,
+  "ratio_stride8_vs_private": 4.968166268940952,
+  "gil_bytecode_baseline": {
+    "stride_1_T1": {
+      "threads": 1,
+      "stride": 1,
+      "wall_ns": 85328000,
+      "ns_per_update_aggregate": 284.4266666666667,
+      "ctx_switches": {
+        "voluntary": 0,
+        "involuntary": 0,
+        "source": "psutil.num_ctx_switches (Windows: involuntary not separated)"
+      }
+    },
+    "stride_1_T2": {
+      "threads": 2,
+      "stride": 1,
+      "wall_ns": 183843700,
+      "ns_per_update_aggregate": 306.40616666666665,
+      "ctx_switches": {
+        "voluntary": 26,
+        "involuntary": 0,
+        "source": "psutil.num_ctx_switches (Windows: involuntary not separated)"
+      }
+    },
+    "stride_1_T4": {
+      "threads": 4,
+      "stride": 1,
+      "wall_ns": 361207200,
+      "ns_per_update_aggregate": 301.006,
+      "ctx_switches": {
+        "voluntary": 96,
+        "involuntary": 0,
+        "source": "psutil.num_ctx_switches (Windows: involuntary not separated)"
+      }
+    },
+    "stride_8_T1": {
+      "threads": 1,
+      "stride": 8,
+      "wall_ns": 137826600,
+      "ns_per_update_aggregate": 459.422,
+      "ctx_switches": {
+        "voluntary": 2,
+        "involuntary": 0,
+        "source": "psutil.num_ctx_switches (Windows: involuntary not separated)"
+      }
+    },
+    "stride_8_T2": {
+      "threads": 2,
+      "stride": 8,
+      "wall_ns": 250841700,
+      "ns_per_update_aggregate": 418.0695,
+      "ctx_switches": {
+        "voluntary": 0,
+        "involuntary": 0,
+        "source": "psutil.num_ctx_switches (Windows: involuntary not separated)"
+      }
+    },
+    "stride_8_T4": {
+      "threads": 4,
+      "stride": 8,
+      "wall_ns": 360081500,
+      "ns_per_update_aggregate": 300.0679166666667,
+      "ctx_switches": {
+        "voluntary": 105,
+        "involuntary": 0,
+        "source": "psutil.num_ctx_switches (Windows: involuntary not separated)"
+      }
+    }
+  },
+  "parity": {
+    "stride_1": true,
+    "stride_4": true,
+    "stride_8": true,
+    "stride_16": true,
+    "private": true,
+    "naive_promoted": true
+  },
+  "reference_final_counters": [
+    1949999939,
+    1950000037,
+    1950000048,
+    1950000014
+  ],
+  "llvm_audit": {
+    "worker_strided_accumulate": {
+      "ir_chars": 18237,
+      "store_i64_total": 13,
+      "load_i64_total": 12,
+      "loop_blocks": [
+        "B34.prol",
+        "B34"
+      ],
+      "store_i64_in_loop": 9,
+      "load_i64_in_loop": 9,
+      "volatile_or_atomic_in_loop": 0,
+      "native_calls": [],
+      "pyobject_fallback": false,
+      "loop_excerpt": [
+        "%.182.prol = load i64, ptr %.181.prol, align 8",
+        "store i64 %.185.prol, ptr %.181.prol, align 8",
+        "br i1 %prol.iter.cmp.not, label %B34.prol.loopexit.loopexit, label %B34.prol, !llvm.loop !0",
+        "%.182 = load i64, ptr %.181, align 8",
+        "store i64 %.185, ptr %.181, align 8",
+        "%.182.1 = load i64, ptr %.181.1, align 8",
+        "store i64 %.185.1, ptr %.181.1, align 8",
+        "%.182.2 = load i64, ptr %.181.2, align 8",
+        "store i64 %.185.2, ptr %.181.2, align 8",
+        "%.182.3 = load i64, ptr %.181.3, align 8",
+        "store i64 %.185.3, ptr %.181.3, align 8",
+        "%.182.4 = load i64, ptr %.181.4, align 8"
+      ]
+    },
+    "naive_promotable_accumulate": {
+      "ir_chars": 20933,
+      "store_i64_total": 5,
+      "load_i64_total": 4,
+      "loop_blocks": [
+        "vector.body",
+        "vec.epilog.vector.body",
+        "B34"
+      ],
+      "store_i64_in_loop": 0,
+      "load_i64_in_loop": 0,
+      "volatile_or_atomic_in_loop": 0,
+      "native_calls": [],
+      "pyobject_fallback": false,
+      "loop_excerpt": [
+        "br i1 %19, label %middle.block, label %vector.body, !llvm.loop !0",
+        "br i1 %32, label %vec.epilog.middle.block, label %vec.epilog.vector.body, !llvm.loop !4",
+        "br i1 %.107, label %B34, label %B30.B144_crit_edge, !llvm.loop !5"
+      ]
+    },
+    "worker_private_accumulate": {
+      "ir_chars": 21033,
+      "store_i64_total": 5,
+      "load_i64_total": 3,
+      "loop_blocks": [
+        "vector.body",
+        "vec.epilog.vector.body",
+        "B78"
+      ],
+      "store_i64_in_loop": 0,
+      "load_i64_in_loop": 0,
+      "volatile_or_atomic_in_loop": 0,
+      "native_calls": [
+        "llvm.smax.i64"
+      ],
+      "pyobject_fallback": false,
+      "loop_excerpt": [
+        "br i1 %18, label %middle.block, label %vector.body, !llvm.loop !0",
+        "br i1 %31, label %vec.epilog.middle.block, label %vec.epilog.vector.body, !llvm.loop !4",
+        "br i1 %.110, label %B78, label %B170.loopexit, !llvm.loop !5"
+      ]
+    }
+  },
+  "gil_released": true,
+  "verification_passed": true,
+  "versions": {
+    "python": "3.14.3",
+    "numpy": "2.5.3",
+    "numba": "0.67.0"
+  },
+  "generated_utc": "2026-11-19T08:19:07Z",
+  "script_sha256": "ac43d64e3f1cff8060f9e3c47949766548056ced648d248ed0aff0f60311996e",
+  "manifest_sha256": "e865527cc49da5833215bc8211a30c277fb4c182889bd7366f2e6511d97b952f"
+}
