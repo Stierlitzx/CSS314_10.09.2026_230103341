@@ -1,0 +1,89 @@
+# LOCAL CROSS-CHECK (not the submission run): AMD Ryzen 5 7640HS, 6 cores / 12 threads, Windows 11, MS-MPI 10.1,
+# 4 ranks via mpiexec -n 4. GPU tiers ran under NUMBA_ENABLE_CUDASIM on a 40x40 grid with 4 steps (timings meaningless,
+# PTX audit stubbed); the MPI-3 shared-window sweep (Task 4) and LLVM audit ran natively at the full 40,000,000 updates.
+==============================================================================
+Hybrid MPI-CUDA distributed stencil + MPI-3 shared-window cache-line coherency
+==============================================================================
+GitHub identity   : Stierlitzx
+GPU               : NVIDIA GeForce RTX 4060 Laptop GPU, 8.9  UUID GPU-0c13a78b-5a3e-7434-f187-59658df572e9
+CPU               : AMD Ryzen 5 7640HS w/ Radeon 760M Graphics  cpu_sig=AMD64::12  line=64 B
+INSTANCE_SEED     : 13371248629658248325 (0xb99037c8e6356485)
+MPI library       : Microsoft MPI 10.1.12498.16
+MPI ranks         : 4 in a 2x2 Cartesian grid, periods=[False, False]; node_comm size 4
+
+[Task 1] Topology (PROC_NULL = '-')
+  rank coords  up down left right  local_shape  node_rank   pid
+     0 (0,0)   -   2    -     1   (22, 22)        0     33728
+     1 (0,1)   -   3    0     -   (22, 22)        1     38724
+     2 (1,0)   0   -    -     3   (22, 22)        2     29876
+     3 (1,1)   1   -    2     -   (22, 22)        3     38716
+  shared window: 64 uint64 slots, base % 64 = 0, base % 128 = 0, disp_unit = 8
+  CPU affinity per rank: [(0, None), (1, None), (2, None), (3, None)]  (os.cpu_count() = 12)
+
+[Task 2] Rank-local 22x22 fields (no global grid)
+  dx = dy = 1/41 = 2.4390243902e-02
+  kappa range [0.080059, 0.239941];  integral S dA = 2.238e-16
+  pulses x=[0.5551, 0.6505, 0.3884] y=[0.5107, 0.4319, 0.581] A=[1.3289, 1.3064, 0.7837] sigma=[0.0521, 0.0456, 0.0675]
+  CFL: dt_max = dx^2/(4 kappa_max) = 6.198227e-04; dt = 0.9 * dt_max = 5.578405e-04
+
+[Task 3/5] 4 stencil steps per mode (allreduce diagnostics every 2)
+  -- serialized --
+     step        energy E (allreduce)        L2 residual           max|u|
+        0   6.222921417946471e-02   0.000000000000e+00   1.3780373624
+        2   6.222307958513348e-02   2.733667844907e-01   1.2794153438
+        4   6.221783908511928e-02   2.249816947724e-01   1.1961322234
+  -- overlapped --
+     step        energy E (allreduce)        L2 residual           max|u|
+        0   6.222921417946471e-02   0.000000000000e+00   1.3780373624
+        2   6.222307958513348e-02   2.733667844907e-01   1.2794153438
+        4   6.221783908511928e-02   2.249816947724e-01   1.1961322234
+  parity_max_diff = 0.000e+00 -> PASS
+  gpu_serialized_ms = 4836.551   gpu_overlapped_ms = 13664.194   speed-up = 0.3540x
+    CUDA event serialized_step_total_ms              0.000 ms (    0.00 us/step, max rank 0.000 ms)
+    CUDA event overlapped_pack_d2h_ms                0.000 ms (    0.00 us/step, max rank 0.000 ms)
+    CUDA event overlapped_interior_kernel_ms         0.000 ms (    0.00 us/step, max rank 0.000 ms)
+    CUDA event overlapped_boundary_stageC_ms         0.000 ms (    0.00 us/step, max rank 0.000 ms)
+  energy monotonic non-increasing: True
+
+[Task 4] MPI-3 shared-window false-sharing sweep: 4 ranks x 40,000,000 updates, 3 trials, slowest rank per trial
+  stride_1   offsets [0, 8, 16, 24]     lines [0]            median   247,898,400 ns  6.197 ns/update  vs stride 8 6.317x  bit-exact=True
+             slowest-rank trials [244833400, 247898400, 260284000]  fastest-rank trials [228350000, 227163700, 246009900]
+  stride_8   offsets [0, 64, 128, 192]  lines [0, 1, 2, 3]   median    39,241,400 ns  0.981 ns/update  vs stride 8 1.000x  bit-exact=True
+             slowest-rank trials [45365900, 39241400, 32360400]  fastest-rank trials [35265200, 32927000, 27654900]
+  stride_16  offsets [0, 128, 256, 384] lines [0, 2, 4, 6]   median    31,647,300 ns  0.791 ns/update  vs stride 8 0.806x  bit-exact=True
+             slowest-rank trials [34944300, 27819000, 31647300]  fastest-rank trials [27569800, 27065000, 26885200]
+  false-sharing slowdown stride 1 / stride 8 = 6.317x;  stride 16 / stride 8 = 0.806x
+
+[Task 5] GPU PTX audit (tiled_stencil_kernel.inspect_asm)
+  st.shared.f64 : 1
+  ld.shared.f64 : 1
+  bar.sync      : 1
+  barrier.sync  : 0
+  ptx_audit_passed: True
+[Task 5] CPU LLVM IR audit (host_shm_accumulate.inspect_llvm)
+  loop blocks ['B34.prol', 'B34']: store i64 = 9, load i64 = 9, vector ops = 0, calls = [], pyobject = False
+      %.153.prol = and i64 %.149.prol, %arg.mask
+      %.182.prol = load i64, ptr %.181.prol, align 8
+      store i64 %.185.prol, ptr %.181.prol, align 8
+      %.153 = and i64 %.149, %arg.mask
+      %.182 = load i64, ptr %.181, align 8
+      store i64 %.185, ptr %.181, align 8
+      %.153.1 = and i64 %.149.1, %arg.mask
+      %.182.1 = load i64, ptr %.181.1, align 8
+      store i64 %.185.1, ptr %.181.1, align 8
+  llvm_audit_passed: True
+
+[Task 5] Verification
+  mpi_ranks_2x2              OK
+  gpu_parity_below_1e-12     OK
+  energy_monotonic           OK
+  ptx_audit_passed           OK
+  llvm_audit_passed          OK
+  shm_counters_bit_exact     OK
+  shm_window_64B_aligned     OK
+  verification_passed: True
+  hybrid_lab_manifest.json written (sha256 197bd11a4781d0ed...)
+[rank 1] max|ref - overlapped| = 1.110e-16  parity = 0.000e+00
+[rank 3] max|ref - overlapped| = 3.469e-18  parity = 0.000e+00
+[rank 2] max|ref - overlapped| = 2.776e-17  parity = 0.000e+00
+[rank 0] max|ref - overlapped| = 6.939e-18  parity = 0.000e+00

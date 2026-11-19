@@ -8,6 +8,9 @@ Four GIL-free `@njit(nogil=True)` Numba workers run on `threading.Thread`, each 
 hammer `uint64` counters laid out at 8, 32, 64 and 128-byte spacing to expose hardware cache-coherence (RFO) traffic,
 alongside a register-private control and a pure-Python GIL baseline.
 
+> **Second practice lab of this session:** [`hybrid_mpi_cuda_cache_lab/`](hybrid_mpi_cuda_cache_lab/README.md) — Hybrid
+> MPI-CUDA distributed stencil + MPI-3 shared-window cache-line coherency, executed on a Colab Tesla T4.
+
 **Host:** AMD Ryzen 5 7640HS (Zen 4, 6 C / 12 T), 64-byte L1d lines, Windows 11, CPython 3.14.3, NumPy 2.5.3, Numba 0.67.0.
 Run on battery (54 %).
 

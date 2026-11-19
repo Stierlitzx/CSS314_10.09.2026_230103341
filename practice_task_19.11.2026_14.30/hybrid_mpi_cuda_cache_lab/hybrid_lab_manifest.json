@@ -1,0 +1,386 @@
+{
+  "github_username": "Stierlitzx",
+  "gpu_name": "Tesla T4, 7.5",
+  "gpu_uuid": "GPU-6c19b838-7a5d-1355-0fdd-83ef8e21deb2",
+  "cpu_model": "Intel(R) Xeon(R) CPU @ 2.00GHz",
+  "cpu_sig": "x86_64::2",
+  "cpu_line_bytes": 64,
+  "instance_seed": 8070547215371552121,
+  "instance_seed_hex": "0x700057eecb3d4579",
+  "mpi_ranks": 4,
+  "cart_dims": [
+    2,
+    2
+  ],
+  "cart_periods": [
+    false,
+    false
+  ],
+  "node_comm_size": 4,
+  "rank_topology": [
+    {
+      "rank": 0,
+      "coords": [
+        0,
+        0
+      ],
+      "up": -1,
+      "down": 2,
+      "left": -1,
+      "right": 1,
+      "local_shape": [
+        258,
+        258
+      ]
+    },
+    {
+      "rank": 1,
+      "coords": [
+        0,
+        1
+      ],
+      "up": -1,
+      "down": 3,
+      "left": 0,
+      "right": -1,
+      "local_shape": [
+        258,
+        258
+      ]
+    },
+    {
+      "rank": 2,
+      "coords": [
+        1,
+        0
+      ],
+      "up": 0,
+      "down": -1,
+      "left": -1,
+      "right": 3,
+      "local_shape": [
+        258,
+        258
+      ]
+    },
+    {
+      "rank": 3,
+      "coords": [
+        1,
+        1
+      ],
+      "up": 1,
+      "down": -1,
+      "left": 2,
+      "right": -1,
+      "local_shape": [
+        258,
+        258
+      ]
+    }
+  ],
+  "rank_cpu_affinity": [
+    [
+      0,
+      [
+        0,
+        1
+      ]
+    ],
+    [
+      1,
+      [
+        0,
+        1
+      ]
+    ],
+    [
+      2,
+      [
+        0,
+        1
+      ]
+    ],
+    [
+      3,
+      [
+        0,
+        1
+      ]
+    ]
+  ],
+  "global_grid": [
+    512,
+    512
+  ],
+  "local_padded_shape": [
+    258,
+    258
+  ],
+  "tile_dim": 16,
+  "shared_dim": 18,
+  "stencil_steps": 300,
+  "lambda_damp": 0.15,
+  "dx": 0.001949317738791423,
+  "kappa_min": 0.08000275651773374,
+  "kappa_max": 0.23999593165551458,
+  "dt_max": 3.95823339645307e-06,
+  "dt": 3.5624100568077633e-06,
+  "cfl_safety": 0.9,
+  "source_integral": 2.8039966927669545e-18,
+  "seeded_parameters": {
+    "pulse_cx": [
+      0.2237068380631441,
+      0.608742173507684,
+      0.6364634891137491
+    ],
+    "pulse_cy": [
+      0.6908977060041662,
+      0.6939199359019662,
+      0.7182715112129384
+    ],
+    "pulse_amp": [
+      0.9432573966973559,
+      0.939894511119964,
+      1.197666104884627
+    ],
+    "pulse_sigma": [
+      0.04611112641959769,
+      0.06473607746490372,
+      0.05235776731583727
+    ],
+    "kappa_fx": 3,
+    "kappa_fy": 1,
+    "kappa_phx": 0.8799749032350391,
+    "kappa_phy": 0.37237777090184854,
+    "src_amp": 3.63196644862397,
+    "src_sigma": 0.03,
+    "src_pos": [
+      0.3799811553514535,
+      0.6626621477177116
+    ],
+    "sink_pos": [
+      0.6647824481300018,
+      0.6251313114303823
+    ]
+  },
+  "energy_trace_serialized": [
+    {
+      "step": 0,
+      "energy": 0.0579790885721084,
+      "l2_residual": 0.0,
+      "u_max": 2.039317163022604
+    },
+    {
+      "step": 100,
+      "energy": 0.05797566933941159,
+      "l2_residual": 0.02236201208027705,
+      "u_max": 2.0001324015243926
+    },
+    {
+      "step": 200,
+      "energy": 0.057972411342411594,
+      "l2_residual": 0.021330749059580406,
+      "u_max": 1.9617821946698937
+    },
+    {
+      "step": 300,
+      "energy": 0.05796928947689404,
+      "l2_residual": 0.02040906451986857,
+      "u_max": 1.9242855861412962
+    }
+  ],
+  "energy_trace_overlapped": [
+    {
+      "step": 0,
+      "energy": 0.0579790885721084,
+      "l2_residual": 0.0,
+      "u_max": 2.039317163022604
+    },
+    {
+      "step": 100,
+      "energy": 0.05797566933941159,
+      "l2_residual": 0.02236201208027705,
+      "u_max": 2.0001324015243926
+    },
+    {
+      "step": 200,
+      "energy": 0.057972411342411594,
+      "l2_residual": 0.021330749059580406,
+      "u_max": 1.9617821946698937
+    },
+    {
+      "step": 300,
+      "energy": 0.05796928947689404,
+      "l2_residual": 0.02040906451986857,
+      "u_max": 1.9242855861412962
+    }
+  ],
+  "energy_monotonic_non_increasing": true,
+  "parity_max_diff": 0.0,
+  "gpu_serialized_ms": 1182.1341049999994,
+  "gpu_overlapped_ms": 1411.5030379999994,
+  "gpu_overlap_speedup": 0.8375002201022538,
+  "cuda_event_timings_ms": {
+    "serialized_step_total_ms": {
+      "mean_over_ranks": 1116.2443907409906,
+      "max_over_ranks": 1128.8656647205353
+    },
+    "overlapped_pack_d2h_ms": {
+      "mean_over_ranks": 107.52738391142339,
+      "max_over_ranks": 128.66204822435975
+    },
+    "overlapped_interior_kernel_ms": {
+      "mean_over_ranks": 94.58708008052781,
+      "max_over_ranks": 110.35580844990909
+    },
+    "overlapped_boundary_stageC_ms": {
+      "mean_over_ranks": 1091.0501692146063,
+      "max_over_ranks": 1112.7404483556747
+    }
+  },
+  "ptx_counts": {
+    "st.shared.f64": 5,
+    "ld.shared.f64": 5,
+    "bar.sync": 1,
+    "barrier.sync": 0
+  },
+  "ptx_audit_passed": true,
+  "shm_window": {
+    "slots": 64,
+    "base_mod64": 0,
+    "base_mod128": 0,
+    "disp_unit": 8
+  },
+  "shm_iters": 40000000,
+  "shm_trials": 3,
+  "shm_results": {
+    "stride_1": {
+      "stride_elems": 1,
+      "byte_offsets": [
+        0,
+        8,
+        16,
+        24
+      ],
+      "cpu_lines_touched": [
+        0
+      ],
+      "slowest_rank_ns_trials": [
+        592842578,
+        541030006,
+        579522133
+      ],
+      "fastest_rank_ns_trials": [
+        591089832,
+        525605313,
+        562078619
+      ],
+      "median_ns": 579522133,
+      "ns_per_update": 14.488053325,
+      "counters_bit_exact": true
+    },
+    "stride_8": {
+      "stride_elems": 8,
+      "byte_offsets": [
+        0,
+        64,
+        128,
+        192
+      ],
+      "cpu_lines_touched": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "slowest_rank_ns_trials": [
+        258860763,
+        191392181,
+        192220911
+      ],
+      "fastest_rank_ns_trials": [
+        215623093,
+        164032074,
+        187732295
+      ],
+      "median_ns": 192220911,
+      "ns_per_update": 4.805522775,
+      "counters_bit_exact": true
+    },
+    "stride_16": {
+      "stride_elems": 16,
+      "byte_offsets": [
+        0,
+        128,
+        256,
+        384
+      ],
+      "cpu_lines_touched": [
+        0,
+        2,
+        4,
+        6
+      ],
+      "slowest_rank_ns_trials": [
+        191541639,
+        193755158,
+        229238967
+      ],
+      "fastest_rank_ns_trials": [
+        188899976,
+        190837127,
+        128858503
+      ],
+      "median_ns": 193755158,
+      "ns_per_update": 4.84387895,
+      "counters_bit_exact": true
+    }
+  },
+  "shm_false_sharing_slowdown_stride1_vs_stride8": 3.0148755928016593,
+  "shm_ratio_stride16_vs_stride8": 1.0079816862380806,
+  "llvm_audit": {
+    "loop_blocks": [
+      "B34.prol",
+      "B34"
+    ],
+    "store_i64_in_loop": 5,
+    "load_i64_in_loop": 5,
+    "vector_ops_in_loop": 0,
+    "native_calls": [],
+    "pyobject_fallback": false,
+    "loop_excerpt": [
+      "%.153.prol = and i64 %.149.prol, %arg.mask",
+      "%.182.prol = load i64, ptr %.181.prol, align 8",
+      "store i64 %.185.prol, ptr %.181.prol, align 8",
+      "%.153 = and i64 %.149, %arg.mask",
+      "%.182 = load i64, ptr %.181, align 8",
+      "store i64 %.185, ptr %.181, align 8",
+      "%.153.1 = and i64 %.149.1, %arg.mask",
+      "%.182.1 = load i64, ptr %.181.1, align 8",
+      "store i64 %.185.1, ptr %.181.1, align 8"
+    ],
+    "passed": true
+  },
+  "llvm_audit_passed": true,
+  "verification": {
+    "mpi_ranks_2x2": true,
+    "gpu_parity_below_1e-12": true,
+    "energy_monotonic": true,
+    "ptx_audit_passed": true,
+    "llvm_audit_passed": true,
+    "shm_counters_bit_exact": true,
+    "shm_window_64B_aligned": true
+  },
+  "verification_passed": true,
+  "versions": {
+    "python": "3.13.16",
+    "numpy": "2.4.6",
+    "numba": "0.64.0",
+    "mpi4py": "4.1.2",
+    "mpi_library": "Open MPI v4.1.6, package: Debian OpenMPI, ident: 4.1.6, repo rev: v4.1.6, Sep 30, 2023\u0000"
+  },
+  "script_sha256": "f423f702bcc033ffc0ac11f66c339776809c0f63ea0919287890de396bef5273",
+  "generated_utc": "2026-11-19T09:53:59Z",
+  "manifest_sha256": "22552c3d31565d6c90c2e2eeb2c42707ddc7c8d7f8f549ac9784a6fe7784d7fc"
+}
