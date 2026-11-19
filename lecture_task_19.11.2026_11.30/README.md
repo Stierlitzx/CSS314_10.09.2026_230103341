@@ -1,85 +1,135 @@
-# Distributed Multi-Rank Stencil & Asynchronous Halo Exchange in MPI + CUDA (Python)
+# Distributed Stencil & Asynchronous Halo Exchange in MPI + CUDA
 
-### Laboratory deliverable · 19 November 2026 · 11:30
+### Lecture lab · 19 November 2026 · 11:30
 
 **Ayazgaliyev Aibek · Student ID `230103341` · GitHub `Stierlitzx`** · Instructor: Sufyan bin Uzayr
 
-This is a 4-rank anisotropic reaction-diffusion solver on a 512 × 512 grid, written with `mpi4py` + `numba.cuda`. Each
-rank owns a 258 × 258 padded device array in a non-periodic 2 × 2 Cartesian grid. Ranks exchange halos through GPU
-pack/unpack kernels and page-locked host buffers with `Isend`/`Irecv`. Cells are updated by an 18 × 18 shared-memory
-tiled stencil on two CUDA streams: the deep interior on `stream_interior`, and the boundary ring on `stream_boundary`.
+A heat-like simulation is split across **4 MPI processes**, each driving the same GPU. Every process owns one quarter
+of a 512 × 512 grid, swaps its border rows and columns with its neighbours every step, and updates its cells with a
+GPU kernel. The lab compares two ways of scheduling that work: a simple **serialized** pipeline, and an **overlapped**
+one that computes the interior while the border data is still in flight.
 
-**Executed on Google Colab — Tesla T4 (CC 7.5), UUID `GPU-198f4157-3506-5952-ab80-80b6dd077a59`, Open MPI 4.1.6.**
+Everything was executed on **Google Colab with a Tesla T4**. All numbers below come from that run.
+
+---
 
 ## Results at a glance
 
-| Verification item | Required | This run |
-|---|---|---|
-| `GITHUB_USERNAME` | real handle | **`Stierlitzx`** |
-| `INSTANCE_SEED` | SHA-256(user ‖ UUID) | `15753744789197117896` (`0xdaa08b6b3a4159c8`) |
-| `mpi_ranks` | 4 in 2 × 2 | **4**, dims `[2, 2]`, periods `[False, False]` |
-| `ptx_audit_passed` | non-zero shared/barrier counts | **true** — `st.shared.f64` 5, `ld.shared.f64` 5, `bar.sync` 1 |
-| `parity_max_diff` | < 1e-12 | **0.0** (bit-identical) |
-| Energy trace | dissipative | **monotone ↓** 7.6067621e-2 → 7.6060523e-2 |
+| Question | Answer from the run |
+|---|---|
+| Do both pipelines compute the same thing? | **Yes, bit-for-bit**: maximum difference **0.0** |
+| How much faster is the overlapped pipeline? | **2.38×** (9.67 → 4.07 ms per step) |
+| Is the GPU kernel really using shared memory + a barrier? | **Yes**: PTX has **5** `st.shared.f64`, **5** `ld.shared.f64`, **1** `bar.sync` |
+| How much PCIe traffic does GPU-side packing save? | **129× less** data: 13.1 MB instead of 1.69 GB over the run |
+| Is the time step stable? | **Yes**: Δt = 0.9 × the stability limit, and energy falls at every checkpoint |
+| Does the measured energy loss match the physics? | **Within 1.7 %** of the cubic-damping prediction |
 
-| Benchmark (400 steps, slowest rank) | Wall time | Per step |
+## Hardware and setup
+
+| Property | Value |
+|---|---|
+| GPU | NVIDIA **Tesla T4** (compute capability 7.5, 15 GB), UUID `GPU-198f4157-3506-5952-ab80-80b6dd077a59` |
+| MPI | Open MPI 4.1.6, 4 ranks in a non-periodic **2 × 2** Cartesian grid |
+| Software | Python 3.13, NumPy 2.4, Numba 0.64 (+ numba-cuda), mpi4py 4.1 |
+| Problem | 512 × 512 interior cells → each rank holds a **258 × 258** array (256² own cells + 1-cell ghost border) |
+| Steps | 400 per pipeline, energy checked every 100 steps |
+| Seed | `INSTANCE_SEED = 15753744789197117896`, from SHA-256 of GitHub handle + GPU UUID |
+
+---
+
+## 1 — The overlap pays off: 2.38× faster per step
+
+![Wall time per step for both pipelines, and the CUDA-event breakdown of one step](plots/overlap_benchmark.png)
+
+Each step, a rank must (A) copy its 4 border strips off the GPU, (B) exchange them with its neighbours over MPI, and
+(C) put the received strips back and update its cells.
+
+* **Serialized:** A → B → C → update everything. The GPU sits idle while MPI messages travel.
+* **Overlapped:** A → *post* the MPI messages → immediately update the 254 × 254 **interior**, which needs no
+  neighbour data, on a second CUDA stream → wait for MPI → update only the thin outer ring.
+
+The right-hand chart shows why the gain is so large: the interior kernel itself costs only **0.30 ms**, while
+waiting for the exchange costs **~3.2 ms**. In the serialized pipeline that wait sits in front of all of the compute.
+The overlapped pipeline lets the shared GPU work on the ranks' interiors while the processes wait for each other.
+
+| Pipeline | Total for 400 steps | Per step |
 |---|---:|---:|
-| `serialized_ms` | 3,869.639 ms | 9.674 ms |
-| `overlapped_ms` | **1,627.154 ms** | **4.068 ms** |
-| Overlap speed-up | **2.378×** | |
+| Serialized | 3,869.6 ms | 9.67 ms |
+| **Overlapped** | **1,627.2 ms** | **4.07 ms** |
 
-| CUDA event (mean over ranks) | Per step |
-|---|---:|
-| Stage A: pack + async D2H + sync | 209.56 µs |
-| Interior 254 × 254 tiled kernel (`stream_interior`) | 298.33 µs |
-| Stage C: Waitall + H2D + unpack + 4 ring kernels | 3,191.40 µs |
-| Serialized step (exchange + full stencil) | 9,338.05 µs |
+## 2 — Why packing the borders on the GPU matters
 
-The CFL limit is `Δt_max = Δx²/(4κ_max) = 3.958193e-6` with `κ_max = 0.2399984`. The run uses `Δt = 0.9·Δt_max = 3.562373e-6`.
+![Device-to-host bytes with GPU packing versus contiguous bounding-box copies](plots/halo_traffic.png)
+
+The array is stored row by row, so a **column** is 256 numbers spaced 2,064 bytes apart. A GPU→CPU copy can only move
+one contiguous block, so copying a column directly would drag along everything in between: 526 KB to deliver 2 KB.
+The `pack_halos_kernel` gathers the four strips into one small contiguous 8 KB buffer on the GPU first. Over the run
+that is **13.1 MB instead of 1.69 GB**.
+
+## 3 — The simulation is stable and physically consistent
+
+![Energy, peak value and step residual all fall monotonically; both pipelines overlap exactly](plots/energy_stability.png)
+
+| Step | Global energy E | Change over the last 100 steps |
+|---:|---:|---:|
+| 0 | 0.0760676207 | — |
+| 100 | 0.0760656985 | −1.92 × 10⁻⁶ |
+| 200 | 0.0760638832 | −1.82 × 10⁻⁶ |
+| 300 | 0.0760621609 | −1.72 × 10⁻⁶ |
+| 400 | 0.0760605226 | −1.64 × 10⁻⁶ |
+
+* **Stability:** the explicit scheme is stable when Δt ≤ Δx² / (4·κ_max) = **3.958 × 10⁻⁶**. The run uses
+  **3.562 × 10⁻⁶** (90 % of the limit).
+* **Energy:** diffusion only moves heat around, and the source term adds and removes equal amounts, so the only real
+  loss is the cubic damping term −λu³. Its prediction for the first 100 steps is −1.956 × 10⁻⁶ against **−1.922 × 10⁻⁶
+  measured**.
+* The hollow orange rings (serialized run) sit exactly on the blue points (overlapped run).
+
+## 4 — Proof the GPU kernel works as required
+
+The 16 × 16-thread kernel loads an 18 × 18 tile (its cells plus a 1-cell border) into fast shared memory, waits at a
+barrier, then computes. The compiled assembly confirms it:
+
+```text
+st.shared.f64  x5   (centre + 4 border loads into the tile)
+bar.sync       x1   (cuda.syncthreads)
+ld.shared.f64  x5   (centre + north/south/west/east reads)
+```
+
+Without that barrier, one group of threads (a warp) could read a tile cell before another warp has written it, and
+the results would be wrong and would change from run to run. The full explanation is in Q3.
+
+---
+
+## Key takeaways
+
+1. **Overlapping communication with computation gave a 2.38× speed-up** even though all 4 ranks share one GPU.
+2. **The bottleneck is waiting, not computing**: the actual stencil is ~0.3 ms of a 4–10 ms step.
+3. **Data layout decides PCIe cost**: packing strided columns on the GPU cuts transfers 129×.
+4. **Correctness was verified, not assumed**: bit-identical pipelines, PTX audit, CFL check, energy budget within 1.7 %.
+
+## Questions Q1–Q6
+
+All six forensic answers are in the last cell of [`mpi_cuda_stencil_lab.ipynb`](mpi_cuda_stencil_lab.ipynb) (source:
+[`answers_q1_q6.md`](answers_q1_q6.md)): memory coalescing, shared-memory bank conflicts, the PTX audit, sharing one
+GPU between processes, MPI deadlock and `PROC_NULL`, and CFL/energy.
 
 ## Files
 
 | File | What it is |
 |---|---|
-| [`mpi_cuda_stencil_lab.ipynb`](mpi_cuda_stencil_lab.ipynb) | The notebook as executed on the Colab T4 and downloaded from Colab (all cell outputs), plus the Q1–Q6 Markdown answers cell |
-| [`distributed_cuda_solver.py`](distributed_cuda_solver.py) | The solver; identical to the notebook's `%%writefile` cell (the manifest's `solver_sha256` matches this file) |
-| [`submission_manifest.json`](submission_manifest.json) | Manifest written by rank 0 on Colab, taken verbatim from the notebook output; `manifest_sha256` recomputes correctly |
-| [`solver_stdout_colab_t4.txt`](solver_stdout_colab_t4.txt) | Raw `mpirun -np 4` stdout from the Colab run |
-| [`answers_q1_q6.md`](answers_q1_q6.md) | Source of the Q1–Q6 answers cell |
-| [`make_notebook.py`](make_notebook.py) | Builds the notebook from the solver file (`--answers` refreshes only the Q1–Q6 cell and keeps outputs) |
+| [`mpi_cuda_stencil_lab.ipynb`](mpi_cuda_stencil_lab.ipynb) | The notebook exactly as executed on Colab (all outputs) + the Q1–Q6 answers |
+| [`distributed_cuda_solver.py`](distributed_cuda_solver.py) | The solver (identical to the notebook's `%%writefile` cell) |
+| [`submission_manifest.json`](submission_manifest.json) | Machine-readable results written by the run (its own hash recomputes; its `solver_sha256` matches the solver file) |
+| [`solver_stdout_colab_t4.txt`](solver_stdout_colab_t4.txt) | Raw console output of the 4-rank run |
+| [`make_plots.py`](make_plots.py) · [`plots/`](plots/) | Draws the charts above from the manifest (never re-runs anything) |
+| [`make_notebook.py`](make_notebook.py) | Builds the notebook from the solver file |
 
-## How each required mechanism is implemented
+## Reproduce
 
-| Invariant | Implementation in `distributed_cuda_solver.py` |
-|---|---|
-| 1. Identity binding | `derive_student_seed(user, uuid)` = first 64 bits of SHA-256(`"user::uuid"`); the UUID comes from `nvidia-smi` on rank 0 and is broadcast to all ranks |
-| 2. Distributed ownership | `initialize_subdomains` builds κ, u₀ and S on rank-local `(258, 258)` arrays from analytic global coordinates; no global array exists and no gather is ever called. The per-rank table is built with `Allreduce` of small metadata vectors |
-| 3. Shared-memory tiling | `tiled_stencil_kernel`: 16 × 16 threads, `cuda.shared.array((18, 18), float64)`, centre + edge-thread apron loads, `cuda.syncthreads()`, then the flux-form update. The bounding box `(r_start, r_end, c_start, c_end)` selects the interior or a ring strip |
-| 4. Strided halo packing | `pack_halos_kernel` / `unpack_halos_kernel` (1D grids) move rows and the strided columns into contiguous `(4, 256)` device buffers |
-| 5. Dual-stream overlap | `step_overlapped`: Stage A on `stream_boundary` → host sync → `Irecv`×4 + `Isend`×4 → interior kernel on `stream_interior` → `Waitall` → async H2D → unpack → 4 ring kernels on `stream_boundary` |
+1. Open [`mpi_cuda_stencil_lab.ipynb`](mpi_cuda_stencil_lab.ipynb) in Google Colab and choose **Runtime → Change
+   runtime type → T4 GPU**.
+2. Run **Runtime → Run all**. Cell 4 runs `mpirun -np 4 python3 distributed_cuda_solver.py <github_user>`.
+3. Redraw the charts locally with `python make_plots.py` (needs matplotlib).
 
-Physics: κ(x,y) = 0.16 + 0.08·sin(2π(f_x x + φ_x))·cos(2π(f_y y + φ_y)) ∈ [0.08, 0.24]. The initial condition is three
-Gaussian pulses, and S is a zero-net source/sink dipole. All of these parameters are drawn from `INSTANCE_SEED` with
-`numpy.random.PCG64`. Outer walls are Dirichlet `u = 0` through `MPI.PROC_NULL` neighbours.
-
-## Verification performed
-
-1. **Colab T4 run (official):** every check in notebook cell 5 printed `OK`, and the solver printed `ALL TASKS COMPLETE: YES`.
-2. **Integrity:** the manifest's `manifest_sha256` recomputes from its contents, and its `solver_sha256` equals the SHA-256 of
-   the committed `distributed_cuda_solver.py`.
-3. **Pre-flight correctness test (local, before Colab):** 4 MS-MPI ranks under `NUMBA_ENABLE_CUDASIM=1` on a 40 × 40 grid.
-   Every rank's subdomain matched a single-array NumPy implementation of the same scheme to ≤ 1.1e-16, and serialized vs.
-   overlapped parity was exactly 0. This check covers the halo exchange, partial tiles and ring/interior boxes.
-4. **Physics cross-check:** the cubic-damping budget `−λ∫u³·100Δt` predicts ΔE = −1.956e-6 over steps 0→100. The run measured
-   −1.922e-6, a 1.7 % difference (see Q6).
-
-## Reproduction
-
-On Colab, choose Runtime → Change runtime type → **T4 GPU**, upload `mpi_cuda_stencil_lab.ipynb`, then Runtime → **Run all**.
-Cell 1 installs `mpi4py`, `numba` and `numba-cuda[cu12]`. The launcher cell uses the instructor's
-`mpirun --allow-run-as-root --oversubscribe -np 4` command. When `mpirun` is absent, as on Windows with MS-MPI, it falls back
-to `mpiexec -n 4`. The seed, and therefore every number above, changes with the GPU UUID of the session.
-
-> Submission protocol note: the assignment asks for a separate repository named `mpi-cuda-stencil-Stierlitzx` with
-> `mpi_cuda_stencil_lab.ipynb`, `distributed_cuda_solver.py` and `submission_manifest.json` at its root. This folder holds
-> the same three files.
+A new Colab session gets a different GPU UUID, which changes the seed, the initial pulses and every number above.
